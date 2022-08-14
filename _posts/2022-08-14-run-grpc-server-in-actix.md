@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Actix에서 gRPC Server 시작하기
+tags: rust actix tonic
 ---
 
 Rust로 gRPC로 외부와 통신하는 Actix 기반 Application을 작성하는 방법을 알아봅니다. gRPC Server는 Tonic을 사용해 구현합니다.
