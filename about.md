@@ -4,12 +4,14 @@ title: About
 permalink: /about/
 ---
 
-Some information about you!
+공부하면서 배운 것들을 정리합니다.  
+주로 Rust 문법과 Rust library 사용법 입니다.    
+틀린 부분이나 부족한 부분은 언제든 댓글, 메일로 알려 주세요 :)
 
-### More Information
-
-A place to include any other types of information that you'd like to include about yourself.
+ 
+ 
 
 ### Contact me
 
-[email@domain.com](mailto:email@domain.com)
+[herehuijeong@gmail.com](mailto:herehuijeong@gmail.com)  
+[https://github.com/huijeong-kim](https://github.com/huijeong-kim)
