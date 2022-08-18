@@ -253,7 +253,7 @@ async fn async_send_ping(&self, addr: Addr<MyActor>) {
 이 때 결과는 아래와 같습니다. 
 
 ```rust
-Actor started, 0x1318043e0
+Actor started
 NOW I WILL START SEND PING: 0x16fa78608, MyActor { count: 0 }
 NOW I WILL SEND PING: 0x130605ee0, MyActor { count: 0 }
 NOW I WILL SEND PING TO SELF COMPLETED: 0x130605ee0, MyActor { count: 0 }
