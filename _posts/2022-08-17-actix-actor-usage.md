@@ -102,7 +102,9 @@ actix::spawn(fut);       // 방법 2, 현재 system에 spawn 하기
  
  
 
-아래 코드는 지금까지 설명한 `run_interval`을 다양한 방식으로 사용하는 코드 예시입니다. 아래 코드에서 특이한(?) 포인트는 `send_ping` 함수에서 `self.clone()`를 하는 건데요. async block 내에서 self의 `async_send_ping`를 호출하고 있기 때문 입니다. 여기서 self가 async block 내로 move될 수 없기 때문에 clone 하였습니다. 
+아래 코드는 지금까지 설명한 `run_interval`을 다양한 방식으로 사용하는 코드 예시입니다. 1) 주기적으로 associated func을 호출하는 경우, 2) 주기적으로 struct method를 호출하는 경우, 그리고 3) 주기적으로 async method를 호출하는 경우입니다. 
+
+아래 코드에서 특이한(?) 포인트는 async method를 호출할 때, `send_ping` 함수에서 `self.clone()`를 하는 건데요. async block 내에서 self의 `async_send_ping`를 호출하고 있기 때문 입니다. 여기서 self가 async block 내로 move될 수 없기 때문에 clone 하였습니다. 이 부분은 아래에서 좀 더 설명합니다. 
 ```rust
 use actix::{Actor, Addr, AsyncContext, Context, Handler, Message};
 
@@ -112,7 +114,7 @@ use actix::{Actor, Addr, AsyncContext, Context, Handler, Message};
 struct Ping(usize);
 
 /// Actor
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 struct MyActor {
     count: usize,
 }
@@ -224,7 +226,52 @@ CASE 3. Send ping, now count is 90
 
  
 
-결과를 보면, `send_async_ping` 에서 출력한 count가 현재 ping으로 인해 증가된 값이 반영되지 않는 문제가 있습니다. `self.clone()`의 영향 일까요? 이 부분은 분석이 완료되면 새로운 글로 정리해 보겠습니다 :) 
+결과를 보면, `send_async_ping` 에서 출력한 count가 현재 ping으로 인해 증가된 값이 반영되지 않는 문제가 있습니다. 위의 코드에서 `self.clone()`을 하면서 의도하지 않은 동작을 하게 만들었네요. 
+이 상태를 분석하기 위해 위의 코드에서 `send_ping`, `send_async_ping` method에 현재 사용하고 있는 actor의 주소를 출력하도록 수정해 봤습니다.
+
+```rust
+fn send_ping(&mut self, ctx: &mut Context<Self>) {
+    println!("NOW I WILL START SEND PING: {:p}, {:?}", &self, self);
+
+    let actor = self.clone();
+    let address = ctx.address();
+    let fut = async move {
+        actor.async_send_ping(address).await;
+    };
+
+    actix::spawn(fut);
+}
+
+async fn async_send_ping(&self, addr: Addr<MyActor>) {
+    println!("NOW I WILL SEND PING: {:p}, {:?}", &self, self);
+    addr.send(Ping(10)).await.unwrap();
+    println!("NOW I WILL SEND PING TO SELF COMPLETED: {:p}, {:?}", &self, self);
+    println!("Send ping, now count is {}", self.count);
+} 
+```
+
+이 때 결과는 아래와 같습니다. 
+
+```rust
+Actor started, 0x1318043e0
+NOW I WILL START SEND PING: 0x16fa78608, MyActor { count: 0 }
+NOW I WILL SEND PING: 0x130605ee0, MyActor { count: 0 }
+NOW I WILL SEND PING TO SELF COMPLETED: 0x130605ee0, MyActor { count: 0 }
+Send ping, now count is 0
+NOW I WILL START SEND PING: 0x16fa78608, MyActor { count: 10 }
+NOW I WILL SEND PING: 0x1306062e0, MyActor { count: 10 }
+NOW I WILL SEND PING TO SELF COMPLETED: 0x1306062e0, MyActor { count: 10 }
+Send ping, now count is 10
+NOW I WILL START SEND PING: 0x16fa78608, MyActor { count: 20 }
+NOW I WILL SEND PING: 0x130707de0, MyActor { count: 20 }
+NOW I WILL SEND PING TO SELF COMPLETED: 0x130707de0, MyActor { count: 20 }
+Send ping, now count is 20
+(생략)
+```
+
+`0x1318043e0` 주소를 가진 actor가 시작되고, 이 actor가 run_interval을 통해 반복적으로 불립니다. 하지만 `send_ping` 함수에서 `self.clone()` 이 되면 매 번 새로운 주소의 actor가 생성된 후 동작합니다. Ping 요청 시 처음 시작한 actor의 address를 전달하고 있기 때문에, 처음에 `0x1318043e0`에 만들어 진 actor가 ping message를 처리하고 있긴 합니다.
+
+이 경우는 `Addr`를 전달하고 있기 때문에 원하는 대로 주기적으로 count가 올라가는 동작을 구현할 수 있었는데, 주기적으로 자기 자신의 상태를 변경시키고, 그 과정에서 async 동작이 필요한 경우에는 위 방법을 활용하기 어렵겠습니다.   
 
 
  
