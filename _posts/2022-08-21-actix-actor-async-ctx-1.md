@@ -118,6 +118,26 @@ fn send_message_to_myself(&mut self, ctx: &mut Context<Self>) {
 
  
 
+`추가`) Message를 보낼 때 상대 actor에게 답장을 받을 주소, 즉 자신의 `Addr`를 전달할 수도 있겠습니다.
+[다음](https://riker.rs/actors/#sending-messages)은 또 다른 actor framework인 riker의 message handling 함수인데요. Message에 sender를 명시하여, 답장을 보낼 주소를 알려줄 수 있습니다.
+```rust
+// implement the Actor trait
+impl Actor for MyActor {
+    type Msg = String;
+
+    fn recv(&mut self,
+            _ctx: &Context<String>,
+            msg: String,
+            _sender: Sender) {
+
+        println!("Received: {}", msg);
+    }
+}
+```
+이는 actor가 앞으로 message를 보내야 하는 모든 상대의 `Addr`를 미리 알 필요 없게 해 주고, actor를 unit test할 때도 유용합니다. 답장을 받을 주소를 test code에서 바꾸기 쉽기 때문입니다.
+
+ 
+
 --- 
 
 ### spawn
