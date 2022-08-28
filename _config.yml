@@ -50,7 +50,18 @@ footer-links:
   rss: # just type anything here for a working RSS icon
   twitter:
 
+defaults:
+  - values:
+      toc: true
+      toc_sticky: true
+      toc_label: "Table of Contents"
+
+toc:
+  list_id: toc
+  list_class: toc-section-nav
+
 plugins:
   - jekyll-seo-tag
   - jekyll-sitemap
   - jekyll-feed
+  - jekyll-toc

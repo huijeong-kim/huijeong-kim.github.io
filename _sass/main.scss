@@ -73,6 +73,14 @@ pre.highlight {
   margin-right: 0.25rem !important;
 }
 
+.toc-section-nav {
+  background-color: #fff;
+  margin: 5px 5px 35px 5px;
+  padding: 10px 30px;
+  border: 1px solid #e8e8e8;
+  border-radius: 0px;
+}
+
 @media (prefers-color-scheme: dark) {
   .footer-icon-links {
     text-decoration: none;
