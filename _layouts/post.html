@@ -13,11 +13,8 @@ layout: default
     {% endif %}
   </span>
   <div class="mt-4">
-    <div id="table-of-contents">
-      {{ content | toc_only }}
-    </div>
     <div id="markdown-content">
-      {{ content | inject_anchors}}
+      {{ content }}
     </div>
   </div>
   <script src="https://utteranc.es/client.js"
