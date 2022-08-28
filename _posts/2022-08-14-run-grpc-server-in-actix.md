@@ -4,14 +4,13 @@ title: Actix에서 gRPC Server 시작하기
 tags: rust actix tonic
 ---
 
-Rust로 gRPC로 외부와 통신하는 Actix 기반 Application을 작성하는 방법을 알아봅니다. gRPC Server는 Tonic을 사용해 구현합니다.
+Rust로 gRPC로 외부와 통신하는 Actix 기반 application을 작성하는 방법을 알아봅니다. gRPC Server는 Tonic을 사용해 구현합니다. Tonic과 Actix는 둘 다 tokio 기반 application으로, tokio Runtime 위에서 동작합니다. 같은 tokio Runtime에 gRPC Server와 Actor System을 실행시켜 보겠습니다. 
 
  
  
 
 ### Tonic을 사용해 gRPC Server 시작하기
-Tonic을 사용하면 다음과 같은 간단한 Server 실행 코드를 포함한 Async Block(Future)을 Tokio Runtime에서 실행하여 gRPC Server를 시작할 수 있습니다.
-아래 코드는 Tonic repo 내 [helloworld exmaple](https://github.com/hyperium/tonic/blob/master/examples/src/helloworld/server.rs)에서 `tonic::main` 매크로를 풀어 쓴 것입니다.
+Tonic을 사용하면 다음과 같은 간단한 Server 실행 코드를 포함한 Async Block(Future)을 Tokio Runtime에서 실행하여 gRPC Server를 시작할 수 있습니다. 아래 코드는 Tonic repo 내 [helloworld exmaple](https://github.com/hyperium/tonic/blob/master/examples/src/helloworld/server.rs)에서 `tonic::main` 매크로를 풀어 쓴 것입니다.
 
 ```` rust
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -55,7 +54,9 @@ fn main() {
  
 
 ### Tonic Server를 실행시키는 Actix Actor 만들기
-이제 위에서 작성한 Greeter Server를 Actix Actor로 만드는 간단한 예제를 작성해 봅니다. MyGreeter가 Hello gRPC 응답 메시지를 보낼 때 MyActor로부터 name을 받아 응답 메시지를 만들도록 합니다.
+이제 위에서 작성한 `Greeter` Server를 Actix Actor로 만드는 간단한 예제를 작성해 봅니다. `MyGreeter`가 Hello gRPC 응답 메시지를 보낼 때 `MyActor`로부터 name을 받아 응답 메시지를 만들도록 합니다.
+
+![Actix+Tonic]({{site.baseurl}}/assets/images/image01.png)
 
 다음 코드에는 두 개의 Actor가 있습니다.  
 `MyActor`는 이름(name)을 갖고 있고, `GetName` message에 응답합니다.  
@@ -157,18 +158,23 @@ fn main() {
 }
 ```
 
+ 
+
 Application을 실행한 후 gRPC message를 보낸 결과는 다음과 같습니다.
 
-Server 출력
+ 
+
+**Server 출력**
 ``` rust
 Start grpc server: addr [::1]:50051
 Got a request from Some([::1]:50408)
 ```
 
-Client가 받은 응답
+**Client가 받은 응답**
 ``` rust
 RESPONSE=Response { metadata: MetadataMap { headers: {"content-type": "application/grpc", "date": "Sat, 13 Aug 2022 16:46:00 GMT", "grpc-status": "0"} }, message: HelloReply { message: "Hello Tonic!, from \"MY_ACTOR\"" }, extensions: Extensions }
 ```
+
  
  
 
@@ -177,3 +183,6 @@ RESPONSE=Response { metadata: MetadataMap { headers: {"content-type": "applicati
 [https://github.com/hyperium/tonic](https://github.com/hyperium/tonic)   
 [https://docs.rs/tokio/0.1.22/tokio/runtime](https://docs.rs/tokio/0.1.22/tokio/runtime)  
 [https://docs.rs/actix/latest/actix/struct.System.html](https://docs.rs/actix/latest/actix/struct.System.html)  
+
+ 
+ 

@@ -4,7 +4,7 @@ title: Actix actor의 AsyncContext 활용하기 (1)
 tags: rust actix actor
 ---
 
-Actix에서 actor를 생성하면, 해당 actor를 실행하는 문맥(context)에 해당하는 `Context`가 생성 되고, `Context`는 actor의 동작을 정의합니다. 그 중 `Context`를 활용해서 actor가 future를 실행, 취소, 기다리는 방법을 알아봅니다. 아래 예제 코드들은 actix 0.13.0 버전을 사용했습니다.
+Actix에서 actor를 생성하면 해당 actor를 실행시키는 문맥(context)에 해당하는 `Context`가 생성 되고, `Context`는 다양한 actor의 동작을 정의합니다. 그 중 `Context`를 활용해서 actor가 future를 실행, 취소, 기다리는 방법을 알아봅니다. 아래 예제 코드들은 actix 0.13.0 버전을 사용했습니다.
 
  
  
@@ -27,7 +27,7 @@ let actor = MyActor;
 let addr = actor.start();
 ```
 
-`actor.start()`는 앞에서 정의한 `Actor` trait에 구현되어 있습니다. 다음은 `Actor`에 구현된 `start` 함수입니다. Actor가 시작되면, Actor가 실행 될 `Context`가 생성됩니다.
+`actor.start()`는 앞에서 정의한 `Actor` trait에 구현되어 있습니다. 다음은 `Actor`에 구현된 `start` 함수입니다. Actor가 시작되면, Actor가 실행 될 `Context`가 생성되고 실행됩니다.
 ```rust
 fn start(self) -> Addr<Self>
     where
@@ -41,7 +41,7 @@ fn start(self) -> Addr<Self>
 
 `Context`는 mailbox, future handles 등 actor가 실행되는 문맥을 갖고 있습니다. 그리고 이 `Context`는 `AsyncContext`라는 trait를 구현하고 있는데요, 이를 활용하면 actor가 실행해야 하는 async task들을 다룰 수 있습니다.
 
-`AsyncContext` trait이 정의하는 함수들은 아래와 같습니다. 함수 목록만 보기 위해 trait에 구현된 내용은 생략하였습니다. 예제를 통해 각 함수들을 사용하는 방법을 알아보겠습니다.
+`AsyncContext`가 정의하는 함수들은 아래와 같습니다. 함수 목록만 보기 위해 trait에 구현된 내용은 생략하였습니다. 예제를 통해 각 함수들을 사용하는 방법을 알아보겠습니다.
 
 ```rust
 pub trait AsyncContext<A>: ActorContext
@@ -101,11 +101,10 @@ where
 ```rust
 fn address(&self) -> Addr<A>;
 ```
-현재 Actor(Actor가 가진 Context)의 `Addr`를 리턴합니다.
+현재 Actor의 `Addr`를 리턴합니다. `Addr`는 해당 Actor에게 message 를 보내는 channel과 같습니다. 어떤 경우에 사용 가능할까 고민을 해 본다면,,
 
-자기 자신에게 message를 보낸다면 이 함수를 통해 address를 얻을 수 있습니다. 자신을 호출하는 것은 아래의 `notify`, `run_later` 등을 사용할 수 있어 이를 활용할 경우가 있을지 모르겠습니다만.. 
 
-혹은 자신의 주소가 바뀌어야 할 경우, 예를 들어 message 처리 중 `self.clone()` 한 뒤 바뀐 `Addr`를 사용자에게 알려줘야 하는 경우엔 사용할 수 있을 것 같긴 하네요.
+- **자기 자신에게 message를 보내야 할 때**: 아래 예제와 같이 자기 자신에게 message를 보내야 한다면 사용할 수 있겠습니다. 하지만 다음에 설명 될 `notify`, `run_later` 등의 함수가 있어 사용하게 될 지 모르겠습니다.
 
 ```rust
 fn send_message_to_myself(&mut self, ctx: &mut Context<Self>) {
@@ -116,12 +115,14 @@ fn send_message_to_myself(&mut self, ctx: &mut Context<Self>) {
 }
 ```
 
- 
+- **자기 자신의 주소가 바뀐 것을 알려줘야 할 때**: 예를 들어 message 처리 중 `self.clone()` 한 뒤 바뀐 `Addr`를 사용자에게 알려줘야 하는 경우엔 사용할 수 있을 것 같긴 하네요. 자주 쓰일지는 모르겠지만요..
 
-`추가`) Message를 보낼 때 상대 actor에게 답장을 받을 주소, 즉 자신의 `Addr`를 전달할 수도 있겠습니다.
-[다음](https://riker.rs/actors/#sending-messages)은 또 다른 actor framework인 riker의 message handling 함수인데요. Message에 sender를 명시하여, 답장을 보낼 주소를 알려줄 수 있습니다.
+
+- **Message에 응답 받을 주소를 기재할 때**: Message를 보낼 때 상대 actor에게 답장을 받을 주소, 즉 자신의 `Addr`를 전달할 수도 있겠습니다. [다음](https://riker.rs/actors/#sending-messages)은 또 다른 actor framework인 riker의 message handling 함수인데요. Actor는 Message를 받을 때 sender의 주소도 받게 됩니다. 이는 actor가 앞으로 message를 보내야 하는 모든 상대의 `Addr`를 미리 알 필요 없게 해 주고, 답장 받을 주소를 바꾸기 쉽게 하여 unit test 작성하기 쉽게 해 줍니다. 
+
+
 ```rust
-// implement the Actor trait
+// Riker implement the Actor trait
 impl Actor for MyActor {
     type Msg = String;
 
@@ -134,7 +135,6 @@ impl Actor for MyActor {
     }
 }
 ```
-이는 actor가 앞으로 message를 보내야 하는 모든 상대의 `Addr`를 미리 알 필요 없게 해 주고, actor를 unit test할 때도 유용합니다. 답장을 받을 주소를 test code에서 바꾸기 쉽기 때문입니다.
 
  
 
@@ -149,9 +149,10 @@ fn spawn<F>(&mut self, fut: F) -> SpawnHandle
 주어진 future를 현재 `Context`에 spawn 합니다. 리턴 된 `SpawnHandle`은 아래에서 설명할 `cancel_future` 함수 등에 활용될 수 있습니다.
 Actor가 stopping 상태에 진입되면 spawn 된 함수들은 모두 cancel 됩니다. 
 
-바로 위, 자기 자신에게 message를 보내는 코드에서 message 보내는 future를 `actix::spawn`을 사용해 시작했는데요, 이를 `Context::spawn`을 사용하여 시작할 수도 있습니다. Actor가 멈추게 된다면 spawn 된 future들도 함께 멈추므로, 이미 멈춘 actor에게 message를 보내는 일이 없도록 `Context::spawn`을 사용하는 게 더 안전할 것 같습니다.
+바로 위, 자기 자신에게 message를 보내는 코드에서 message 보내는 future를 `actix::spawn()`을 사용해 시작했는데요, 이를 `Context::spawn()`을 사용하여 시작할 수도 있습니다. Actor가 멈추게 된다면 spawn 된 future들도 함께 멈추므로, 이미 멈춘 actor에게 message를 보내는 일이 없도록 `Context::spawn()`을 사용하는 게 더 안전할 것 같습니다.
 
 여기서 future의 type은 `ActorFuture` 입니다. `into_actor`를 통해 future를 actor의 context를 담은 `ActorFuture`로 변환할 수 있습니다.
+
 ```rust
 fn send_message_to_myself(&mut self, ctx: &mut Context<Self>) {
     let my_address = ctx.address();
@@ -185,7 +186,7 @@ fn wait_future(&mut self, ctx: &mut Context<Self>) {
 }
 ```
 
-위와 같은 코드를 실행 해 보면 결과는 아래와 같습니다. `wait`이 호출 되면 async block 이 끝날 때 까지 기다릴 것 같아 보이지만, 이 함수 호출에서 resolve를 기다리는 것은 아니고 **함수는 바로 종료됩니다**. 다만 context가 wait 합니다. 이 부분은 바로 다음에서 설명하겠습니다.  
+위와 같은 코드를 실행 해 보면 결과는 아래와 같습니다. `wait`이 호출 되면 async block 이 끝날 때 까지 기다릴 것 같아 보이지만, 이 함수 호출에서 resolve를 기다리는 것은 아니고 **<u>함수는 바로 종료됩니다</u>**. 다만 context가 wait 합니다. 이 부분은 바로 다음에서 설명하겠습니다.  
 
 ```cpp
 2022-08-20T12:55:48.307811Z  INFO actix_context_usage: actor started
@@ -204,7 +205,10 @@ fn wait_future(&mut self, ctx: &mut Context<Self>) {
 fn waiting(&self) -> bool;
 ```
 
-현재 context가 waiting(paused) 상태인지 알려줍니다. 위의 `wait` 함수가 불리고 있는 경우, context는 해당 future가 끝나기를 기다리며 다음 future를 실행하지 않는 pause 상태가 됩니다. 이 상태를 확인하는 용도입니다. 다음은 바로 위에서 작성한 함수에 waiting을 확인하여 출력하도록 수정한 코드입니다.
+현재 context가 waiting(paused) 상태인지 알려줍니다. 위에서 설명한 `Context::wait()` 함수를 통해 시작한 future가 실행되고 있는 경우, context는 해당 future가 끝나기를 기다리며 다음 future를 실행하지 않는 pause 상태가 됩니다. `Context::waiting()` 함수는 이 상태를 확인하는 용도입니다. 
+
+
+다음은 바로 위에서 작성한 함수에 waiting을 확인하여 출력하도록 수정한 코드입니다.
 
 ```rust
 use actix::{Actor, AsyncContext, Context, Handler, Message, System, WrapFuture};
@@ -262,7 +266,7 @@ fn main() {
 }
 ```
 
-결과는 다음과 같습니다. `context::wait`이 시작된 이후로 waiting은 false 입니다. `context::wait`이 불린 순간부터 waiting이 true가 됩니다. waiting 상태가 된 후에는 IsWaiting 메시지는 처리되지 않습니다. 이후 async block 이 완료된 후 waiting이 false가 되고, IsWaiting 메시지에 응답합니다.
+실행 결과는 다음과 같습니다. `Context::wait()`이 시작된 이후로 waiting은 false 입니다. `Context::wait()`이 불린 순간부터 `waiting()`이 true가 됩니다. waiting 상태가 된 후에는 `IsWaiting` 메시지는 처리되지 않습니다. 이후 async block(future)이 완료된 후 `waiting()`이 false가 되고, `IsWaiting` 메시지에 응답합니다.
 
 ```cpp
 2022-08-20T12:56:07.653870Z  INFO actix_context_usage: actor started
@@ -275,6 +279,8 @@ fn main() {
 2022-08-20T12:56:10.656440Z  INFO actix_context_usage: async block ended...
 2022-08-20T12:56:10.656739Z  INFO actix_context_usage: is actor waiting: false
 ```
+
+![timeline]({{site.baseurl}}/assets/images/image02.png)
 
  
 
@@ -294,16 +300,19 @@ pub fn cancel_future(&mut self, handle: SpawnHandle) -> bool {
 ```
 
 다음은 actor가 시작하면 두 개의 future를 spawn 하고, 이후 spawn 된 future들을 취소하는 예제입니다. 아주 단순하게, 두 future는 각각 1초, 5초를 sleep 하고, main 에서는 actor 시작 3초 후에 cancel을 시도합니다.
+
+![timeline]({{site.baseurl}}/assets/images/image03.png)
+
 ```rust
 impl MyActor {
     fn spawn_futures(&mut self, ctx: &mut Context<Self>) {
-        let handle1 = ctx.spawn(async move {
+        let handle1 = ctx.spawn(async move { // Future 01
             tracing::info!("async block 1 started...");
             tokio::time::sleep(tokio::time::Duration::from_secs(1)).await;
             tracing::info!("async block 1 ended...");
         }.into_actor(self));
 
-        let handle2 = ctx.spawn(async move {
+        let handle2 = ctx.spawn(async move { // Future 02
             tracing::info!("async block 2 started...");
             tokio::time::sleep(tokio::time::Duration::from_secs(5)).await;
             tracing::info!("async block 2 ended...");
@@ -346,7 +355,8 @@ fn main() {
 }
 ```
 
-결과는 다음과 같습니다. actor가 시작하면서 두 개의 future가 모두 시작되고, 1초만 sleep 하는 첫 번째 future는 바로 완료 됩니다. 이후 모든 future들을 취소 했고, 취소 함수의 리턴 값은 모두 true입니다. 앞에 설명한 것 처럼, 항상 true로 리턴하는 것으로 보입니다. 하지만 로그에서 볼 수 있듯 첫 번째 future는 이미 끝나 취소되지 않았고 두 번째 future는 sleep 중에 취소된 것으로 보입니다.
+
+결과는 다음과 같습니다. actor가 시작하면서 두 개의 future가 모두 시작되고, 1초만 sleep 하는 첫 번째 future는 바로 완료 됩니다. 이후 모든 future들을 취소 했고, **취소 함수의 리턴 값은 모두 true입니다**. 앞에 설명한 것 처럼, 항상 true로 리턴하는 것으로 보입니다. 하지만 로그에서 볼 수 있듯 첫 번째 future는 이미 끝나 취소되지 않았고 두 번째 future는 sleep 중에 취소된 것으로 보입니다.
 
 ```cpp
 2022-08-21T09:09:08.685024Z  INFO actix_context_usage: actor started
@@ -373,6 +383,4 @@ fn main() {
 
  
  
-
-
 

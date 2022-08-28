@@ -13,7 +13,7 @@ async rust에서 mpsc queue를 사용하는 방법을 알아보겠습니다.
 
 ### 1. std::sync::mpsc 사용하기
 
-Async rust에서 mpsc를 사용하려면 여러 future들이 message sender(tx)를 갖고 있고 하나의 future가 message receiver(rx)를 갖고 있어야 합니다. mpsc의 `Sender`는 clone 가능하므로 다음과 같이 tx를 clone하여 message channel을 공유할 수 있습니다.
+가장 먼저 `std` 라이브러리의 mpsc를 사용해 볼 수 있겠습니다. Async rust에서 mpsc를 사용하려면 여러 future들이 message sender(tx)를 갖고 있고 하나의 future가 message receiver(rx)를 갖고 있어야 합니다. mpsc의 `Sender`는 clone 가능하므로 다음과 같이 tx를 clone하여 여러 Future가 message channel을 공유할 수 있습니다.
 
 ```rust
 usd std::sync::mpsc;
@@ -41,7 +41,7 @@ async fn main() {
 }
 ```
 
-`Sender`가 필요한 async future를 spawn 할 때 마다 message channel의 `Sender`를 clone 하였습니다. 중간에 처음 생성한 tx를 drop 하는 것은, 모든 tx 가 drop 되어야 channel이 close 되고 `rx.recv()`가 `Err`를 받게 되어 프로그램을 종료할 수 있기 때문입니다. 
+`Sender`가 필요한 future를 spawn 할 때 마다 message channel의 `Sender`를 clone 하였습니다. 중간에 처음 생성한 tx를 drop 하는 것은, 모든 tx 가 drop 되어야 channel이 close 되고 `rx.recv()`가 `Err`를 받게 되어 프로그램을 종료할 수 있기 때문입니다. 
 
 실행 결과는 다음과 같습니다.
 ```rust
@@ -59,9 +59,9 @@ got = 9
 
  
 
-위의 예시에서 `std::sync::recv`는 blocking function 입니다. 새로운 메시지를 받거나 `Err`를 받지 않는 한, spawn 된 future는 executor에서 다음 async task 수행을 blocking 할 수 있습니다. 즉 timing에 따라 deadlock을 발생시킬 수 있습니다.
+위의 예시에서 `std::sync::recv`는 blocking function 입니다. 새로운 메시지를 받거나 `Err`를 받지 않는 한, spawn 된 future는 executor에서 다음 async task 수행을 blocking 할 수 있습니다. 즉 `recv` 함수는 runtime executor를 막아 어떤 future들의 실행을 막을 수 있습니다.
 
-문제가 발생할 만한 예시를 만들기 위해, tokio Runtime을 single-thread (`new_current_thread()`)로 생성하고, message send 하기 전에 3초 sleep 하도록 수정해 보았습니다.
+문제가 발생할 만한 예시를 만들기 위해, tokio Runtime을 single-thread (`new_current_thread`)로 생성하고, message send 하기 전에 3초 sleep 하도록 수정해 보았습니다.
 
 ```rust
 fn main() {
@@ -96,9 +96,9 @@ fn main() {
 }
 ```
 
-위 코드에서는 모든 tx들이 sleep하며 await 을 하는 동안 `rx.recv()`가 시작될 테고, 이 `recv()` 함수는 blocking 함수이므로 Runtime executor를 막고 있어서, tx를 갖고 있는 future들이 실행 될 기회를 주지 않습니다.
+위 코드에서는 모든 tx들이 sleep하며 await 을 하는 동안 `rx.recv()`가 시작될 테고, 이 `recv()` 함수는 blocking 함수이므로 runtime executor를 막고 있어서, tx를 갖고 있는 future들이 sleep 이 끝난 뒤 재 실행 될 기회를 주지 않습니다.
 
-실행 하면 이전과 다르게 아무런 출력이 나오지 않습니다. 여기서 `tokio-console`을 사용하여 future들의 상태를 확인하면 다음과 같습니다. [tokio-console](https://tokio.rs/tokio/topics/tracing-next-steps) 사용법은 링크 참고하세요.
+실행 하면 이전과 다르게 아무런 출력이 나오지 않습니다. 여기서 [tokio-console](https://tokio.rs/tokio/topics/tracing-next-steps)을 사용하여 future들의 상태를 확인하면 다음과 같습니다.
 
 ``` rust
 connection: http://127.0.0.1:6669/ (CONNECTED)
@@ -127,7 +127,7 @@ Warn  ID  State  Name  Total-     Busy       Idle       Polls  Target      Locat
 모든 future들은 IDLE 상태인데, BUSY 상태인 future가 하나 있습니다. `tokio-mpsc.rs:23`에서 시작 한 future 인데, 이는 `recv()`함수가 포함된 future의 시작점입니다.
 
 
-이와 같이 async rust에서 기존의 mpsc queue를 사용할 순 있지만 경우에 따라서 문제가 발생할 수 있습니다. 물론 `try_recv`를 사용하여 workaround 코드를 작성할 순 있겠으나 조금 복잡해 질 것 같습니다. Async rust에서는 async로 동작하는 mpsc queue를 사용하는 게 좋을 것 같습니다.
+이와 같이 async rust에서 **기존의 mpsc queue를 사용할 순 있지만 경우에 따라서 문제가 발생할 수 있습니다.** 물론 `try_recv`를 사용하여 workaround 코드를 작성할 순 있겠으나 조금 복잡해 질 것 같습니다. Async rust에서는 async로 동작하는 mpsc queue를 사용하는 게 좋을 것 같습니다.
 
 
  
@@ -191,7 +191,6 @@ got = 9
 ### 3. Tonic server의 async function에서 tx 공유하기
 
 Tokio을 기반으로 하는 Tonic을 사용할 때 mpsc queue가 필요한 경우가 있습니다. gRPC server에서 받은 message를 message queue를 통해 다른 future에게 전달하고 싶을 때가 그 예 중 하나입니다.
- 
 
 Tonic의 [hello world](https://github.com/hyperium/tonic/tree/master/examples/src/helloworld) 예제에서 mpsc queue를 사용해 봅시다. Hello message를 받을 때 마다 이를 tokio의 다른 future에게 전달하도록 하였습니다.
 
@@ -261,7 +260,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
  
 
-`std::sync::mpsc`를 사용하면, 이전과는 다르게 compile error부터 납니다. `std::sync::mpsc::Sender`가 Sync 를 구현하고 있지 않기 때문입니다. gRPC Server의 message handle 함수들은 여러 thread에서 동시에 수행될 수 있으므로(같은 gRPC가 여러 개 들어오면 한 번에 모두 처리 될 수 있음) `Sync` trait을 가질 것을 강제하고 있습니다. 
+우선 `std::sync::mpsc`를 사용해 봤습니다. 빌드와 실행이 잘 되고, 특정 상황에서만 실행 상 오류가 나던 이전 예제와는 달리, compile error부터 납니다. `std::sync::mpsc::Sender`가 Sync 를 구현하고 있지 않기 때문입니다. gRPC Server의 message handle 함수들은 여러 thread(tokio runtime이 사용하는 thread)에서 동시에 수행될 수 있으므로(같은 gRPC가 여러 개 들어오면 한 번에 모두 처리 될 수 있음) `Sync` trait을 가질 것을 강제하고 있습니다. 
 ```rust
 error[E0277]: `std::sync::mpsc::Sender<String>` cannot be shared between threads safely
    --> src/bin/tokio-mpsc.rs:55:6
@@ -287,7 +286,7 @@ error: could not compile `rust_practice` due to previous error
 
  
 
-이 경우도 앞에서와 같이 `tokio::sync::mpsc`를 사용하는 것으로 해결할 수 있습니다. 수정한 코드는 아래와 같습니다.
+이 문제는 tx를 mutex로 보호해서 해결할 수도 있고, 앞에서와 같이 `tokio::sync::mpsc`를 사용하는 것으로도 해결할 수 있습니다. `tokio::sync::mpsc`를 사용하도록 수정한 코드는 아래와 같습니다.
 
 ```rust
 use tokio::sync::mpsc;
@@ -358,7 +357,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
  
  
 
-`tokio::sync::mpsc`의 구현을 살펴 보면 이유를 알 수 있습니다. tokio mpsc queue의 `Sender` 구현은 아래와 같이 Arc와 Semaphore로 보호되어 있습니다.
+`tokio::sync::mpsc`의 구현을 살펴 보면 그 이유를 알 수 있습니다. tokio mpsc queue의 `Sender` 구현은 아래와 같이 Arc와 Semaphore로 보호되어 있습니다.
 
 ```rust
 // tokio::sync::mpsc 의 Sender
@@ -380,7 +379,7 @@ pub(crate) struct Tx<T, S> {
 
 ### 4. 결론
 
-Async rust에서는 async mpsc 를 사용해야 한다는 당연한 얘기를 돌고 돌아 알게 되었습니다. 제 삽질기가 도움이 되었길 바랍니다....  
+돌고 돌아 async rust에서는 async mpsc 를 사용해야 한다는 당연한 얘기로 마무리 합니다.... 제 삽질기가 도움이 되었길 바랍니다....  
 
 
  

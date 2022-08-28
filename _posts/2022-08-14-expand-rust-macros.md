@@ -4,7 +4,10 @@ title: Rust 코드에서 macro 펼쳐보기
 tags: rust cargo
 ---
 
-Rust에서 사용 된 macro의 구현이 궁금할 때, [cargo expand](https://github.com/dtolnay/cargo-expand)를 사용할 수 있습니다.
+Rust에서 사용 된 macro의 구현이 궁금할 때 [cargo expand](https://github.com/dtolnay/cargo-expand)를 사용할 수 있습니다.
+
+ 
+ 
 
 ### 설치
 ```rust

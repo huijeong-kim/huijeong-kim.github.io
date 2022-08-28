@@ -25,9 +25,7 @@ fn add_message_stream<S>(&mut self, fut: S)
 
 Context에 stream을 등록하는 함수입니다. 두 함수는 거의 비슷하나 차이점은 `add_message_stream`은 stream error를 무시한다는 점입니다.
 
-다음은 [API Doc](https://docs.rs/actix/0.13.0/actix/prelude/trait.AsyncContext.html#method.add_stream)의 예제인데요. Stream을 만들고 message를 하나 보냅니다.
-
-`Stream`의 사용법과 예제는 다음 글에서 따로 정리해 보겠습니다 :) 
+다음은 [API Doc](https://docs.rs/actix/0.13.0/actix/prelude/trait.AsyncContext.html#method.add_stream)의 예제인데요. Stream을 만들고 message를 하나 보냅니다. `Stream`의 사용법과 예제는 다음 글에서 따로 정리해 보겠습니다 :) 
 
 ```rust
 use actix::prelude::*;
@@ -67,6 +65,7 @@ fn main() {
 }
 ```
 
+
 실행 결과는 다음과 같습니다.
 
 ```cpp
@@ -92,7 +91,7 @@ fn notify_later<M>(&mut self, msg: M, after: Duration) -> SpawnHandle
 ```
 
 `notify`는 자기 자신에게 message를 보내는 함수입니다. 이전 글에서 `address`를 통해 자기 자신의 주소를 찾고, 여기에 message를 보내는 예제를 작성하였는데요. `notify` 함수로 바로 message handler를 부를 수도 있습니다.
-이 함수는 actor의 mailbox를 bypass 하고 항상 message를 전달한다고 합니다. 하지만 actor가 `Stopped` 상태라면 error 발생합니다.
+이 함수는 actor의 <u>mailbox를 bypass</u> 하고 항상 message를 전달한다고 합니다. 하지만 actor가 `Stopped` 상태라면 error 발생합니다.
 
 이전에 자신의 `Addr`를 찾아 메시지를 보내는 예제를 `notify` 함수를 사용하도록 수정하면 다음과 같습니다.
 
@@ -110,7 +109,7 @@ fn send_message_to_myself_using_notify(&mut self, ctx: &mut Context<Self>) {
 ```
  
 
-`notify_later`은 `notify` 함수와 유사하지만, 지정된 시간 이후에 message를 보냅니다. 또 하나의 차이점은 `SpawnHandle`을 리턴한다는 것 인데요. 주어진 `after: Duration` 시간 내에 `cancel_future` 통해 동작을 취소할 수 있습니다. 이전 글에서 언급한 바와 같이, `cancel_future` 함수의 리턴 값은 항상 true 입니다. 취소 성공 여부를 리턴하지 않습니다.
+`notify_later`은 `notify` 함수와 유사하지만, 지정된 시간 이후에 message를 보냅니다. 또 하나의 차이점은 `SpawnHandle`을 리턴한다는 것 인데요. 실행되기 전에는 `cancel_future` 통해 동작을 취소할 수 있습니다. 이전 글에서 언급한 바와 같이, `cancel_future` 함수의 리턴 값은 항상 true 입니다. 취소 성공 여부를 리턴하지 않음을 참고하세요.
 
 ```rust
 fn send_message_to_myself_and_cancel(&mut self, ctx: &mut Context<Self>) {
