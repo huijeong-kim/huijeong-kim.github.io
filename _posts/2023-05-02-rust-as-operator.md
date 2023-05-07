@@ -157,6 +157,13 @@ UnitOnlyEnum2: UnitNum 1, UnitNum2 4
 
 numerics -> char 변환은 `u8`만 가능합니다. 그보다 큰 값을 가진 emoji 들은 `try_into`나 `into`를 사용해 type conversion 하면 되겠습니다.
 
+<br>
+
+**업데이트 (23.5.7)**
+`char` 타입은 "Unicode scalar value" 를 의미하며, 1B로 표현 됩니다. Unicode 글자만이 `char`로 type casting 가능하다고 보면 될 것 같습니다.
+
+<br>
+
 ```rust
 println!("False as u8: {}", false as u8);
 println!("True as u8: {}", true as u8);
