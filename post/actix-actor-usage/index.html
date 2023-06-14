@@ -335,7 +335,7 @@ if (!doNotTrack) {
 <p> 
  </p>
 <p>이를 활용하여 다양한 함수를 주기적으로 호출되도록 등록할 수 있습니다. 여기서 만약, 주기적으로 실행되어야 하는 동작이 async 함수라면 어떻게 해야 할까요? 현재 Rust는 async closure를 지원하지 않습니다. <code>run_interval()</code>함수의 두 번째 인자인 f도 Future 타입은 아니죠.</p>
-<p>해결하는 방법은 <a href="https://huijeong-kim.github.io/2022/08/14/run-grpc-server-in-actix/">지난 글</a>에서 사용한 방식과 동일합니다. fn에서 future를 spawn하면 됩니다. 지난 글처럼 해당 context에 spawn 하거나, actix system(현재 arbiter)에 spawn 할 수 있습니다.</p>
+<p>해결하는 방법은 <a href="https://huijeong-kim.github.io/post/run-grpc-server-in-actix/">지난 글</a>에서 사용한 방식과 동일합니다. fn에서 future를 spawn하면 됩니다. 지난 글처럼 해당 context에 spawn 하거나, actix system(현재 arbiter)에 spawn 할 수 있습니다.</p>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
