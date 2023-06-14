@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>cargo on my dev note</title>
+    <link>http://huijeong-kim.github.io/tags/cargo/</link>
+    <description>Recent content in cargo on my dev note</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>kr</language>
+    <lastBuildDate>Sun, 14 Aug 2022 18:09:18 +0900</lastBuildDate><atom:link href="http://huijeong-kim.github.io/tags/cargo/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Expand Rust Macros</title>
+      <link>http://huijeong-kim.github.io/post/expand-rust-macros/</link>
+      <pubDate>Sun, 14 Aug 2022 18:09:18 +0900</pubDate>
+      
+      <guid>http://huijeong-kim.github.io/post/expand-rust-macros/</guid>
+      <description>Rust에서 사용 된 macro의 구현이 궁금할 때 cargo expand를 사용할 수 있습니다.
+설치 $ cargo install cargo-expand 사용법 이전 글에서 사용한 코드를 expand해 봅시다. cargo expand 시 expand 된 코드가 stdout으로 출력됩니다. $ cargo expand --bin actix-and-tonic
+이 예제는 하나의 파일로 이루어져 있어 binary를 지정했지만, 특정 module 코드를 expand하기 위해서 module을 지정할 수도 있습니다. $ cargo expand path::to:module
+Message 구현에 사용했던 Message macro는
+1 2 3 #[derive(Default, Message)] #[rtype(result = &amp;#34;String&amp;#34;)] struct GetName; 이렇게 풀어쓸 수 있습니다.</description>
+    </item>
+    
+  </channel>
+</rss>
