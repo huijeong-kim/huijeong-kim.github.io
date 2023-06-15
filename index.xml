@@ -6,13 +6,24 @@
     <description>Recent content on my dev note</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>kr</language>
-    <lastBuildDate>Sun, 07 May 2023 19:02:30 +0900</lastBuildDate><atom:link href="http://huijeong-kim.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 15 Jun 2023 16:24:38 +0900</lastBuildDate><atom:link href="http://huijeong-kim.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Jekyll to Hugo</title>
+      <link>http://huijeong-kim.github.io/post/2023-06-15-jekyll-to-hugo/</link>
+      <pubDate>Thu, 15 Jun 2023 16:24:38 +0900</pubDate>
+      
+      <guid>http://huijeong-kim.github.io/post/2023-06-15-jekyll-to-hugo/</guid>
+      <description>이 블로그는 정적 사이트 생성기를 사용하여 웹페이지를 생성하고, 이를 GitHub에 올려서 hosting하고 있습니다. 그 동안은 Jekyll 을 사용하여 페이지를 생성했는데, 이번에 Hugo로 바꿔봤습니다. 어떻게 바꿨는지, 무엇이 좋았는지를 정리해 봤습니다.
+Why? Jekyll을 사용한 건 가장 유명한 정적 사이트 생성기이고 GitHub 에서 빌드를 해 주기 때문이었습니다. 적당한 theme 을 찾아 받고 그 위에 글을 올리고, 가끔 약간의 customize를 했습니다.
+근데 사용하기가 조금 불편했습니다. 웹 지식이 부족해서인 것 같긴 하지만, 어떤 것이 생성 결과물인지, 내가 customize 하고자 하는 부분과 관련된 코드는 어디에 있는지 등을 찾기 어려웠습니다.</description>
+    </item>
+    
     <item>
       <title>Exploring Rust Strings</title>
-      <link>http://huijeong-kim.github.io/post/exploring-rust-strings/</link>
+      <link>http://huijeong-kim.github.io/post/2023-05-07-exploring-rust-strings/</link>
       <pubDate>Sun, 07 May 2023 19:02:30 +0900</pubDate>
       
-      <guid>http://huijeong-kim.github.io/post/exploring-rust-strings/</guid>
+      <guid>http://huijeong-kim.github.io/post/2023-05-07-exploring-rust-strings/</guid>
       <description>안녕하세요.
 오늘은 Rust의 문자열 개념을 간단하게 알아보고, 코드 작성 시 문자열 관련 혼란스러웠던 포인트들을 정리해 보고자 합니다.
 1. String vs. str String 과 str 는 모두 valid UTF-8 문자열을 나타냅니다. Invalid UTF-8 데이터로 String 타입을 생성할 수 없습니다. UTF-8, Unicode 등에 대한 설명은 생략합니다.
@@ -21,20 +32,20 @@ Rust에서는 C와 같이 null-terminating string 개념을 사용하지 않습�
     
     <item>
       <title>as operator in Rust</title>
-      <link>http://huijeong-kim.github.io/post/rust-as-operator/</link>
+      <link>http://huijeong-kim.github.io/post/2023-05-02-rust-as-operator/</link>
       <pubDate>Tue, 02 May 2023 19:00:30 +0900</pubDate>
       
-      <guid>http://huijeong-kim.github.io/post/rust-as-operator/</guid>
+      <guid>http://huijeong-kim.github.io/post/2023-05-02-rust-as-operator/</guid>
       <description>안녕하세요.
 오늘은 Rust의 as 를 사용한 type casting에 대해 알아보고자 합니다. C++ 프로그램에서는 잘못된 type 사용 으로 인한 오류를 종종 볼 수 있습니다. uint64_t 값을 uint32_t 값에 대입하여 잘못된 값으로 동작하는 경우가 그 예입니다. 조금은 어이 없는 실수이긴 한데, 생각보다 자주 발견됩니다. 이런 류의 버그는 처음 봤을 때 원인을 가늠하기 힘들기도 하지만, 고치기 귀찮거나 어렵기도 합니다. Type 재정의를 사용하지 않는 경우도 많고, 가끔씩은 통일할 필요가 크게 없는 경우도 있고, 의미 상 같은 변수를 모두 찾아내기 힘든 코드들도 종종 있습니다.</description>
     </item>
     
     <item>
       <title>Polymorphism in Rust</title>
-      <link>http://huijeong-kim.github.io/post/rust-polymorphism/</link>
+      <link>http://huijeong-kim.github.io/post/2023-01-29-rust-polymorphism/</link>
       <pubDate>Sun, 29 Jan 2023 18:58:03 +0900</pubDate>
       
-      <guid>http://huijeong-kim.github.io/post/rust-polymorphism/</guid>
+      <guid>http://huijeong-kim.github.io/post/2023-01-29-rust-polymorphism/</guid>
       <description>안녕하세요. 오늘은 rust에서 polymorphism을 활용하는 방법을 정리해 보고자 합니다.
 cpp 코드를 작성하던 습관 대로 Rust 코드를 작성하다 보면 막히는 부분 중 하나가 interface 클래스(pure virtual class)와 이를 통한 객체 전달 부분입니다. 단순히 trait으로 변환하여 코드를 작성하다 보면 쉽게 컴파일 에러 지옥에 빠지곤 하는데요..
 아주 간단한 composite design pattern 예제를 구현해 보면서 rust의 polymorphism 에 대해 알아보도록 하겠습니다. Composite pattern 예제로 많이 사용되는 File, Directory 구조를 표현해 보고자 합니다. File은 이름과 크기를 갖고 있는 객체로, Directory는 이름과 하위 파일 및 디렉토리를 갖는 객체로, 그리고 File, Directory 는 모두 Node 라는 interface를 구현하게 만들고자 합니다.</description>
@@ -42,10 +53,10 @@ cpp 코드를 작성하던 습관 대로 Rust 코드를 작성하다 보면 막�
     
     <item>
       <title>Rust Async Programming</title>
-      <link>http://huijeong-kim.github.io/post/rust-async-programming/</link>
+      <link>http://huijeong-kim.github.io/post/2022-09-11-rust-async-programming/</link>
       <pubDate>Sun, 11 Sep 2022 18:53:04 +0900</pubDate>
       
-      <guid>http://huijeong-kim.github.io/post/rust-async-programming/</guid>
+      <guid>http://huijeong-kim.github.io/post/2022-09-11-rust-async-programming/</guid>
       <description>오늘은 Rust에서 제공하는 Asynchronous Programming 관련 feature들에 대해 정리하면서, async 관련 포스트를 쓸 때 마다 사용되는 단어들, async, future, runtime, executor에 대해 정리해 보겠습니다. 오늘은 유독 내용이 추상적인 느낌에 부족한 부분이 많은 것 같은데, 틀린 부분이나 부족한 부분이 있다면 코멘트 남겨 주세요 :)
 Asynchronous Programming Async book에는 Asynchronous programming이 다음과 같이 정의되어 있습니다.
 Asynchronous programming, or async for short, is a concurrent programming model supported by an increasing number of programming languages.</description>
@@ -53,10 +64,10 @@ Asynchronous programming, or async for short, is a concurrent programming model 
     
     <item>
       <title>Rust로 Parameterised Test 작성하기</title>
-      <link>http://huijeong-kim.github.io/post/parameterised-test/</link>
+      <link>http://huijeong-kim.github.io/post/2022-08-28-parameterised-test/</link>
       <pubDate>Sun, 28 Aug 2022 18:51:05 +0900</pubDate>
       
-      <guid>http://huijeong-kim.github.io/post/parameterised-test/</guid>
+      <guid>http://huijeong-kim.github.io/post/2022-08-28-parameterised-test/</guid>
       <description>Unit test를 작성 하다 보면 간단한 함수에 대해서도 꽤나 많은 수의 테스트 케이스를 작성하게 됩니다. Input 값의 조합, 특히나 Invalid Input 값의 조합은 무지 많아질 수 있기 때문 입니다. 그 모든 케이스를 하나 씩 테스트로 작성 하는 것은 꽤 귀찮기도 하고, 테스트 함수 작명 지옥에 빠지면서 테스트 가독성도 떨어지게 됩니다.
 이럴 때 사용할 수 있는 것이 table-driven test, 혹은 parameterised test 입니다. Input-Output 조합을 table로 표현하는 방식입니다.
 Rust로 간단한 함수의 parameterised test를 작성해 보고, rust의 test-case, rtest crate를 활용해 이를 더 간편하게 작성하는 방법을 알아보겠습니다.</description>
@@ -64,10 +75,10 @@ Rust로 간단한 함수의 parameterised test를 작성해 보고, rust의 test
     
     <item>
       <title>Async Rust에서 mpsc queue 사용하기</title>
-      <link>http://huijeong-kim.github.io/post/tokio-mpsc/</link>
+      <link>http://huijeong-kim.github.io/post/2022-08-27-tokio-mpsc/</link>
       <pubDate>Sat, 27 Aug 2022 18:49:11 +0900</pubDate>
       
-      <guid>http://huijeong-kim.github.io/post/tokio-mpsc/</guid>
+      <guid>http://huijeong-kim.github.io/post/2022-08-27-tokio-mpsc/</guid>
       <description>mpsc(multi produce single consumer) queue는 thread 간 message를 주고받는 channel로 많이 쓰입니다. std mpsc와 crossbeam channel가 많이 쓰이는 mpsc channel이고, async rust에서는 tokio mpsc를 사용할 수 있습니다.
 async rust에서 mpsc queue를 사용하는 방법을 알아보겠습니다.
 1. std::sync::mpsc 사용하기 가장 먼저 std 라이브러리의 mpsc를 사용해 볼 수 있겠습니다. Async rust에서 mpsc를 사용하려면 여러 future들이 message sender(tx)를 갖고 있고 하나의 future가 message receiver(rx)를 갖고 있어야 합니다. mpsc의 Sender는 clone 가능하므로 다음과 같이 tx를 clone하여 여러 Future가 message channel을 공유할 수 있습니다.</description>
@@ -75,10 +86,10 @@ async rust에서 mpsc queue를 사용하는 방법을 알아보겠습니다.
     
     <item>
       <title>Actix actor의 AsyncContext 활용하기 (2)</title>
-      <link>http://huijeong-kim.github.io/post/actix-actor-async-ctx-2/</link>
+      <link>http://huijeong-kim.github.io/post/2022-08-27-actix-actor-async-ctx-2/</link>
       <pubDate>Sat, 27 Aug 2022 18:47:08 +0900</pubDate>
       
-      <guid>http://huijeong-kim.github.io/post/actix-actor-async-ctx-2/</guid>
+      <guid>http://huijeong-kim.github.io/post/2022-08-27-actix-actor-async-ctx-2/</guid>
       <description>지난 글에 이어 Actix actor의 AsyncContext 함수를 사용하는 방법을 알아봅니다.
 add_stream, add_message_stream 1 2 3 4 5 6 7 8 9 10 fn add_stream&amp;lt;S&amp;gt;(&amp;amp;mut self, fut: S) -&amp;gt; SpawnHandle where S: Stream + &amp;#39;static, A: StreamHandler&amp;lt;S::Item&amp;gt;; fn add_message_stream&amp;lt;S&amp;gt;(&amp;amp;mut self, fut: S) where S: Stream + &amp;#39;static, S::Item: Message, A: Handler&amp;lt;S::Item&amp;gt;; Context에 stream을 등록하는 함수입니다. 두 함수는 거의 비슷하나 차이점은 add_message_stream은 stream error를 무시한다는 점입니다.
 다음은 API Doc의 예제인데요. Stream을 만들고 message를 하나 보냅니다.</description>
@@ -86,10 +97,10 @@ add_stream, add_message_stream 1 2 3 4 5 6 7 8 9 10 fn add_stream&amp;lt;S&amp;g
     
     <item>
       <title>Actix actor의 AsyncContext 활용하기 (1)</title>
-      <link>http://huijeong-kim.github.io/post/actix-actor-async-ctx-1/</link>
+      <link>http://huijeong-kim.github.io/post/2022-08-21-actix-actor-async-ctx-1/</link>
       <pubDate>Sun, 21 Aug 2022 18:43:23 +0900</pubDate>
       
-      <guid>http://huijeong-kim.github.io/post/actix-actor-async-ctx-1/</guid>
+      <guid>http://huijeong-kim.github.io/post/2022-08-21-actix-actor-async-ctx-1/</guid>
       <description>Actix에서 actor를 생성하면 해당 actor를 실행시키는 문맥(context)에 해당하는 Context가 생성 되고, Context는 다양한 actor의 동작을 정의합니다. 그 중 Context를 활용해서 actor가 future를 실행, 취소, 기다리는 방법을 알아봅니다. 아래 예제 코드들은 actix 0.13.0 버전을 사용했습니다.
 Actor Context 먼저, Actor의 Context의 정의, 생성 시기를 알아보겠습니다.
 사용자가 정의한 struct를 actor로 만들기 위해서 최소로 필요한 것은 Actor trait을 구현(implement) 하고 Context를 정의하는 것 입니다.
@@ -98,20 +109,20 @@ Actor Context 먼저, Actor의 Context의 정의, 생성 시기를 알아보겠�
     
     <item>
       <title>Actix actor를 사용하는 두 가지 방법</title>
-      <link>http://huijeong-kim.github.io/post/actix-actor-usage/</link>
+      <link>http://huijeong-kim.github.io/post/2022-08-17-actix-actor-usage/</link>
       <pubDate>Wed, 17 Aug 2022 18:39:01 +0900</pubDate>
       
-      <guid>http://huijeong-kim.github.io/post/actix-actor-usage/</guid>
+      <guid>http://huijeong-kim.github.io/post/2022-08-17-actix-actor-usage/</guid>
       <description>Actix에서 actor를 사용하는 방법은 두 가지로 나눌 수 있을 것 같습니다. 첫 번째는 특정 task를 실행시키는 용도로, client가 message를 보내면 이를 받아서 처리하는 actor를 만드는 것 이고, 두 번째는 주기적으로 task를 실행시키는 actor를 만드는 것 입니다. 두 경우 각각 actor를 사용하는 방법에 대해 알아봅니다.
 1. Message를 처리하는 actor Actor를 시작하면 Addr가 리턴됩니다. Addr는 해당 actor에게 message를 전달할 수 있는 channel 입니다. Client module은 이 addr를 통해서 message를 전달할 수 있습니다.</description>
     </item>
     
     <item>
       <title>Expand Rust Macros</title>
-      <link>http://huijeong-kim.github.io/post/expand-rust-macros/</link>
+      <link>http://huijeong-kim.github.io/post/2022-08-14-expand-rust-macros/</link>
       <pubDate>Sun, 14 Aug 2022 18:09:18 +0900</pubDate>
       
-      <guid>http://huijeong-kim.github.io/post/expand-rust-macros/</guid>
+      <guid>http://huijeong-kim.github.io/post/2022-08-14-expand-rust-macros/</guid>
       <description>Rust에서 사용 된 macro의 구현이 궁금할 때 cargo expand를 사용할 수 있습니다.
 설치 $ cargo install cargo-expand 사용법 이전 글에서 사용한 코드를 expand해 봅시다. cargo expand 시 expand 된 코드가 stdout으로 출력됩니다. $ cargo expand --bin actix-and-tonic
 이 예제는 하나의 파일로 이루어져 있어 binary를 지정했지만, 특정 module 코드를 expand하기 위해서 module을 지정할 수도 있습니다. $ cargo expand path::to:module
@@ -121,10 +132,10 @@ Message 구현에 사용했던 Message macro는
     
     <item>
       <title>Actix에서 gRPC Server 시작하기</title>
-      <link>http://huijeong-kim.github.io/post/run-grpc-server-in-actix/</link>
+      <link>http://huijeong-kim.github.io/post/2022-08-14-run-grpc-server-in-actix/</link>
       <pubDate>Sun, 14 Aug 2022 17:24:46 +0900</pubDate>
       
-      <guid>http://huijeong-kim.github.io/post/run-grpc-server-in-actix/</guid>
+      <guid>http://huijeong-kim.github.io/post/2022-08-14-run-grpc-server-in-actix/</guid>
       <description>Rust로 gRPC로 외부와 통신하는 Actix 기반 application을 작성하는 방법을 알아봅니다. gRPC Server는 Tonic을 사용해 구현합니다. Tonic과 Actix는 둘 다 tokio 기반 application으로, tokio Runtime 위에서 동작합니다. 같은 tokio Runtime에 gRPC Server와 Actor System을 실행시켜 보겠습니다.
 Tonic을 사용해 gRPC Server 시작하기 Tonic을 사용하면 다음과 같은 간단한 Server 실행 코드를 포함한 Async Block(Future)을 Tokio Runtime에서 실행하여 gRPC Server를 시작할 수 있습니다. 아래 코드는 Tonic repo 내 helloworld exmaple에서 tonic::main 매크로를 풀어 쓴 것입니다.</description>
     </item>

@@ -9,10 +9,10 @@
     <lastBuildDate>Sat, 27 Aug 2022 18:47:08 +0900</lastBuildDate><atom:link href="http://huijeong-kim.github.io/tags/actor/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Actix actor의 AsyncContext 활용하기 (2)</title>
-      <link>http://huijeong-kim.github.io/post/actix-actor-async-ctx-2/</link>
+      <link>http://huijeong-kim.github.io/post/2022-08-27-actix-actor-async-ctx-2/</link>
       <pubDate>Sat, 27 Aug 2022 18:47:08 +0900</pubDate>
       
-      <guid>http://huijeong-kim.github.io/post/actix-actor-async-ctx-2/</guid>
+      <guid>http://huijeong-kim.github.io/post/2022-08-27-actix-actor-async-ctx-2/</guid>
       <description>지난 글에 이어 Actix actor의 AsyncContext 함수를 사용하는 방법을 알아봅니다.
 add_stream, add_message_stream 1 2 3 4 5 6 7 8 9 10 fn add_stream&amp;lt;S&amp;gt;(&amp;amp;mut self, fut: S) -&amp;gt; SpawnHandle where S: Stream + &amp;#39;static, A: StreamHandler&amp;lt;S::Item&amp;gt;; fn add_message_stream&amp;lt;S&amp;gt;(&amp;amp;mut self, fut: S) where S: Stream + &amp;#39;static, S::Item: Message, A: Handler&amp;lt;S::Item&amp;gt;; Context에 stream을 등록하는 함수입니다. 두 함수는 거의 비슷하나 차이점은 add_message_stream은 stream error를 무시한다는 점입니다.
 다음은 API Doc의 예제인데요. Stream을 만들고 message를 하나 보냅니다.</description>
@@ -20,10 +20,10 @@ add_stream, add_message_stream 1 2 3 4 5 6 7 8 9 10 fn add_stream&amp;lt;S&amp;g
     
     <item>
       <title>Actix actor의 AsyncContext 활용하기 (1)</title>
-      <link>http://huijeong-kim.github.io/post/actix-actor-async-ctx-1/</link>
+      <link>http://huijeong-kim.github.io/post/2022-08-21-actix-actor-async-ctx-1/</link>
       <pubDate>Sun, 21 Aug 2022 18:43:23 +0900</pubDate>
       
-      <guid>http://huijeong-kim.github.io/post/actix-actor-async-ctx-1/</guid>
+      <guid>http://huijeong-kim.github.io/post/2022-08-21-actix-actor-async-ctx-1/</guid>
       <description>Actix에서 actor를 생성하면 해당 actor를 실행시키는 문맥(context)에 해당하는 Context가 생성 되고, Context는 다양한 actor의 동작을 정의합니다. 그 중 Context를 활용해서 actor가 future를 실행, 취소, 기다리는 방법을 알아봅니다. 아래 예제 코드들은 actix 0.13.0 버전을 사용했습니다.
 Actor Context 먼저, Actor의 Context의 정의, 생성 시기를 알아보겠습니다.
 사용자가 정의한 struct를 actor로 만들기 위해서 최소로 필요한 것은 Actor trait을 구현(implement) 하고 Context를 정의하는 것 입니다.
@@ -32,10 +32,10 @@ Actor Context 먼저, Actor의 Context의 정의, 생성 시기를 알아보겠�
     
     <item>
       <title>Actix actor를 사용하는 두 가지 방법</title>
-      <link>http://huijeong-kim.github.io/post/actix-actor-usage/</link>
+      <link>http://huijeong-kim.github.io/post/2022-08-17-actix-actor-usage/</link>
       <pubDate>Wed, 17 Aug 2022 18:39:01 +0900</pubDate>
       
-      <guid>http://huijeong-kim.github.io/post/actix-actor-usage/</guid>
+      <guid>http://huijeong-kim.github.io/post/2022-08-17-actix-actor-usage/</guid>
       <description>Actix에서 actor를 사용하는 방법은 두 가지로 나눌 수 있을 것 같습니다. 첫 번째는 특정 task를 실행시키는 용도로, client가 message를 보내면 이를 받아서 처리하는 actor를 만드는 것 이고, 두 번째는 주기적으로 task를 실행시키는 actor를 만드는 것 입니다. 두 경우 각각 actor를 사용하는 방법에 대해 알아봅니다.
 1. Message를 처리하는 actor Actor를 시작하면 Addr가 리턴됩니다. Addr는 해당 actor에게 message를 전달할 수 있는 channel 입니다. Client module은 이 addr를 통해서 message를 전달할 수 있습니다.</description>
     </item>

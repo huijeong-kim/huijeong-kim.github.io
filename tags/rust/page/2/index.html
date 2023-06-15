@@ -158,7 +158,7 @@ async rust에서 mpsc queue를 사용하는 방법을 알아보겠습니다.
 1. std::sync::mpsc 사용하기 가장 먼저 std 라이브러리의 mpsc를 사용해 볼 수 있겠습니다. Async rust에서 mpsc를 사용하려면 여러 future들이 message sender(tx)를 갖고 있고 하나의 future가 message receiver(rx)를 갖고 있어야 합니다. mpsc의 Sender는 clone 가능하므로 다음과 같이 tx를 clone하여 여러 Future가 message channel을 공유할 수 있습니다....</p>
   </div>
   <footer class="entry-footer"><span title='2022-08-27 18:49:11 +0900 KST'>2022-08-27</span>&nbsp;·&nbsp;8 min&nbsp;·&nbsp;1596 words&nbsp;·&nbsp;Huijeong Kim</footer>
-  <a class="entry-link" aria-label="post link to Async Rust에서 mpsc queue 사용하기" href="http://huijeong-kim.github.io/post/tokio-mpsc/"></a>
+  <a class="entry-link" aria-label="post link to Async Rust에서 mpsc queue 사용하기" href="http://huijeong-kim.github.io/post/2022-08-27-tokio-mpsc/"></a>
 </article>
 
 <article class="post-entry tag-entry"> 
@@ -172,7 +172,7 @@ add_stream, add_message_stream 1 2 3 4 5 6 7 8 9 10 fn add_stream&lt;S&gt;(&amp;
 다음은 API Doc의 예제인데요. Stream을 만들고 message를 하나 보냅니다....</p>
   </div>
   <footer class="entry-footer"><span title='2022-08-27 18:47:08 +0900 KST'>2022-08-27</span>&nbsp;·&nbsp;3 min&nbsp;·&nbsp;468 words&nbsp;·&nbsp;Huijeong Kim</footer>
-  <a class="entry-link" aria-label="post link to Actix actor의 AsyncContext 활용하기 (2)" href="http://huijeong-kim.github.io/post/actix-actor-async-ctx-2/"></a>
+  <a class="entry-link" aria-label="post link to Actix actor의 AsyncContext 활용하기 (2)" href="http://huijeong-kim.github.io/post/2022-08-27-actix-actor-async-ctx-2/"></a>
 </article>
 
 <article class="post-entry tag-entry"> 
@@ -187,7 +187,7 @@ Actor Context 먼저, Actor의 Context의 정의, 생성 시기를 알아보겠�
 1 2 3 4 5 struct MyActor; impl Actor for MyActor { type Context = Context&lt;Self&gt;; } 위 actor는 다음과 같이 생성되고 시작될 수 있습니다....</p>
   </div>
   <footer class="entry-footer"><span title='2022-08-21 18:43:23 +0900 KST'>2022-08-21</span>&nbsp;·&nbsp;8 min&nbsp;·&nbsp;1541 words&nbsp;·&nbsp;Huijeong Kim</footer>
-  <a class="entry-link" aria-label="post link to Actix actor의 AsyncContext 활용하기 (1)" href="http://huijeong-kim.github.io/post/actix-actor-async-ctx-1/"></a>
+  <a class="entry-link" aria-label="post link to Actix actor의 AsyncContext 활용하기 (1)" href="http://huijeong-kim.github.io/post/2022-08-21-actix-actor-async-ctx-1/"></a>
 </article>
 
 <article class="post-entry tag-entry"> 
@@ -200,7 +200,7 @@ Actor Context 먼저, Actor의 Context의 정의, 생성 시기를 알아보겠�
 1. Message를 처리하는 actor Actor를 시작하면 Addr가 리턴됩니다. Addr는 해당 actor에게 message를 전달할 수 있는 channel 입니다. Client module은 이 addr를 통해서 message를 전달할 수 있습니다....</p>
   </div>
   <footer class="entry-footer"><span title='2022-08-17 18:39:01 +0900 KST'>2022-08-17</span>&nbsp;·&nbsp;8 min&nbsp;·&nbsp;1494 words&nbsp;·&nbsp;Huijeong Kim</footer>
-  <a class="entry-link" aria-label="post link to Actix actor를 사용하는 두 가지 방법" href="http://huijeong-kim.github.io/post/actix-actor-usage/"></a>
+  <a class="entry-link" aria-label="post link to Actix actor를 사용하는 두 가지 방법" href="http://huijeong-kim.github.io/post/2022-08-17-actix-actor-usage/"></a>
 </article>
 
 <article class="post-entry tag-entry"> 
@@ -216,7 +216,7 @@ Message 구현에 사용했던 Message macro는
 1 2 3 #[derive(Default, Message)] #[rtype(result = &#34;String&#34;)] struct GetName; 이렇게 풀어쓸 수 있습니다....</p>
   </div>
   <footer class="entry-footer"><span title='2022-08-14 18:09:18 +0900 KST'>2022-08-14</span>&nbsp;·&nbsp;1 min&nbsp;·&nbsp;132 words&nbsp;·&nbsp;Huijeong Kim</footer>
-  <a class="entry-link" aria-label="post link to Expand Rust Macros" href="http://huijeong-kim.github.io/post/expand-rust-macros/"></a>
+  <a class="entry-link" aria-label="post link to Expand Rust Macros" href="http://huijeong-kim.github.io/post/2022-08-14-expand-rust-macros/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

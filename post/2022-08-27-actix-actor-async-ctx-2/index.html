@@ -11,7 +11,7 @@
 add_stream, add_message_stream 1 2 3 4 5 6 7 8 9 10 fn add_stream&lt;S&gt;(&amp;mut self, fut: S) -&gt; SpawnHandle where S: Stream &#43; &#39;static, A: StreamHandler&lt;S::Item&gt;; fn add_message_stream&lt;S&gt;(&amp;mut self, fut: S) where S: Stream &#43; &#39;static, S::Item: Message, A: Handler&lt;S::Item&gt;; Context에 stream을 등록하는 함수입니다. 두 함수는 거의 비슷하나 차이점은 add_message_stream은 stream error를 무시한다는 점입니다.
 다음은 API Doc의 예제인데요. Stream을 만들고 message를 하나 보냅니다.">
 <meta name="author" content="Huijeong Kim">
-<link rel="canonical" href="http://huijeong-kim.github.io/post/actix-actor-async-ctx-2/">
+<link rel="canonical" href="http://huijeong-kim.github.io/post/2022-08-27-actix-actor-async-ctx-2/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.3613efbd0b1772781e8f49935e973cae632a7f61471c05b17be155505ccf87b5.css" integrity="sha256-NhPvvQsXcngej0mTXpc8rmMqf2FHHAWxe&#43;FVUFzPh7U=" rel="preload stylesheet" as="style">
 <script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
     onload="hljs.initHighlightingOnLoad();"></script>
@@ -74,7 +74,7 @@ if (!doNotTrack) {
 add_stream, add_message_stream 1 2 3 4 5 6 7 8 9 10 fn add_stream&lt;S&gt;(&amp;mut self, fut: S) -&gt; SpawnHandle where S: Stream &#43; &#39;static, A: StreamHandler&lt;S::Item&gt;; fn add_message_stream&lt;S&gt;(&amp;mut self, fut: S) where S: Stream &#43; &#39;static, S::Item: Message, A: Handler&lt;S::Item&gt;; Context에 stream을 등록하는 함수입니다. 두 함수는 거의 비슷하나 차이점은 add_message_stream은 stream error를 무시한다는 점입니다.
 다음은 API Doc의 예제인데요. Stream을 만들고 message를 하나 보냅니다." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://huijeong-kim.github.io/post/actix-actor-async-ctx-2/" /><meta property="article:section" content="post" />
+<meta property="og:url" content="http://huijeong-kim.github.io/post/2022-08-27-actix-actor-async-ctx-2/" /><meta property="article:section" content="post" />
 <meta property="article:published_time" content="2022-08-27T18:47:08+09:00" />
 <meta property="article:modified_time" content="2022-08-27T18:47:08+09:00" />
 
@@ -100,7 +100,7 @@ add_stream, add_message_stream 1 2 3 4 5 6 7 8 9 10 fn add_stream&lt;S&gt;(&amp;
       "@type": "ListItem",
       "position":  2 ,
       "name": "Actix actor의 AsyncContext 활용하기 (2)",
-      "item": "http://huijeong-kim.github.io/post/actix-actor-async-ctx-2/"
+      "item": "http://huijeong-kim.github.io/post/2022-08-27-actix-actor-async-ctx-2/"
     }
   ]
 }
@@ -126,7 +126,7 @@ add_stream, add_message_stream 1 2 3 4 5 6 7 8 9 10 fn add_stream&lt;S&gt;(&amp;
   },
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "http://huijeong-kim.github.io/post/actix-actor-async-ctx-2/"
+    "@id": "http://huijeong-kim.github.io/post/2022-08-27-actix-actor-async-ctx-2/"
   },
   "publisher": {
     "@type": "Organization",
@@ -215,7 +215,7 @@ add_stream, add_message_stream 1 2 3 4 5 6 7 8 9 10 fn add_stream&lt;S&gt;(&amp;
 
 </div>
   </header> 
-  <div class="post-content"><p><a href="https://huijeong-kim.github.io/post/actix-actor-async-ctx-1/">지난 글</a>에 이어 Actix actor의 <code>AsyncContext</code> 함수를 사용하는 방법을 알아봅니다.</p>
+  <div class="post-content"><p><a href="https://huijeong-kim.github.io/actix-actor-async-ctx-1/">지난 글</a>에 이어 Actix actor의 <code>AsyncContext</code> 함수를 사용하는 방법을 알아봅니다.</p>
 <p> 
  </p>
 <h3 id="add_stream-add_message_stream">add_stream, add_message_stream<a hidden class="anchor" aria-hidden="true" href="#add_stream-add_message_stream">#</a></h3>
@@ -446,12 +446,12 @@ add_stream, add_message_stream 1 2 3 4 5 6 7 8 9 10 fn add_stream&lt;S&gt;(&amp;
       <li><a href="http://huijeong-kim.github.io/tags/actor/">actor</a></li>
     </ul>
 <nav class="paginav">
-  <a class="prev" href="http://huijeong-kim.github.io/post/tokio-mpsc/">
+  <a class="prev" href="http://huijeong-kim.github.io/post/2022-08-27-tokio-mpsc/">
     <span class="title">« Prev</span>
     <br>
     <span>Async Rust에서 mpsc queue 사용하기</span>
   </a>
-  <a class="next" href="http://huijeong-kim.github.io/post/actix-actor-async-ctx-1/">
+  <a class="next" href="http://huijeong-kim.github.io/post/2022-08-21-actix-actor-async-ctx-1/">
     <span class="title">Next »</span>
     <br>
     <span>Actix actor의 AsyncContext 활용하기 (1)</span>

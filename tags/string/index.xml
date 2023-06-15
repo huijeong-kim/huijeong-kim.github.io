@@ -9,10 +9,10 @@
     <lastBuildDate>Sun, 07 May 2023 19:02:30 +0900</lastBuildDate><atom:link href="http://huijeong-kim.github.io/tags/string/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Exploring Rust Strings</title>
-      <link>http://huijeong-kim.github.io/post/exploring-rust-strings/</link>
+      <link>http://huijeong-kim.github.io/post/2023-05-07-exploring-rust-strings/</link>
       <pubDate>Sun, 07 May 2023 19:02:30 +0900</pubDate>
       
-      <guid>http://huijeong-kim.github.io/post/exploring-rust-strings/</guid>
+      <guid>http://huijeong-kim.github.io/post/2023-05-07-exploring-rust-strings/</guid>
       <description>안녕하세요.
 오늘은 Rust의 문자열 개념을 간단하게 알아보고, 코드 작성 시 문자열 관련 혼란스러웠던 포인트들을 정리해 보고자 합니다.
 1. String vs. str String 과 str 는 모두 valid UTF-8 문자열을 나타냅니다. Invalid UTF-8 데이터로 String 타입을 생성할 수 없습니다. UTF-8, Unicode 등에 대한 설명은 생략합니다.
