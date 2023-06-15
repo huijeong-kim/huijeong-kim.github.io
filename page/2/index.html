@@ -159,6 +159,20 @@ if (!doNotTrack) {
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2>Rust로 Parameterised Test 작성하기
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Unit test를 작성 하다 보면 간단한 함수에 대해서도 꽤나 많은 수의 테스트 케이스를 작성하게 됩니다. Input 값의 조합, 특히나 Invalid Input 값의 조합은 무지 많아질 수 있기 때문 입니다. 그 모든 케이스를 하나 씩 테스트로 작성 하는 것은 꽤 귀찮기도 하고, 테스트 함수 작명 지옥에 빠지면서 테스트 가독성도 떨어지게 됩니다.
+이럴 때 사용할 수 있는 것이 table-driven test, 혹은 parameterised test 입니다. Input-Output 조합을 table로 표현하는 방식입니다.
+Rust로 간단한 함수의 parameterised test를 작성해 보고, rust의 test-case, rtest crate를 활용해 이를 더 간편하게 작성하는 방법을 알아보겠습니다....</p>
+  </div>
+  <footer class="entry-footer"><span title='2022-08-28 18:51:05 +0900 KST'>2022-08-28</span>&nbsp;·&nbsp;6 min&nbsp;·&nbsp;1114 words&nbsp;·&nbsp;Huijeong Kim</footer>
+  <a class="entry-link" aria-label="post link to Rust로 Parameterised Test 작성하기" href="http://huijeong-kim.github.io/post/2022-08-28-parameterised-test/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2>Async Rust에서 mpsc queue 사용하기
     </h2>
   </header>
@@ -211,22 +225,6 @@ Actor Context 먼저, Actor의 Context의 정의, 생성 시기를 알아보겠�
   </div>
   <footer class="entry-footer"><span title='2022-08-17 18:39:01 +0900 KST'>2022-08-17</span>&nbsp;·&nbsp;8 min&nbsp;·&nbsp;1494 words&nbsp;·&nbsp;Huijeong Kim</footer>
   <a class="entry-link" aria-label="post link to Actix actor를 사용하는 두 가지 방법" href="http://huijeong-kim.github.io/post/2022-08-17-actix-actor-usage/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>Expand Rust Macros
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Rust에서 사용 된 macro의 구현이 궁금할 때 cargo expand를 사용할 수 있습니다.
-설치 $ cargo install cargo-expand 사용법 이전 글에서 사용한 코드를 expand해 봅시다. cargo expand 시 expand 된 코드가 stdout으로 출력됩니다. $ cargo expand --bin actix-and-tonic
-이 예제는 하나의 파일로 이루어져 있어 binary를 지정했지만, 특정 module 코드를 expand하기 위해서 module을 지정할 수도 있습니다. $ cargo expand path::to:module
-Message 구현에 사용했던 Message macro는
-1 2 3 #[derive(Default, Message)] #[rtype(result = &#34;String&#34;)] struct GetName; 이렇게 풀어쓸 수 있습니다....</p>
-  </div>
-  <footer class="entry-footer"><span title='2022-08-14 18:09:18 +0900 KST'>2022-08-14</span>&nbsp;·&nbsp;1 min&nbsp;·&nbsp;132 words&nbsp;·&nbsp;Huijeong Kim</footer>
-  <a class="entry-link" aria-label="post link to Expand Rust Macros" href="http://huijeong-kim.github.io/post/2022-08-14-expand-rust-macros/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

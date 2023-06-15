@@ -6,7 +6,18 @@
     <description>Recent content in Posts on my dev note</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>kr</language>
-    <lastBuildDate>Sun, 07 May 2023 19:02:30 +0900</lastBuildDate><atom:link href="http://huijeong-kim.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 15 Jun 2023 16:24:38 +0900</lastBuildDate><atom:link href="http://huijeong-kim.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Jekyll to Hugo</title>
+      <link>http://huijeong-kim.github.io/post/2023-06-15-jekyll-to-hugo/</link>
+      <pubDate>Thu, 15 Jun 2023 16:24:38 +0900</pubDate>
+      
+      <guid>http://huijeong-kim.github.io/post/2023-06-15-jekyll-to-hugo/</guid>
+      <description>이 블로그는 정적 사이트 생성기를 사용하여 웹페이지를 생성하고, 이를 GitHub에 올려서 hosting하고 있습니다. 그 동안은 Jekyll 을 사용하여 페이지를 생성했는데, 이번에 Hugo로 바꿔봤습니다. 어떻게 바꿨는지, 무엇이 좋았는지를 정리해 봤습니다.
+Why? Jekyll을 사용한 건 가장 유명한 정적 사이트 생성기이고 GitHub 에서 빌드를 해 주기 때문이었습니다. 적당한 theme 을 찾아 받고 그 위에 글을 올리고, 가끔 약간의 customize를 했습니다.
+근데 사용하기가 조금 불편했습니다. 웹 지식이 부족해서인 것 같긴 하지만, 어떤 것이 생성 결과물인지, 내가 customize 하고자 하는 부분과 관련된 코드는 어디에 있는지 등을 찾기 어려웠습니다.</description>
+    </item>
+    
     <item>
       <title>Exploring Rust Strings</title>
       <link>http://huijeong-kim.github.io/post/2023-05-07-exploring-rust-strings/</link>

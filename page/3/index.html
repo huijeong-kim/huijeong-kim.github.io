@@ -159,6 +159,22 @@ if (!doNotTrack) {
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2>Expand Rust Macros
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Rust에서 사용 된 macro의 구현이 궁금할 때 cargo expand를 사용할 수 있습니다.
+설치 $ cargo install cargo-expand 사용법 이전 글에서 사용한 코드를 expand해 봅시다. cargo expand 시 expand 된 코드가 stdout으로 출력됩니다. $ cargo expand --bin actix-and-tonic
+이 예제는 하나의 파일로 이루어져 있어 binary를 지정했지만, 특정 module 코드를 expand하기 위해서 module을 지정할 수도 있습니다. $ cargo expand path::to:module
+Message 구현에 사용했던 Message macro는
+1 2 3 #[derive(Default, Message)] #[rtype(result = &#34;String&#34;)] struct GetName; 이렇게 풀어쓸 수 있습니다....</p>
+  </div>
+  <footer class="entry-footer"><span title='2022-08-14 18:09:18 +0900 KST'>2022-08-14</span>&nbsp;·&nbsp;1 min&nbsp;·&nbsp;132 words&nbsp;·&nbsp;Huijeong Kim</footer>
+  <a class="entry-link" aria-label="post link to Expand Rust Macros" href="http://huijeong-kim.github.io/post/2022-08-14-expand-rust-macros/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2>Actix에서 gRPC Server 시작하기
     </h2>
   </header>
