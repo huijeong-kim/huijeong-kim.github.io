@@ -2,16 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>http://huijeong-kim.github.io/post/2023-06-15-jekyll-to-hugo/</loc>
-    <lastmod>2023-06-15T16:24:38+09:00</lastmod>
+    <loc>http://huijeong-kim.github.io/post/2023-05-07-exploring-rust-strings/</loc>
+    <lastmod>2023-05-07T19:02:30+09:00</lastmod>
   </url><url>
     <loc>http://huijeong-kim.github.io/</loc>
-    <lastmod>2023-06-15T16:24:38+09:00</lastmod>
+    <lastmod>2023-05-07T19:02:30+09:00</lastmod>
   </url><url>
     <loc>http://huijeong-kim.github.io/post/</loc>
-    <lastmod>2023-06-15T16:24:38+09:00</lastmod>
-  </url><url>
-    <loc>http://huijeong-kim.github.io/post/2023-05-07-exploring-rust-strings/</loc>
     <lastmod>2023-05-07T19:02:30+09:00</lastmod>
   </url><url>
     <loc>http://huijeong-kim.github.io/tags/rust/</loc>

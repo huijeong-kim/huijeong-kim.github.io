@@ -207,20 +207,6 @@ if (!doNotTrack) {
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2>Jekyll to Hugo
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>이 블로그는 정적 사이트 생성기를 사용하여 웹페이지를 생성하고, 이를 GitHub에 올려서 hosting하고 있습니다. 그 동안은 Jekyll 을 사용하여 페이지를 생성했는데, 이번에 Hugo로 바꿔봤습니다. 어떻게 바꿨는지, 무엇이 좋았는지를 정리해 봤습니다.
-Why? Jekyll을 사용한 건 가장 유명한 정적 사이트 생성기이고 GitHub 에서 빌드를 해 주기 때문이었습니다. 적당한 theme 을 찾아 받고 그 위에 글을 올리고, 가끔 약간의 customize를 했습니다.
-근데 사용하기가 조금 불편했습니다. 웹 지식이 부족해서인 것 같긴 하지만, 어떤 것이 생성 결과물인지, 내가 customize 하고자 하는 부분과 관련된 코드는 어디에 있는지 등을 찾기 어려웠습니다....</p>
-  </div>
-  <footer class="entry-footer"><span title='2023-06-15 16:24:38 +0900 KST'>2023-06-15</span>&nbsp;·&nbsp;8 min&nbsp;·&nbsp;1589 words&nbsp;·&nbsp;Huijeong Kim</footer>
-  <a class="entry-link" aria-label="post link to Jekyll to Hugo" href="http://huijeong-kim.github.io/post/2023-06-15-jekyll-to-hugo/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
     <h2>Exploring Rust Strings
     </h2>
   </header>
@@ -273,6 +259,20 @@ Asynchronous programming, or async for short, is a concurrent programming model 
   </div>
   <footer class="entry-footer"><span title='2022-09-11 18:53:04 +0900 KST'>2022-09-11</span>&nbsp;·&nbsp;7 min&nbsp;·&nbsp;1415 words&nbsp;·&nbsp;Huijeong Kim</footer>
   <a class="entry-link" aria-label="post link to Rust Async Programming" href="http://huijeong-kim.github.io/post/2022-09-11-rust-async-programming/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>Rust로 Parameterised Test 작성하기
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Unit test를 작성 하다 보면 간단한 함수에 대해서도 꽤나 많은 수의 테스트 케이스를 작성하게 됩니다. Input 값의 조합, 특히나 Invalid Input 값의 조합은 무지 많아질 수 있기 때문 입니다. 그 모든 케이스를 하나 씩 테스트로 작성 하는 것은 꽤 귀찮기도 하고, 테스트 함수 작명 지옥에 빠지면서 테스트 가독성도 떨어지게 됩니다.
+이럴 때 사용할 수 있는 것이 table-driven test, 혹은 parameterised test 입니다. Input-Output 조합을 table로 표현하는 방식입니다.
+Rust로 간단한 함수의 parameterised test를 작성해 보고, rust의 test-case, rtest crate를 활용해 이를 더 간편하게 작성하는 방법을 알아보겠습니다....</p>
+  </div>
+  <footer class="entry-footer"><span title='2022-08-28 18:51:05 +0900 KST'>2022-08-28</span>&nbsp;·&nbsp;6 min&nbsp;·&nbsp;1114 words&nbsp;·&nbsp;Huijeong Kim</footer>
+  <a class="entry-link" aria-label="post link to Rust로 Parameterised Test 작성하기" href="http://huijeong-kim.github.io/post/2022-08-28-parameterised-test/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
