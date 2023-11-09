@@ -164,6 +164,20 @@ if (!doNotTrack) {
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2>Rust Async Programming
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>오늘은 Rust에서 제공하는 Asynchronous Programming 관련 feature들에 대해 정리하면서, async 관련 포스트를 쓸 때 마다 사용되는 단어들, async, future, runtime, executor에 대해 정리해 보겠습니다. 오늘은 유독 내용이 추상적인 느낌에 부족한 부분이 많은 것 같은데, 틀린 부분이나 부족한 부분이 있다면 코멘트 남겨 주세요 :)
+Asynchronous Programming Async book에는 Asynchronous programming이 다음과 같이 정의되어 있습니다.
+Asynchronous programming, or async for short, is a concurrent programming model supported by an increasing number of programming languages....</p>
+  </div>
+  <footer class="entry-footer"><span title='2022-09-11 18:53:04 +0900 KST'>2022-09-11</span>&nbsp;·&nbsp;7 min&nbsp;·&nbsp;1415 words&nbsp;·&nbsp;Huijeong Kim</footer>
+  <a class="entry-link" aria-label="post link to Rust Async Programming" href="http://huijeong-kim.github.io/post/2022-09-11-rust-async-programming/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2>Rust로 Parameterised Test 작성하기
     </h2>
   </header>
@@ -217,19 +231,6 @@ Actor Context 먼저, Actor의 Context의 정의, 생성 시기를 알아보겠�
   </div>
   <footer class="entry-footer"><span title='2022-08-21 18:43:23 +0900 KST'>2022-08-21</span>&nbsp;·&nbsp;8 min&nbsp;·&nbsp;1541 words&nbsp;·&nbsp;Huijeong Kim</footer>
   <a class="entry-link" aria-label="post link to Actix actor의 AsyncContext 활용하기 (1)" href="http://huijeong-kim.github.io/post/2022-08-21-actix-actor-async-ctx-1/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>Actix actor를 사용하는 두 가지 방법
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Actix에서 actor를 사용하는 방법은 두 가지로 나눌 수 있을 것 같습니다. 첫 번째는 특정 task를 실행시키는 용도로, client가 message를 보내면 이를 받아서 처리하는 actor를 만드는 것 이고, 두 번째는 주기적으로 task를 실행시키는 actor를 만드는 것 입니다. 두 경우 각각 actor를 사용하는 방법에 대해 알아봅니다.
-1. Message를 처리하는 actor Actor를 시작하면 Addr가 리턴됩니다. Addr는 해당 actor에게 message를 전달할 수 있는 channel 입니다. Client module은 이 addr를 통해서 message를 전달할 수 있습니다....</p>
-  </div>
-  <footer class="entry-footer"><span title='2022-08-17 18:39:01 +0900 KST'>2022-08-17</span>&nbsp;·&nbsp;8 min&nbsp;·&nbsp;1494 words&nbsp;·&nbsp;Huijeong Kim</footer>
-  <a class="entry-link" aria-label="post link to Actix actor를 사용하는 두 가지 방법" href="http://huijeong-kim.github.io/post/2022-08-17-actix-actor-usage/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

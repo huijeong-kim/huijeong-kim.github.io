@@ -6,7 +6,17 @@
     <description>Recent content on my dev note</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>kr</language>
-    <lastBuildDate>Thu, 15 Jun 2023 16:24:38 +0900</lastBuildDate><atom:link href="http://huijeong-kim.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 09 Nov 2023 14:56:31 +0900</lastBuildDate><atom:link href="http://huijeong-kim.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>ML Strategy 1</title>
+      <link>http://huijeong-kim.github.io/post/2023-11-09-ml-strategy-1/</link>
+      <pubDate>Thu, 09 Nov 2023 14:56:31 +0900</pubDate>
+      
+      <guid>http://huijeong-kim.github.io/post/2023-11-09-ml-strategy-1/</guid>
+      <description>최근 Andrew Ng 교수님의 Deep Learning Specialization(DLS) 과정을 들었습니다. Machine Learning이라는 완전히 다른 패러다임에 적응하지 어렵고 오랫만에 보는 수식들에 정신이 없지만, 그래도 나름 재미있게 공부하고 있어요.
+DLS 강의 중 &amp;ldquo;ML Strategy&amp;rdquo; 강의가 특히 흥미로웠습니다. 이 강의를 통해 &amp;ldquo;ML engineering&amp;quot;을 어떻게 하는지 엿볼 수 있었기 때문입니다. 처음에는 ML System의 general 성능(실행속도 아닌 정확도를 의미)을 측정하는 게 불가능해 보였지만, 이 강의를 통해 ML System을 체계적으로, 전략적으로 분석, 개선하는 방법을 (조금이나마) 배울 수 있었습니다.</description>
+    </item>
+    
     <item>
       <title>Jekyll to Hugo</title>
       <link>http://huijeong-kim.github.io/post/2023-06-15-jekyll-to-hugo/</link>
