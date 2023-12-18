@@ -6,7 +6,18 @@
     <description>Recent content on my dev note</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>kr</language>
-    <lastBuildDate>Thu, 09 Nov 2023 14:56:31 +0900</lastBuildDate><atom:link href="http://huijeong-kim.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 17 Nov 2023 19:20:54 +0900</lastBuildDate><atom:link href="http://huijeong-kim.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>ML Strategy 2</title>
+      <link>http://huijeong-kim.github.io/post/2023-11-18-ml-strategy-2/</link>
+      <pubDate>Fri, 17 Nov 2023 19:20:54 +0900</pubDate>
+      
+      <guid>http://huijeong-kim.github.io/post/2023-11-18-ml-strategy-2/</guid>
+      <description>지난번에 이어, Andrew Ng 교수님의 &amp;ldquo;ML Strategy&amp;rdquo; 강의 이어서 정리합니다. 이번에는 ML 시스템 디버깅과 프로젝트 디자인 팁들이 소개됩니다.
+Error Analysis 사람이 할 수 있는 일에 대한 learning algorithm이 아직 human performance에 미치지 못한다면, machine의 mistake를 수동으로(manually) 분석하여 인사이트를 얻고 추가 개선을 해 볼 수 있습니다. 이 과정을 Error Analysis라고 합니다.
+Carrying Out Error Analysis Error analysis를 통해 시스템의 &amp;ldquo;어떤&amp;rdquo; 성능을 높이는 게 좋을지 찾아볼 수 있습니다. Cat classifier의 예를 들면, 전체적인 성능을 높이는 것이 아니라 &amp;ldquo;dog picture가 cat으로 분류되는 경우 줄이기(false positive 줄이기)&amp;ldquo;와 같은 구체적인 목표를 세울 수 있습니다.</description>
+    </item>
+    
     <item>
       <title>ML Strategy 1</title>
       <link>http://huijeong-kim.github.io/post/2023-11-09-ml-strategy-1/</link>
