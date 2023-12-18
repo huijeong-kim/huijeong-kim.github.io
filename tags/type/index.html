@@ -5,11 +5,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>Tags | my dev note</title>
+<title>type | my dev note</title>
 <meta name="keywords" content="">
 <meta name="description" content="">
 <meta name="author" content="Huijeong Kim">
-<link rel="canonical" href="http://huijeong-kim.github.io/tags/">
+<link rel="canonical" href="http://huijeong-kim.github.io/tags/type/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.3613efbd0b1772781e8f49935e973cae632a7f61471c05b17be155505ccf87b5.css" integrity="sha256-NhPvvQsXcngej0mTXpc8rmMqf2FHHAWxe&#43;FVUFzPh7U=" rel="preload stylesheet" as="style">
 <link rel="icon" href="http://huijeong-kim.github.io/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="http://huijeong-kim.github.io/favicon-16x16.png">
@@ -18,7 +18,7 @@
 <link rel="mask-icon" href="http://huijeong-kim.github.io/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" type="application/rss+xml" href="http://huijeong-kim.github.io/tags/index.xml">
+<link rel="alternate" type="application/rss+xml" href="http://huijeong-kim.github.io/tags/type/index.xml">
 <noscript>
     <style>
         #theme-toggle,
@@ -66,13 +66,13 @@ if (!doNotTrack) {
 	gtag('config', 'G-VHBQNPGKKB', { 'anonymize_ip': false });
 }
 </script>
-<meta property="og:title" content="Tags" />
+<meta property="og:title" content="type" />
 <meta property="og:description" content="" />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="http://huijeong-kim.github.io/tags/" />
+<meta property="og:url" content="http://huijeong-kim.github.io/tags/type/" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Tags"/>
+<meta name="twitter:title" content="type"/>
 <meta name="twitter:description" content=""/>
 
 </head>
@@ -134,43 +134,46 @@ if (!doNotTrack) {
             </li>
             <li>
                 <a href="http://huijeong-kim.github.io/tags/" title="Tags">
-                    <span class="active">Tags</span>
+                    <span>Tags</span>
                 </a>
             </li>
         </ul>
     </nav>
 </header>
-<main class="main">
-<header class="page-header">
-    <h1>Tags</h1>
+<main class="main"> 
+<header class="page-header"><div class="breadcrumbs"><a href="http://huijeong-kim.github.io/">Home</a>&nbsp;»&nbsp;<a href="http://huijeong-kim.github.io/tags/">Tags</a></div>
+  <h1>
+    type
+  </h1>
 </header>
 
-<ul class="terms-tags">
-    <li>
-        <a href="http://huijeong-kim.github.io/tags/actix/">actix <sup><strong><sup>4</sup></strong></sup> </a>
-    </li>
-    <li>
-        <a href="http://huijeong-kim.github.io/tags/async-rust/">async rust <sup><strong><sup>2</sup></strong></sup> </a>
-    </li>
-    <li>
-        <a href="http://huijeong-kim.github.io/tags/cargo/">cargo <sup><strong><sup>1</sup></strong></sup> </a>
-    </li>
-    <li>
-        <a href="http://huijeong-kim.github.io/tags/machine-learning/">machine learning <sup><strong><sup>2</sup></strong></sup> </a>
-    </li>
-    <li>
-        <a href="http://huijeong-kim.github.io/tags/polymorphism/">polymorphism <sup><strong><sup>1</sup></strong></sup> </a>
-    </li>
-    <li>
-        <a href="http://huijeong-kim.github.io/tags/rust/">rust <sup><strong><sup>9</sup></strong></sup> </a>
-    </li>
-    <li>
-        <a href="http://huijeong-kim.github.io/tags/type/">type <sup><strong><sup>2</sup></strong></sup> </a>
-    </li>
-    <li>
-        <a href="http://huijeong-kim.github.io/tags/unittest/">unittest <sup><strong><sup>1</sup></strong></sup> </a>
-    </li>
-</ul>
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2>Exploring Rust Strings
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>안녕하세요.
+오늘은 Rust의 문자열 개념을 간단하게 알아보고, 코드 작성 시 문자열 관련 혼란스러웠던 포인트들을 정리해 보고자 합니다.
+1. String vs. str String 과 str 는 모두 valid UTF-8 문자열을 나타냅니다. Invalid UTF-8 데이터로 String 타입을 생성할 수 없습니다. UTF-8, Unicode 등에 대한 설명은 생략합니다.
+Rust에서는 C와 같이 null-terminating string 개념을 사용하지 않습니다. 대신 String 타입은 문자열과 그 길이를 갖고 있는 “fat pointer” 입니다. “fat pointer&#34;는 raw pointer과 additional metadata (e.g., length)를 갖고 있는 포인터를 의미합니다....</p>
+  </div>
+  <footer class="entry-footer"><span title='2023-05-07 19:02:30 +0900 KST'>2023-05-07</span>&nbsp;·&nbsp;8 min&nbsp;·&nbsp;1587 words&nbsp;·&nbsp;Huijeong Kim</footer>
+  <a class="entry-link" aria-label="post link to Exploring Rust Strings" href="http://huijeong-kim.github.io/post/2023-05-07-exploring-rust-strings/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2>as operator in Rust
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>안녕하세요.
+오늘은 Rust의 as 를 사용한 type casting에 대해 알아보고자 합니다. C&#43;&#43; 프로그램에서는 잘못된 type 사용 으로 인한 오류를 종종 볼 수 있습니다. uint64_t 값을 uint32_t 값에 대입하여 잘못된 값으로 동작하는 경우가 그 예입니다. 조금은 어이 없는 실수이긴 한데, 생각보다 자주 발견됩니다. 이런 류의 버그는 처음 봤을 때 원인을 가늠하기 힘들기도 하지만, 고치기 귀찮거나 어렵기도 합니다. Type 재정의를 사용하지 않는 경우도 많고, 가끔씩은 통일할 필요가 크게 없는 경우도 있고, 의미 상 같은 변수를 모두 찾아내기 힘든 코드들도 종종 있습니다....</p>
+  </div>
+  <footer class="entry-footer"><span title='2023-05-02 19:00:30 +0900 KST'>2023-05-02</span>&nbsp;·&nbsp;8 min&nbsp;·&nbsp;1558 words&nbsp;·&nbsp;Huijeong Kim</footer>
+  <a class="entry-link" aria-label="post link to as operator in Rust" href="http://huijeong-kim.github.io/post/2023-05-02-rust-as-operator/"></a>
+</article>
     </main>
     
 <footer class="footer">

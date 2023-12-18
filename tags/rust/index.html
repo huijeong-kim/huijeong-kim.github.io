@@ -191,20 +191,6 @@ cpp 코드를 작성하던 습관 대로 Rust 코드를 작성하다 보면 막�
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
-    <h2>Rust Async Programming
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>오늘은 Rust에서 제공하는 Asynchronous Programming 관련 feature들에 대해 정리하면서, async 관련 포스트를 쓸 때 마다 사용되는 단어들, async, future, runtime, executor에 대해 정리해 보겠습니다. 오늘은 유독 내용이 추상적인 느낌에 부족한 부분이 많은 것 같은데, 틀린 부분이나 부족한 부분이 있다면 코멘트 남겨 주세요 :)
-Asynchronous Programming Async book에는 Asynchronous programming이 다음과 같이 정의되어 있습니다.
-Asynchronous programming, or async for short, is a concurrent programming model supported by an increasing number of programming languages....</p>
-  </div>
-  <footer class="entry-footer"><span title='2022-09-11 18:53:04 +0900 KST'>2022-09-11</span>&nbsp;·&nbsp;7 min&nbsp;·&nbsp;1415 words&nbsp;·&nbsp;Huijeong Kim</footer>
-  <a class="entry-link" aria-label="post link to Rust Async Programming" href="http://huijeong-kim.github.io/post/2022-09-11-rust-async-programming/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
     <h2>Rust로 Parameterised Test 작성하기
     </h2>
   </header>
@@ -216,9 +202,23 @@ Rust로 간단한 함수의 parameterised test를 작성해 보고, rust의 test
   <footer class="entry-footer"><span title='2022-08-28 18:51:05 +0900 KST'>2022-08-28</span>&nbsp;·&nbsp;6 min&nbsp;·&nbsp;1114 words&nbsp;·&nbsp;Huijeong Kim</footer>
   <a class="entry-link" aria-label="post link to Rust로 Parameterised Test 작성하기" href="http://huijeong-kim.github.io/post/2022-08-28-parameterised-test/"></a>
 </article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2>Actix actor의 AsyncContext 활용하기 (2)
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>지난 글에 이어 Actix actor의 AsyncContext 함수를 사용하는 방법을 알아봅니다.
+add_stream, add_message_stream 1 2 3 4 5 6 7 8 9 10 fn add_stream&lt;S&gt;(&amp;mut self, fut: S) -&gt; SpawnHandle where S: Stream &#43; &#39;static, A: StreamHandler&lt;S::Item&gt;; fn add_message_stream&lt;S&gt;(&amp;mut self, fut: S) where S: Stream &#43; &#39;static, S::Item: Message, A: Handler&lt;S::Item&gt;; Context에 stream을 등록하는 함수입니다. 두 함수는 거의 비슷하나 차이점은 add_message_stream은 stream error를 무시한다는 점입니다.
+다음은 API Doc의 예제인데요. Stream을 만들고 message를 하나 보냅니다....</p>
+  </div>
+  <footer class="entry-footer"><span title='2022-08-27 18:47:08 +0900 KST'>2022-08-27</span>&nbsp;·&nbsp;3 min&nbsp;·&nbsp;468 words&nbsp;·&nbsp;Huijeong Kim</footer>
+  <a class="entry-link" aria-label="post link to Actix actor의 AsyncContext 활용하기 (2)" href="http://huijeong-kim.github.io/post/2022-08-27-actix-actor-async-ctx-2/"></a>
+</article>
 <footer class="page-footer">
   <nav class="pagination">
-    <a class="next" href="http://huijeong-kim.github.io/tags/rust/page/2/">Next&nbsp;2/3&nbsp;»
+    <a class="next" href="http://huijeong-kim.github.io/tags/rust/page/2/">Next&nbsp;2/2&nbsp;»
     </a>
   </nav>
 </footer>

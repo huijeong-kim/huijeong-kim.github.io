@@ -41,17 +41,6 @@ cpp 코드를 작성하던 습관 대로 Rust 코드를 작성하다 보면 막�
     </item>
     
     <item>
-      <title>Rust Async Programming</title>
-      <link>http://huijeong-kim.github.io/post/2022-09-11-rust-async-programming/</link>
-      <pubDate>Sun, 11 Sep 2022 18:53:04 +0900</pubDate>
-      
-      <guid>http://huijeong-kim.github.io/post/2022-09-11-rust-async-programming/</guid>
-      <description>오늘은 Rust에서 제공하는 Asynchronous Programming 관련 feature들에 대해 정리하면서, async 관련 포스트를 쓸 때 마다 사용되는 단어들, async, future, runtime, executor에 대해 정리해 보겠습니다. 오늘은 유독 내용이 추상적인 느낌에 부족한 부분이 많은 것 같은데, 틀린 부분이나 부족한 부분이 있다면 코멘트 남겨 주세요 :)
-Asynchronous Programming Async book에는 Asynchronous programming이 다음과 같이 정의되어 있습니다.
-Asynchronous programming, or async for short, is a concurrent programming model supported by an increasing number of programming languages.</description>
-    </item>
-    
-    <item>
       <title>Rust로 Parameterised Test 작성하기</title>
       <link>http://huijeong-kim.github.io/post/2022-08-28-parameterised-test/</link>
       <pubDate>Sun, 28 Aug 2022 18:51:05 +0900</pubDate>
@@ -60,17 +49,6 @@ Asynchronous programming, or async for short, is a concurrent programming model 
       <description>Unit test를 작성 하다 보면 간단한 함수에 대해서도 꽤나 많은 수의 테스트 케이스를 작성하게 됩니다. Input 값의 조합, 특히나 Invalid Input 값의 조합은 무지 많아질 수 있기 때문 입니다. 그 모든 케이스를 하나 씩 테스트로 작성 하는 것은 꽤 귀찮기도 하고, 테스트 함수 작명 지옥에 빠지면서 테스트 가독성도 떨어지게 됩니다.
 이럴 때 사용할 수 있는 것이 table-driven test, 혹은 parameterised test 입니다. Input-Output 조합을 table로 표현하는 방식입니다.
 Rust로 간단한 함수의 parameterised test를 작성해 보고, rust의 test-case, rtest crate를 활용해 이를 더 간편하게 작성하는 방법을 알아보겠습니다.</description>
-    </item>
-    
-    <item>
-      <title>Async Rust에서 mpsc queue 사용하기</title>
-      <link>http://huijeong-kim.github.io/post/2022-08-27-tokio-mpsc/</link>
-      <pubDate>Sat, 27 Aug 2022 18:49:11 +0900</pubDate>
-      
-      <guid>http://huijeong-kim.github.io/post/2022-08-27-tokio-mpsc/</guid>
-      <description>mpsc(multi produce single consumer) queue는 thread 간 message를 주고받는 channel로 많이 쓰입니다. std mpsc와 crossbeam channel가 많이 쓰이는 mpsc channel이고, async rust에서는 tokio mpsc를 사용할 수 있습니다.
-async rust에서 mpsc queue를 사용하는 방법을 알아보겠습니다.
-1. std::sync::mpsc 사용하기 가장 먼저 std 라이브러리의 mpsc를 사용해 볼 수 있겠습니다. Async rust에서 mpsc를 사용하려면 여러 future들이 message sender(tx)를 갖고 있고 하나의 future가 message receiver(rx)를 갖고 있어야 합니다. mpsc의 Sender는 clone 가능하므로 다음과 같이 tx를 clone하여 여러 Future가 message channel을 공유할 수 있습니다.</description>
     </item>
     
     <item>

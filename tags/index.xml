@@ -26,56 +26,11 @@
     </item>
     
     <item>
-      <title>str</title>
-      <link>http://huijeong-kim.github.io/tags/str/</link>
+      <title>type</title>
+      <link>http://huijeong-kim.github.io/tags/type/</link>
       <pubDate>Sun, 07 May 2023 19:02:30 +0900</pubDate>
       
-      <guid>http://huijeong-kim.github.io/tags/str/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>String</title>
-      <link>http://huijeong-kim.github.io/tags/string/</link>
-      <pubDate>Sun, 07 May 2023 19:02:30 +0900</pubDate>
-      
-      <guid>http://huijeong-kim.github.io/tags/string/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>as</title>
-      <link>http://huijeong-kim.github.io/tags/as/</link>
-      <pubDate>Tue, 02 May 2023 19:00:30 +0900</pubDate>
-      
-      <guid>http://huijeong-kim.github.io/tags/as/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>type casting</title>
-      <link>http://huijeong-kim.github.io/tags/type-casting/</link>
-      <pubDate>Tue, 02 May 2023 19:00:30 +0900</pubDate>
-      
-      <guid>http://huijeong-kim.github.io/tags/type-casting/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>enum</title>
-      <link>http://huijeong-kim.github.io/tags/enum/</link>
-      <pubDate>Sun, 29 Jan 2023 18:58:03 +0900</pubDate>
-      
-      <guid>http://huijeong-kim.github.io/tags/enum/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>generics</title>
-      <link>http://huijeong-kim.github.io/tags/generics/</link>
-      <pubDate>Sun, 29 Jan 2023 18:58:03 +0900</pubDate>
-      
-      <guid>http://huijeong-kim.github.io/tags/generics/</guid>
+      <guid>http://huijeong-kim.github.io/tags/type/</guid>
       <description></description>
     </item>
     
@@ -89,29 +44,11 @@
     </item>
     
     <item>
-      <title>trait</title>
-      <link>http://huijeong-kim.github.io/tags/trait/</link>
-      <pubDate>Sun, 29 Jan 2023 18:58:03 +0900</pubDate>
-      
-      <guid>http://huijeong-kim.github.io/tags/trait/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>async</title>
-      <link>http://huijeong-kim.github.io/tags/async/</link>
+      <title>async rust</title>
+      <link>http://huijeong-kim.github.io/tags/async-rust/</link>
       <pubDate>Sun, 11 Sep 2022 18:53:04 +0900</pubDate>
       
-      <guid>http://huijeong-kim.github.io/tags/async/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>runtime</title>
-      <link>http://huijeong-kim.github.io/tags/runtime/</link>
-      <pubDate>Sun, 11 Sep 2022 18:53:04 +0900</pubDate>
-      
-      <guid>http://huijeong-kim.github.io/tags/runtime/</guid>
+      <guid>http://huijeong-kim.github.io/tags/async-rust/</guid>
       <description></description>
     </item>
     
@@ -125,24 +62,6 @@
     </item>
     
     <item>
-      <title>mpsc</title>
-      <link>http://huijeong-kim.github.io/tags/mpsc/</link>
-      <pubDate>Sat, 27 Aug 2022 18:49:11 +0900</pubDate>
-      
-      <guid>http://huijeong-kim.github.io/tags/mpsc/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>tokio</title>
-      <link>http://huijeong-kim.github.io/tags/tokio/</link>
-      <pubDate>Sat, 27 Aug 2022 18:49:11 +0900</pubDate>
-      
-      <guid>http://huijeong-kim.github.io/tags/tokio/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>actix</title>
       <link>http://huijeong-kim.github.io/tags/actix/</link>
       <pubDate>Sat, 27 Aug 2022 18:47:08 +0900</pubDate>
@@ -152,29 +71,11 @@
     </item>
     
     <item>
-      <title>actor</title>
-      <link>http://huijeong-kim.github.io/tags/actor/</link>
-      <pubDate>Sat, 27 Aug 2022 18:47:08 +0900</pubDate>
-      
-      <guid>http://huijeong-kim.github.io/tags/actor/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>cargo</title>
       <link>http://huijeong-kim.github.io/tags/cargo/</link>
       <pubDate>Sun, 14 Aug 2022 18:09:18 +0900</pubDate>
       
       <guid>http://huijeong-kim.github.io/tags/cargo/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>tonic</title>
-      <link>http://huijeong-kim.github.io/tags/tonic/</link>
-      <pubDate>Sun, 14 Aug 2022 17:24:46 +0900</pubDate>
-      
-      <guid>http://huijeong-kim.github.io/tags/tonic/</guid>
       <description></description>
     </item>
     
