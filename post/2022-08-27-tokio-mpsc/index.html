@@ -241,9 +241,9 @@ async rust에서 mpsc queue를 사용하는 방법을 알아보겠습니다.
  </p>
 <h3 id="1-stdsyncmpsc-사용하기">1. std::sync::mpsc 사용하기<a hidden class="anchor" aria-hidden="true" href="#1-stdsyncmpsc-사용하기">#</a></h3>
 <p>가장 먼저 <code>std</code> 라이브러리의 mpsc를 사용해 볼 수 있겠습니다. Async rust에서 mpsc를 사용하려면 여러 future들이 message sender(tx)를 갖고 있고 하나의 future가 message receiver(rx)를 갖고 있어야 합니다. mpsc의 <code>Sender</code>는 clone 가능하므로 다음과 같이 tx를 clone하여 여러 Future가 message channel을 공유할 수 있습니다.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -268,36 +268,36 @@ async rust에서 mpsc queue를 사용하는 방법을 알아보겠습니다.
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span>usd std::sync::mpsc;
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span>usd std::sync::mpsc;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#[tokio::main]</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">main</span>() {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> (tx, rx) <span style="color:#f92672">=</span> mpsc::channel();
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">#[tokio::main]</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">async</span> <span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">main</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">let</span> (tx, rx) <span style="color:#ff79c6">=</span> mpsc::channel();
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> sender_id <span style="color:#66d9ef">in</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">..</span><span style="color:#ae81ff">10</span> {
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> tx_channel <span style="color:#f92672">=</span> tx.clone();
-</span></span><span style="display:flex;"><span>        tokio::spawn(<span style="color:#66d9ef">async</span> <span style="color:#66d9ef">move</span> {
-</span></span><span style="display:flex;"><span>            tx_channel.send(sender_id).expect(<span style="color:#e6db74">&#34;Failed to send message&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">for</span> sender_id <span style="color:#ff79c6">in</span> <span style="color:#bd93f9">0</span><span style="color:#ff79c6">..</span><span style="color:#bd93f9">10</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#8be9fd;font-style:italic">let</span> tx_channel <span style="color:#ff79c6">=</span> tx.clone();
+</span></span><span style="display:flex;"><span>        tokio::spawn(<span style="color:#ff79c6">async</span> <span style="color:#ff79c6">move</span> {
+</span></span><span style="display:flex;"><span>            tx_channel.send(sender_id).expect(<span style="color:#f1fa8c">&#34;Failed to send message&#34;</span>);
 </span></span><span style="display:flex;"><span>        });
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    drop(tx);
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">drop</span>(tx);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> handle <span style="color:#f92672">=</span> tokio::task::spawn(<span style="color:#66d9ef">async</span> <span style="color:#66d9ef">move</span> {
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">while</span> <span style="color:#66d9ef">let</span> Ok(i) <span style="color:#f92672">=</span> rx.recv() {
-</span></span><span style="display:flex;"><span>            println!(<span style="color:#e6db74">&#34;got = </span><span style="color:#e6db74">{}</span><span style="color:#e6db74">&#34;</span>, i);
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">let</span> handle <span style="color:#ff79c6">=</span> tokio::task::spawn(<span style="color:#ff79c6">async</span> <span style="color:#ff79c6">move</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">while</span> <span style="color:#8be9fd;font-style:italic">let</span> <span style="color:#8be9fd;font-style:italic">Ok</span>(i) <span style="color:#ff79c6">=</span> rx.recv() {
+</span></span><span style="display:flex;"><span>            println!(<span style="color:#f1fa8c">&#34;got = </span><span style="color:#f1fa8c">{}</span><span style="color:#f1fa8c">&#34;</span>, i);
 </span></span><span style="display:flex;"><span>        }
 </span></span><span style="display:flex;"><span>    });
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    handle.<span style="color:#66d9ef">await</span>;
+</span></span><span style="display:flex;"><span>    handle.<span style="color:#ff79c6">await</span>;
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><code>Sender</code>가 필요한 future를 spawn 할 때 마다 message channel의 <code>Sender</code>를 clone 하였습니다. 중간에 처음 생성한 tx를 drop 하는 것은, 모든 tx 가 drop 되어야 channel이 close 되고 <code>rx.recv()</code>가 <code>Err</code>를 받게 되어 프로그램을 종료할 수 있기 때문입니다.</p>
 <p>실행 결과는 다음과 같습니다.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -309,24 +309,24 @@ async rust에서 mpsc queue를 사용하는 방법을 알아보겠습니다.
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>got <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
-</span></span><span style="display:flex;"><span>got <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>
-</span></span><span style="display:flex;"><span>got <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>
-</span></span><span style="display:flex;"><span>got <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
-</span></span><span style="display:flex;"><span>got <span style="color:#f92672">=</span> <span style="color:#ae81ff">4</span>
-</span></span><span style="display:flex;"><span>got <span style="color:#f92672">=</span> <span style="color:#ae81ff">5</span>
-</span></span><span style="display:flex;"><span>got <span style="color:#f92672">=</span> <span style="color:#ae81ff">6</span>
-</span></span><span style="display:flex;"><span>got <span style="color:#f92672">=</span> <span style="color:#ae81ff">7</span>
-</span></span><span style="display:flex;"><span>got <span style="color:#f92672">=</span> <span style="color:#ae81ff">8</span>
-</span></span><span style="display:flex;"><span>got <span style="color:#f92672">=</span> <span style="color:#ae81ff">9</span>
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">got</span> <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">0</span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">got</span> <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">2</span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">got</span> <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">3</span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">got</span> <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">1</span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">got</span> <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">4</span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">got</span> <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">5</span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">got</span> <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">6</span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">got</span> <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">7</span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">got</span> <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">8</span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">got</span> <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">9</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p> </p>
 <p>위의 예시에서 <code>std::sync::recv</code>는 blocking function 입니다. 새로운 메시지를 받거나 <code>Err</code>를 받지 않는 한, spawn 된 future는 executor에서 다음 async task 수행을 blocking 할 수 있습니다. 즉 <code>recv</code> 함수는 runtime executor를 막아 어떤 future들의 실행을 막을 수 있습니다.</p>
 <p>문제가 발생할 만한 예시를 만들기 위해, tokio Runtime을 single-thread (<code>new_current_thread</code>)로 생성하고, message send 하기 전에 3초 sleep 하도록 수정해 보았습니다.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -358,43 +358,43 @@ async rust에서 mpsc queue를 사용하는 방법을 알아보겠습니다.
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">main</span>() {
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">main</span>() {
 </span></span><span style="display:flex;"><span>    console_subscriber::init();
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> rt1 <span style="color:#f92672">=</span> tokio::runtime::Builder::new_current_thread()
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">let</span> rt1 <span style="color:#ff79c6">=</span> tokio::runtime::Builder::new_current_thread()
 </span></span><span style="display:flex;"><span>                    .enable_all()
 </span></span><span style="display:flex;"><span>                    .build()
 </span></span><span style="display:flex;"><span>                    .unwrap();
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> (tx, rx) <span style="color:#f92672">=</span> mpsc::channel();
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">let</span> (tx, rx) <span style="color:#ff79c6">=</span> mpsc::channel();
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> sender_id <span style="color:#66d9ef">in</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">..</span><span style="color:#ae81ff">10</span> {
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> tx_channel <span style="color:#f92672">=</span> tx.clone();
-</span></span><span style="display:flex;"><span>        rt1.spawn(<span style="color:#66d9ef">async</span> <span style="color:#66d9ef">move</span> {
-</span></span><span style="display:flex;"><span>            tokio::time::sleep(tokio::time::Duration::from_secs(<span style="color:#ae81ff">3</span>)).<span style="color:#66d9ef">await</span>;
-</span></span><span style="display:flex;"><span>            tx_channel.send(sender_id).expect(<span style="color:#e6db74">&#34;Failed to send message&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">for</span> sender_id <span style="color:#ff79c6">in</span> <span style="color:#bd93f9">0</span><span style="color:#ff79c6">..</span><span style="color:#bd93f9">10</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#8be9fd;font-style:italic">let</span> tx_channel <span style="color:#ff79c6">=</span> tx.clone();
+</span></span><span style="display:flex;"><span>        rt1.spawn(<span style="color:#ff79c6">async</span> <span style="color:#ff79c6">move</span> {
+</span></span><span style="display:flex;"><span>            tokio::time::sleep(tokio::time::Duration::from_secs(<span style="color:#bd93f9">3</span>)).<span style="color:#ff79c6">await</span>;
+</span></span><span style="display:flex;"><span>            tx_channel.send(sender_id).expect(<span style="color:#f1fa8c">&#34;Failed to send message&#34;</span>);
 </span></span><span style="display:flex;"><span>        });
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    drop(tx);
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">drop</span>(tx);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> handle <span style="color:#f92672">=</span> rt1.spawn(<span style="color:#66d9ef">async</span> <span style="color:#66d9ef">move</span> {
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">while</span> <span style="color:#66d9ef">let</span> Ok(i) <span style="color:#f92672">=</span> rx.recv() {
-</span></span><span style="display:flex;"><span>            println!(<span style="color:#e6db74">&#34;got = </span><span style="color:#e6db74">{}</span><span style="color:#e6db74">&#34;</span>, i);
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">let</span> handle <span style="color:#ff79c6">=</span> rt1.spawn(<span style="color:#ff79c6">async</span> <span style="color:#ff79c6">move</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">while</span> <span style="color:#8be9fd;font-style:italic">let</span> <span style="color:#8be9fd;font-style:italic">Ok</span>(i) <span style="color:#ff79c6">=</span> rx.recv() {
+</span></span><span style="display:flex;"><span>            println!(<span style="color:#f1fa8c">&#34;got = </span><span style="color:#f1fa8c">{}</span><span style="color:#f1fa8c">&#34;</span>, i);
 </span></span><span style="display:flex;"><span>        }
 </span></span><span style="display:flex;"><span>    });
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    rt1.block_on(<span style="color:#66d9ef">async</span> {
-</span></span><span style="display:flex;"><span>        handle.<span style="color:#66d9ef">await</span>;
+</span></span><span style="display:flex;"><span>    rt1.block_on(<span style="color:#ff79c6">async</span> {
+</span></span><span style="display:flex;"><span>        handle.<span style="color:#ff79c6">await</span>;
 </span></span><span style="display:flex;"><span>    });
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>위 코드에서는 모든 tx들이 sleep하며 await 을 하는 동안 <code>rx.recv()</code>가 시작될 테고, 이 <code>recv()</code> 함수는 blocking 함수이므로 runtime executor를 막고 있어서, tx를 갖고 있는 future들이 sleep 이 끝난 뒤 재 실행 될 기회를 주지 않습니다.</p>
 <p>실행 하면 이전과 다르게 아무런 출력이 나오지 않습니다. 여기서 <a href="https://tokio.rs/tokio/topics/tracing-next-steps">tokio-console</a>을 사용하여 future들의 상태를 확인하면 다음과 같습니다.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -417,27 +417,27 @@ async rust에서 mpsc queue를 사용하는 방법을 알아보겠습니다.
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>connection: http://127.0.0.1:6669/ <span style="color:#f92672">(</span>CONNECTED<span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>views: t <span style="color:#f92672">=</span> tasks, r <span style="color:#f92672">=</span> resources
-</span></span><span style="display:flex;"><span>controls: left, right or h, l <span style="color:#f92672">=</span> <span style="color:#66d9ef">select</span> column <span style="color:#f92672">(</span>sort<span style="color:#f92672">)</span>, up, down or k, j <span style="color:#f92672">=</span> scroll, enter <span style="color:#f92672">=</span> view details, i <span style="color:#f92672">=</span> invert sort
-</span></span><span style="display:flex;"><span><span style="color:#f92672">(</span>highest/lowest<span style="color:#f92672">)</span>, q <span style="color:#f92672">=</span> quit gg <span style="color:#f92672">=</span> scroll to top, G <span style="color:#f92672">=</span> scroll to bottom
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>connection: http://127.0.0.1:6669/ <span style="color:#ff79c6">(</span>CONNECTED<span style="color:#ff79c6">)</span>
+</span></span><span style="display:flex;"><span>views: <span style="color:#8be9fd;font-style:italic">t</span> <span style="color:#ff79c6">=</span> tasks, <span style="color:#8be9fd;font-style:italic">r</span> <span style="color:#ff79c6">=</span> resources
+</span></span><span style="display:flex;"><span>controls: left, right or h, <span style="color:#8be9fd;font-style:italic">l</span> <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">select</span> column <span style="color:#ff79c6">(</span>sort<span style="color:#ff79c6">)</span>, up, down or k, <span style="color:#8be9fd;font-style:italic">j</span> <span style="color:#ff79c6">=</span> scroll, <span style="color:#8be9fd;font-style:italic">enter</span> <span style="color:#ff79c6">=</span> view details, <span style="color:#8be9fd;font-style:italic">i</span> <span style="color:#ff79c6">=</span> invert sort
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">(</span>highest/lowest<span style="color:#ff79c6">)</span>, <span style="color:#8be9fd;font-style:italic">q</span> <span style="color:#ff79c6">=</span> quit <span style="color:#8be9fd;font-style:italic">gg</span> <span style="color:#ff79c6">=</span> scroll to top, <span style="color:#8be9fd;font-style:italic">G</span> <span style="color:#ff79c6">=</span> scroll to bottom
 </span></span><span style="display:flex;"><span>Warnings
-</span></span><span style="display:flex;"><span>/!<span style="color:#ae81ff">\ </span><span style="color:#ae81ff">1</span> tasks have lost their waker
+</span></span><span style="display:flex;"><span>/!<span style="color:#f1fa8c">\ </span><span style="color:#bd93f9">1</span> tasks have lost their waker
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>Tasks <span style="color:#f92672">(</span>12<span style="color:#f92672">)</span> BUSY Running <span style="color:#f92672">(</span>1<span style="color:#f92672">)</span> IDLE Idle <span style="color:#f92672">(</span>11<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>Tasks <span style="color:#ff79c6">(</span>12<span style="color:#ff79c6">)</span> BUSY Running <span style="color:#ff79c6">(</span>1<span style="color:#ff79c6">)</span> IDLE Idle <span style="color:#ff79c6">(</span>11<span style="color:#ff79c6">)</span>
 </span></span><span style="display:flex;"><span>Warn  ID  State  Name  Total-     Busy       Idle       Polls  Target      Location
-</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">9</span> IDLE          244.0032s 118.4160us  244.0031s <span style="color:#ae81ff">1</span>      tokio::task src/bin/tokio-mpsc.rs:15:13
-</span></span><span style="display:flex;"><span>       <span style="color:#ae81ff">10</span> IDLE          244.0031s  89.2080us  244.0030s <span style="color:#ae81ff">1</span>      tokio::task src/bin/tokio-mpsc.rs:15:13
-</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">6</span> IDLE          244.0031s  86.3330us  244.0030s <span style="color:#ae81ff">1</span>      tokio::task src/bin/tokio-mpsc.rs:15:13
-</span></span><span style="display:flex;"><span>       <span style="color:#ae81ff">11</span> IDLE          244.0030s  85.7080us  244.0029s <span style="color:#ae81ff">1</span>      tokio::task src/bin/tokio-mpsc.rs:15:13
-</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">2</span> IDLE          244.0029s  84.9580us  244.0028s <span style="color:#ae81ff">1</span>      tokio::task src/bin/tokio-mpsc.rs:15:13
-</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">3</span> IDLE          244.0029s  95.5410us  244.0028s <span style="color:#ae81ff">1</span>      tokio::task src/bin/tokio-mpsc.rs:15:13
-</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">8</span> IDLE          244.0028s  84.5830us  244.0027s <span style="color:#ae81ff">1</span>      tokio::task src/bin/tokio-mpsc.rs:15:13
-</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">1</span> IDLE          244.0028s  86.4160us  244.0027s <span style="color:#ae81ff">1</span>      tokio::task src/bin/tokio-mpsc.rs:15:13
-</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">7</span> IDLE          244.0027s  86.0410us  244.0026s <span style="color:#ae81ff">1</span>      tokio::task src/bin/tokio-mpsc.rs:15:13
-</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">5</span> IDLE          244.0026s  86.5830us  244.0025s <span style="color:#ae81ff">1</span>      tokio::task src/bin/tokio-mpsc.rs:15:13
-</span></span><span style="display:flex;"><span>       <span style="color:#ae81ff">12</span> BUSY          244.0026s  244.0015s   1.0940ms <span style="color:#ae81ff">1</span>      tokio::task src/bin/tokio-mpsc.rs:23:22
-</span></span><span style="display:flex;"><span>! <span style="color:#ae81ff">1</span>     <span style="color:#ae81ff">4</span> IDLE          244.0025s  18.0410us  244.0025s <span style="color:#ae81ff">1</span>      tokio::task &lt;cargo&gt;/tokio-1.20.1/src/runtime/mod.rs:477:2
+</span></span><span style="display:flex;"><span>        <span style="color:#bd93f9">9</span> IDLE          244.0032s 118.4160us  244.0031s <span style="color:#bd93f9">1</span>      tokio::task src/bin/tokio-mpsc.rs:15:13
+</span></span><span style="display:flex;"><span>       <span style="color:#bd93f9">10</span> IDLE          244.0031s  89.2080us  244.0030s <span style="color:#bd93f9">1</span>      tokio::task src/bin/tokio-mpsc.rs:15:13
+</span></span><span style="display:flex;"><span>        <span style="color:#bd93f9">6</span> IDLE          244.0031s  86.3330us  244.0030s <span style="color:#bd93f9">1</span>      tokio::task src/bin/tokio-mpsc.rs:15:13
+</span></span><span style="display:flex;"><span>       <span style="color:#bd93f9">11</span> IDLE          244.0030s  85.7080us  244.0029s <span style="color:#bd93f9">1</span>      tokio::task src/bin/tokio-mpsc.rs:15:13
+</span></span><span style="display:flex;"><span>        <span style="color:#bd93f9">2</span> IDLE          244.0029s  84.9580us  244.0028s <span style="color:#bd93f9">1</span>      tokio::task src/bin/tokio-mpsc.rs:15:13
+</span></span><span style="display:flex;"><span>        <span style="color:#bd93f9">3</span> IDLE          244.0029s  95.5410us  244.0028s <span style="color:#bd93f9">1</span>      tokio::task src/bin/tokio-mpsc.rs:15:13
+</span></span><span style="display:flex;"><span>        <span style="color:#bd93f9">8</span> IDLE          244.0028s  84.5830us  244.0027s <span style="color:#bd93f9">1</span>      tokio::task src/bin/tokio-mpsc.rs:15:13
+</span></span><span style="display:flex;"><span>        <span style="color:#bd93f9">1</span> IDLE          244.0028s  86.4160us  244.0027s <span style="color:#bd93f9">1</span>      tokio::task src/bin/tokio-mpsc.rs:15:13
+</span></span><span style="display:flex;"><span>        <span style="color:#bd93f9">7</span> IDLE          244.0027s  86.0410us  244.0026s <span style="color:#bd93f9">1</span>      tokio::task src/bin/tokio-mpsc.rs:15:13
+</span></span><span style="display:flex;"><span>        <span style="color:#bd93f9">5</span> IDLE          244.0026s  86.5830us  244.0025s <span style="color:#bd93f9">1</span>      tokio::task src/bin/tokio-mpsc.rs:15:13
+</span></span><span style="display:flex;"><span>       <span style="color:#bd93f9">12</span> BUSY          244.0026s  244.0015s   1.0940ms <span style="color:#bd93f9">1</span>      tokio::task src/bin/tokio-mpsc.rs:23:22
+</span></span><span style="display:flex;"><span>! <span style="color:#bd93f9">1</span>     <span style="color:#bd93f9">4</span> IDLE          244.0025s  18.0410us  244.0025s <span style="color:#bd93f9">1</span>      tokio::task &lt;cargo&gt;/tokio-1.20.1/src/runtime/mod.rs:477:2
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>모든 future들은 IDLE 상태인데, BUSY 상태인 future가 하나 있습니다. <code>tokio-mpsc.rs:23</code>에서 시작 한 future 인데, 이는 <code>recv()</code>함수가 포함된 future의 시작점입니다.</p>
@@ -446,9 +446,9 @@ async rust에서 mpsc queue를 사용하는 방법을 알아보겠습니다.
  </p>
 <h3 id="2-tokiosyncmpsc-사용하기">2. tokio::sync::mpsc 사용하기<a hidden class="anchor" aria-hidden="true" href="#2-tokiosyncmpsc-사용하기">#</a></h3>
 <p><code>recv()</code> 동작이 executor를 blocking 하지 않도록 tokio의 async mpsc queue를 사용해 봅시다. 위의 코드에서 mpsc를 tokio 의 mpsc로 바꾸고, await 하도록 수정하면 됩니다. 그 외 API 사용법이 조금씩 다른 부분이 있으니 주의하세요.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -480,42 +480,42 @@ async rust에서 mpsc queue를 사용하는 방법을 알아보겠습니다.
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">use</span> tokio::sync::mpsc;
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#66d9ef">BUFFER_SIZE</span>: <span style="color:#66d9ef">usize</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">128</span>;
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ff79c6">use</span> tokio::sync::mpsc;
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">const</span> BUFFER_SIZE: <span style="color:#8be9fd">usize</span> <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">128</span>;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">main</span>() {
 </span></span><span style="display:flex;"><span>    console_subscriber::init();
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> rt1 <span style="color:#f92672">=</span> tokio::runtime::Builder::new_current_thread().enable_all().build().unwrap();
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">let</span> rt1 <span style="color:#ff79c6">=</span> tokio::runtime::Builder::new_current_thread().enable_all().build().unwrap();
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> (tx, <span style="color:#66d9ef">mut</span> rx) <span style="color:#f92672">=</span> mpsc::channel(<span style="color:#66d9ef">BUFFER_SIZE</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">let</span> (tx, <span style="color:#ff79c6">mut</span> rx) <span style="color:#ff79c6">=</span> mpsc::channel(BUFFER_SIZE);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> sender_id <span style="color:#66d9ef">in</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">..</span><span style="color:#ae81ff">10</span> {
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> tx_channel <span style="color:#f92672">=</span> tx.clone();
-</span></span><span style="display:flex;"><span>        rt1.spawn(<span style="color:#66d9ef">async</span> <span style="color:#66d9ef">move</span> {
-</span></span><span style="display:flex;"><span>            tokio::time::sleep(tokio::time::Duration::from_secs(<span style="color:#ae81ff">3</span>)).<span style="color:#66d9ef">await</span>;
-</span></span><span style="display:flex;"><span>            tx_channel.send(sender_id).<span style="color:#66d9ef">await</span>.expect(<span style="color:#e6db74">&#34;Failed to send message&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">for</span> sender_id <span style="color:#ff79c6">in</span> <span style="color:#bd93f9">0</span><span style="color:#ff79c6">..</span><span style="color:#bd93f9">10</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#8be9fd;font-style:italic">let</span> tx_channel <span style="color:#ff79c6">=</span> tx.clone();
+</span></span><span style="display:flex;"><span>        rt1.spawn(<span style="color:#ff79c6">async</span> <span style="color:#ff79c6">move</span> {
+</span></span><span style="display:flex;"><span>            tokio::time::sleep(tokio::time::Duration::from_secs(<span style="color:#bd93f9">3</span>)).<span style="color:#ff79c6">await</span>;
+</span></span><span style="display:flex;"><span>            tx_channel.send(sender_id).<span style="color:#ff79c6">await</span>.expect(<span style="color:#f1fa8c">&#34;Failed to send message&#34;</span>);
 </span></span><span style="display:flex;"><span>        });
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    drop(tx);
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">drop</span>(tx);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> handle <span style="color:#f92672">=</span> rt1.spawn(<span style="color:#66d9ef">async</span> <span style="color:#66d9ef">move</span> {
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">while</span> <span style="color:#66d9ef">let</span> Some(i) <span style="color:#f92672">=</span> rx.recv().<span style="color:#66d9ef">await</span> {
-</span></span><span style="display:flex;"><span>            println!(<span style="color:#e6db74">&#34;got = </span><span style="color:#e6db74">{}</span><span style="color:#e6db74">&#34;</span>, i);
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">let</span> handle <span style="color:#ff79c6">=</span> rt1.spawn(<span style="color:#ff79c6">async</span> <span style="color:#ff79c6">move</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">while</span> <span style="color:#8be9fd;font-style:italic">let</span> <span style="color:#8be9fd;font-style:italic">Some</span>(i) <span style="color:#ff79c6">=</span> rx.recv().<span style="color:#ff79c6">await</span> {
+</span></span><span style="display:flex;"><span>            println!(<span style="color:#f1fa8c">&#34;got = </span><span style="color:#f1fa8c">{}</span><span style="color:#f1fa8c">&#34;</span>, i);
 </span></span><span style="display:flex;"><span>        }
 </span></span><span style="display:flex;"><span>    });
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    rt1.block_on(<span style="color:#66d9ef">async</span> {
-</span></span><span style="display:flex;"><span>        handle.<span style="color:#66d9ef">await</span>;
+</span></span><span style="display:flex;"><span>    rt1.block_on(<span style="color:#ff79c6">async</span> {
+</span></span><span style="display:flex;"><span>        handle.<span style="color:#ff79c6">await</span>;
 </span></span><span style="display:flex;"><span>    });
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>실행 시 다음과 같이 정상적인 결과가 나옵니다.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -527,16 +527,16 @@ async rust에서 mpsc queue를 사용하는 방법을 알아보겠습니다.
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>got <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
-</span></span><span style="display:flex;"><span>got <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
-</span></span><span style="display:flex;"><span>got <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>
-</span></span><span style="display:flex;"><span>got <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>
-</span></span><span style="display:flex;"><span>got <span style="color:#f92672">=</span> <span style="color:#ae81ff">4</span>
-</span></span><span style="display:flex;"><span>got <span style="color:#f92672">=</span> <span style="color:#ae81ff">5</span>
-</span></span><span style="display:flex;"><span>got <span style="color:#f92672">=</span> <span style="color:#ae81ff">6</span>
-</span></span><span style="display:flex;"><span>got <span style="color:#f92672">=</span> <span style="color:#ae81ff">7</span>
-</span></span><span style="display:flex;"><span>got <span style="color:#f92672">=</span> <span style="color:#ae81ff">8</span>
-</span></span><span style="display:flex;"><span>got <span style="color:#f92672">=</span> <span style="color:#ae81ff">9</span>
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">got</span> <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">0</span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">got</span> <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">1</span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">got</span> <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">2</span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">got</span> <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">3</span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">got</span> <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">4</span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">got</span> <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">5</span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">got</span> <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">6</span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">got</span> <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">7</span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">got</span> <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">8</span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">got</span> <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">9</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p> 
@@ -544,9 +544,9 @@ async rust에서 mpsc queue를 사용하는 방법을 알아보겠습니다.
 <h3 id="3-tonic-server의-async-function에서-tx-공유하기">3. Tonic server의 async function에서 tx 공유하기<a hidden class="anchor" aria-hidden="true" href="#3-tonic-server의-async-function에서-tx-공유하기">#</a></h3>
 <p>Tokio을 기반으로 하는 Tonic을 사용할 때 mpsc queue가 필요한 경우가 있습니다. gRPC server에서 받은 message를 message queue를 통해 다른 future에게 전달하고 싶을 때가 그 예 중 하나입니다.</p>
 <p>Tonic의 <a href="https://github.com/hyperium/tonic/tree/master/examples/src/helloworld">hello world</a> 예제에서 mpsc queue를 사용해 봅시다. Hello message를 받을 때 마다 이를 tokio의 다른 future에게 전달하도록 하였습니다.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -609,74 +609,74 @@ async rust에서 mpsc queue를 사용하는 방법을 알아보겠습니다.
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">61
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">use</span> std::sync::mpsc;
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">use</span> tonic::{transport::Server, Request, Response, Status};
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ff79c6">use</span> std::sync::mpsc;
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">use</span> tonic::{transport::Server, Request, Response, Status};
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">use</span> hello_world::greeter_server::{Greeter, GreeterServer};
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">use</span> hello_world::{HelloReply, HelloRequest};
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">use</span> hello_world::greeter_server::{Greeter, GreeterServer};
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">use</span> hello_world::{HelloReply, HelloRequest};
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">mod</span> hello_world {
-</span></span><span style="display:flex;"><span>    tonic::include_proto!(<span style="color:#e6db74">&#34;helloworld&#34;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">pub</span> <span style="color:#ff79c6">mod</span> hello_world {
+</span></span><span style="display:flex;"><span>    tonic::include_proto!(<span style="color:#f1fa8c">&#34;helloworld&#34;</span>);
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">MyGreeter</span> {
-</span></span><span style="display:flex;"><span>    tx: <span style="color:#a6e22e">mpsc</span>::Sender<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span>,
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">pub</span> <span style="color:#ff79c6">struct</span> <span style="color:#50fa7b">MyGreeter</span> {
+</span></span><span style="display:flex;"><span>    tx: <span style="color:#50fa7b">mpsc</span>::Sender<span style="color:#ff79c6">&lt;</span><span style="color:#8be9fd;font-style:italic">String</span><span style="color:#ff79c6">&gt;</span>,
 </span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">impl</span> MyGreeter {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">new</span>(tx: <span style="color:#a6e22e">mpsc</span>::Sender<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span>) -&gt; <span style="color:#a6e22e">Self</span> {
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">impl</span> MyGreeter {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">pub</span> <span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">new</span>(tx: <span style="color:#50fa7b">mpsc</span>::Sender<span style="color:#ff79c6">&lt;</span><span style="color:#8be9fd;font-style:italic">String</span><span style="color:#ff79c6">&gt;</span>) -&gt; <span style="color:#50fa7b">Self</span> {
 </span></span><span style="display:flex;"><span>        Self {
 </span></span><span style="display:flex;"><span>            tx,
 </span></span><span style="display:flex;"><span>        }
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#[tonic::async_trait]</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">impl</span> Greeter <span style="color:#66d9ef">for</span> MyGreeter {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">say_hello</span>(
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&amp;</span>self,
-</span></span><span style="display:flex;"><span>        request: <span style="color:#a6e22e">Request</span><span style="color:#f92672">&lt;</span>HelloRequest<span style="color:#f92672">&gt;</span>,
-</span></span><span style="display:flex;"><span>    ) -&gt; Result<span style="color:#f92672">&lt;</span>Response<span style="color:#f92672">&lt;</span>HelloReply<span style="color:#f92672">&gt;</span>, Status<span style="color:#f92672">&gt;</span> {
-</span></span><span style="display:flex;"><span>        println!(<span style="color:#e6db74">&#34;Got a request from </span><span style="color:#e6db74">{:?}</span><span style="color:#e6db74">&#34;</span>, request.remote_addr());
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">#[tonic::async_trait]</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">impl</span> Greeter <span style="color:#ff79c6">for</span> MyGreeter {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">async</span> <span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">say_hello</span>(
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">&amp;</span>self,
+</span></span><span style="display:flex;"><span>        request: <span style="color:#50fa7b">Request</span><span style="color:#ff79c6">&lt;</span>HelloRequest<span style="color:#ff79c6">&gt;</span>,
+</span></span><span style="display:flex;"><span>    ) -&gt; <span style="color:#8be9fd;font-style:italic">Result</span><span style="color:#ff79c6">&lt;</span>Response<span style="color:#ff79c6">&lt;</span>HelloReply<span style="color:#ff79c6">&gt;</span>, Status<span style="color:#ff79c6">&gt;</span> {
+</span></span><span style="display:flex;"><span>        println!(<span style="color:#f1fa8c">&#34;Got a request from </span><span style="color:#f1fa8c">{:?}</span><span style="color:#f1fa8c">&#34;</span>, request.remote_addr());
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> name <span style="color:#f92672">=</span> request.into_inner().name;
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> reply <span style="color:#f92672">=</span> hello_world::HelloReply {
-</span></span><span style="display:flex;"><span>            message: <span style="color:#a6e22e">format</span><span style="color:#f92672">!</span>(<span style="color:#e6db74">&#34;Hello {}!&#34;</span>, name.clone()),
+</span></span><span style="display:flex;"><span>        <span style="color:#8be9fd;font-style:italic">let</span> name <span style="color:#ff79c6">=</span> request.into_inner().name;
+</span></span><span style="display:flex;"><span>        <span style="color:#8be9fd;font-style:italic">let</span> reply <span style="color:#ff79c6">=</span> hello_world::HelloReply {
+</span></span><span style="display:flex;"><span>            message: <span style="color:#50fa7b">format</span><span style="color:#ff79c6">!</span>(<span style="color:#f1fa8c">&#34;Hello {}!&#34;</span>, name.clone()),
 </span></span><span style="display:flex;"><span>        };
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>        self.tx.send(name);
-</span></span><span style="display:flex;"><span>        Ok(Response::new(reply))
+</span></span><span style="display:flex;"><span>        <span style="color:#8be9fd;font-style:italic">Ok</span>(Response::new(reply))
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#[tokio::main]</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">main</span>() -&gt; Result<span style="color:#f92672">&lt;</span>(), Box<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">dyn</span> std::error::Error<span style="color:#f92672">&gt;&gt;</span> {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> (tx, rx) <span style="color:#f92672">=</span> mpsc::channel();
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">#[tokio::main]</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">async</span> <span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">main</span>() -&gt; <span style="color:#8be9fd;font-style:italic">Result</span><span style="color:#ff79c6">&lt;</span>(), <span style="color:#8be9fd;font-style:italic">Box</span><span style="color:#ff79c6">&lt;</span><span style="color:#ff79c6">dyn</span> std::error::Error<span style="color:#ff79c6">&gt;&gt;</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">let</span> (tx, rx) <span style="color:#ff79c6">=</span> mpsc::channel();
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> addr <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;[::1]:50051&#34;</span>.parse().unwrap();
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> greeter <span style="color:#f92672">=</span> MyGreeter::new(tx);
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">let</span> addr <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;[::1]:50051&#34;</span>.parse().unwrap();
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">let</span> greeter <span style="color:#ff79c6">=</span> MyGreeter::new(tx);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    println!(<span style="color:#e6db74">&#34;GreeterServer listening on </span><span style="color:#e6db74">{}</span><span style="color:#e6db74">&#34;</span>, addr);
+</span></span><span style="display:flex;"><span>    println!(<span style="color:#f1fa8c">&#34;GreeterServer listening on </span><span style="color:#f1fa8c">{}</span><span style="color:#f1fa8c">&#34;</span>, addr);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    tokio::spawn(<span style="color:#66d9ef">async</span> <span style="color:#66d9ef">move</span> {
-</span></span><span style="display:flex;"><span>        println!(<span style="color:#e6db74">&#34;START RECEIVING MESSAGES&#34;</span>);
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">while</span> <span style="color:#66d9ef">let</span> Ok(msg) <span style="color:#f92672">=</span> rx.recv() {
-</span></span><span style="display:flex;"><span>            println!(<span style="color:#e6db74">&#34;received a message: </span><span style="color:#e6db74">{:?}</span><span style="color:#e6db74">&#34;</span>, msg);
+</span></span><span style="display:flex;"><span>    tokio::spawn(<span style="color:#ff79c6">async</span> <span style="color:#ff79c6">move</span> {
+</span></span><span style="display:flex;"><span>        println!(<span style="color:#f1fa8c">&#34;START RECEIVING MESSAGES&#34;</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">while</span> <span style="color:#8be9fd;font-style:italic">let</span> <span style="color:#8be9fd;font-style:italic">Ok</span>(msg) <span style="color:#ff79c6">=</span> rx.recv() {
+</span></span><span style="display:flex;"><span>            println!(<span style="color:#f1fa8c">&#34;received a message: </span><span style="color:#f1fa8c">{:?}</span><span style="color:#f1fa8c">&#34;</span>, msg);
 </span></span><span style="display:flex;"><span>        }
 </span></span><span style="display:flex;"><span>    });
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    Server::builder()
 </span></span><span style="display:flex;"><span>        .add_service(GreeterServer::new(greeter))
 </span></span><span style="display:flex;"><span>        .serve(addr)
-</span></span><span style="display:flex;"><span>        .<span style="color:#66d9ef">await</span><span style="color:#f92672">?</span>;
+</span></span><span style="display:flex;"><span>        .<span style="color:#ff79c6">await</span><span style="color:#ff79c6">?</span>;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    Ok(())
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">Ok</span>(())
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p> </p>
 <p>우선 <code>std::sync::mpsc</code>를 사용해 봤습니다. 빌드와 실행이 잘 되고, 특정 상황에서만 실행 상 오류가 나던 이전 예제와는 달리, compile error부터 납니다. <code>std::sync::mpsc::Sender</code>가 Sync 를 구현하고 있지 않기 때문입니다. gRPC Server의 message handle 함수들은 여러 thread(tokio runtime이 사용하는 thread)에서 동시에 수행될 수 있으므로(같은 gRPC가 여러 개 들어오면 한 번에 모두 처리 될 수 있음) <code>Sync</code> trait을 가질 것을 강제하고 있습니다.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -698,33 +698,33 @@ async rust에서 mpsc queue를 사용하는 방법을 알아보겠습니다.
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>error<span style="color:#f92672">[</span>E0277<span style="color:#f92672">]</span>: <span style="color:#e6db74">`</span>std::sync::mpsc::Sender&lt;String&gt;<span style="color:#e6db74">`</span> cannot be shared between threads safely
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>error<span style="color:#ff79c6">[</span>E0277<span style="color:#ff79c6">]</span>: <span style="color:#f1fa8c">`</span>std::sync::mpsc::Sender&lt;String&gt;<span style="color:#f1fa8c">`</span> cannot be shared between threads safely
 </span></span><span style="display:flex;"><span>   --&gt; src/bin/tokio-mpsc.rs:55:6
 </span></span><span style="display:flex;"><span>    |
-</span></span><span style="display:flex;"><span><span style="color:#ae81ff">55</span>  | impl Greeter <span style="color:#66d9ef">for</span> MyGreeter <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    |      ^^^^^^^ <span style="color:#e6db74">`</span>std::sync::mpsc::Sender&lt;String&gt;<span style="color:#e6db74">`</span> cannot be shared between threads safely
+</span></span><span style="display:flex;"><span><span style="color:#bd93f9">55</span>  | impl Greeter <span style="color:#ff79c6">for</span> MyGreeter <span style="color:#ff79c6">{</span>
+</span></span><span style="display:flex;"><span>    |      ^^^^^^^ <span style="color:#f1fa8c">`</span>std::sync::mpsc::Sender&lt;String&gt;<span style="color:#f1fa8c">`</span> cannot be shared between threads safely
 </span></span><span style="display:flex;"><span>    |
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">=</span> help: within <span style="color:#e6db74">`</span>MyGreeter<span style="color:#e6db74">`</span>, the trait <span style="color:#e6db74">`</span>Sync<span style="color:#e6db74">`</span> is not implemented <span style="color:#66d9ef">for</span> <span style="color:#e6db74">`</span>std::sync::mpsc::Sender&lt;String&gt;<span style="color:#e6db74">`</span>
-</span></span><span style="display:flex;"><span>note: required because it appears within the type <span style="color:#e6db74">`</span>MyGreeter<span style="color:#e6db74">`</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">=</span> help: within <span style="color:#f1fa8c">`</span>MyGreeter<span style="color:#f1fa8c">`</span>, the trait <span style="color:#f1fa8c">`</span>Sync<span style="color:#f1fa8c">`</span> is not implemented <span style="color:#ff79c6">for</span> <span style="color:#f1fa8c">`</span>std::sync::mpsc::Sender&lt;String&gt;<span style="color:#f1fa8c">`</span>
+</span></span><span style="display:flex;"><span>note: required because it appears within the <span style="color:#8be9fd;font-style:italic">type</span> <span style="color:#f1fa8c">`</span>MyGreeter<span style="color:#f1fa8c">`</span>
 </span></span><span style="display:flex;"><span>   --&gt; src/bin/tokio-mpsc.rs:44:12
 </span></span><span style="display:flex;"><span>    |
-</span></span><span style="display:flex;"><span><span style="color:#ae81ff">44</span>  | pub struct MyGreeter <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#bd93f9">44</span>  | pub struct MyGreeter <span style="color:#ff79c6">{</span>
 </span></span><span style="display:flex;"><span>    |            ^^^^^^^^^
-</span></span><span style="display:flex;"><span>note: required by a bound in <span style="color:#e6db74">`</span>Greeter<span style="color:#e6db74">`</span>
+</span></span><span style="display:flex;"><span>note: required by a bound in <span style="color:#f1fa8c">`</span>Greeter<span style="color:#f1fa8c">`</span>
 </span></span><span style="display:flex;"><span>   --&gt; /Users/huijeongkim/Workspace/rust_practice/target/debug/build/rust_practice-41089e7fe9e0adbb/out/helloworld.rs:111:31
 </span></span><span style="display:flex;"><span>    |
-</span></span><span style="display:flex;"><span><span style="color:#ae81ff">111</span> |     pub trait Greeter: Send + Sync + <span style="color:#960050;background-color:#1e0010">&#39;</span>static <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    |                               ^^^^ required by this bound in <span style="color:#e6db74">`</span>Greeter<span style="color:#e6db74">`</span>
+</span></span><span style="display:flex;"><span><span style="color:#bd93f9">111</span> |     pub trait Greeter: Send + Sync + &#39;static <span style="color:#ff79c6">{</span>
+</span></span><span style="display:flex;"><span>    |                               ^^^^ required by this bound in <span style="color:#f1fa8c">`</span>Greeter<span style="color:#f1fa8c">`</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>For more information about this error, try <span style="color:#e6db74">`</span>rustc --explain E0277<span style="color:#e6db74">`</span>.
-</span></span><span style="display:flex;"><span>error: could not compile <span style="color:#e6db74">`</span>rust_practice<span style="color:#e6db74">`</span> due to previous error
+</span></span><span style="display:flex;"><span>For more information about this error, try <span style="color:#f1fa8c">`</span>rustc --explain E0277<span style="color:#f1fa8c">`</span>.
+</span></span><span style="display:flex;"><span>error: could not compile <span style="color:#f1fa8c">`</span>rust_practice<span style="color:#f1fa8c">`</span> due to previous error
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p> </p>
 <p>이 문제는 tx를 mutex로 보호해서 해결할 수도 있고, 앞에서와 같이 <code>tokio::sync::mpsc</code>를 사용하는 것으로도 해결할 수 있습니다. <code>tokio::sync::mpsc</code>를 사용하도록 수정한 코드는 아래와 같습니다.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -789,77 +789,77 @@ async rust에서 mpsc queue를 사용하는 방법을 알아보겠습니다.
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">63
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">use</span> tokio::sync::mpsc;
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#66d9ef">BUFFER_SIZE</span>: <span style="color:#66d9ef">usize</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">128</span>;
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ff79c6">use</span> tokio::sync::mpsc;
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">const</span> BUFFER_SIZE: <span style="color:#8be9fd">usize</span> <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">128</span>;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">use</span> tonic::{transport::Server, Request, Response, Status};
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">use</span> tonic::{transport::Server, Request, Response, Status};
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">use</span> hello_world::greeter_server::{Greeter, GreeterServer};
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">use</span> hello_world::{HelloReply, HelloRequest};
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">use</span> hello_world::greeter_server::{Greeter, GreeterServer};
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">use</span> hello_world::{HelloReply, HelloRequest};
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">mod</span> hello_world {
-</span></span><span style="display:flex;"><span>    tonic::include_proto!(<span style="color:#e6db74">&#34;helloworld&#34;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">pub</span> <span style="color:#ff79c6">mod</span> hello_world {
+</span></span><span style="display:flex;"><span>    tonic::include_proto!(<span style="color:#f1fa8c">&#34;helloworld&#34;</span>);
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">MyGreeter</span> {
-</span></span><span style="display:flex;"><span>    tx: <span style="color:#a6e22e">mpsc</span>::Sender<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span>,
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">pub</span> <span style="color:#ff79c6">struct</span> <span style="color:#50fa7b">MyGreeter</span> {
+</span></span><span style="display:flex;"><span>    tx: <span style="color:#50fa7b">mpsc</span>::Sender<span style="color:#ff79c6">&lt;</span><span style="color:#8be9fd;font-style:italic">String</span><span style="color:#ff79c6">&gt;</span>,
 </span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">impl</span> MyGreeter {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">new</span>(tx: <span style="color:#a6e22e">mpsc</span>::Sender<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span>) -&gt; <span style="color:#a6e22e">Self</span> {
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">impl</span> MyGreeter {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">pub</span> <span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">new</span>(tx: <span style="color:#50fa7b">mpsc</span>::Sender<span style="color:#ff79c6">&lt;</span><span style="color:#8be9fd;font-style:italic">String</span><span style="color:#ff79c6">&gt;</span>) -&gt; <span style="color:#50fa7b">Self</span> {
 </span></span><span style="display:flex;"><span>        Self {
 </span></span><span style="display:flex;"><span>            tx,
 </span></span><span style="display:flex;"><span>        }
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#[tonic::async_trait]</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">impl</span> Greeter <span style="color:#66d9ef">for</span> MyGreeter {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">say_hello</span>(
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&amp;</span>self,
-</span></span><span style="display:flex;"><span>        request: <span style="color:#a6e22e">Request</span><span style="color:#f92672">&lt;</span>HelloRequest<span style="color:#f92672">&gt;</span>,
-</span></span><span style="display:flex;"><span>    ) -&gt; Result<span style="color:#f92672">&lt;</span>Response<span style="color:#f92672">&lt;</span>HelloReply<span style="color:#f92672">&gt;</span>, Status<span style="color:#f92672">&gt;</span> {
-</span></span><span style="display:flex;"><span>        println!(<span style="color:#e6db74">&#34;Got a request from </span><span style="color:#e6db74">{:?}</span><span style="color:#e6db74">&#34;</span>, request.remote_addr());
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">#[tonic::async_trait]</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">impl</span> Greeter <span style="color:#ff79c6">for</span> MyGreeter {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">async</span> <span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">say_hello</span>(
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">&amp;</span>self,
+</span></span><span style="display:flex;"><span>        request: <span style="color:#50fa7b">Request</span><span style="color:#ff79c6">&lt;</span>HelloRequest<span style="color:#ff79c6">&gt;</span>,
+</span></span><span style="display:flex;"><span>    ) -&gt; <span style="color:#8be9fd;font-style:italic">Result</span><span style="color:#ff79c6">&lt;</span>Response<span style="color:#ff79c6">&lt;</span>HelloReply<span style="color:#ff79c6">&gt;</span>, Status<span style="color:#ff79c6">&gt;</span> {
+</span></span><span style="display:flex;"><span>        println!(<span style="color:#f1fa8c">&#34;Got a request from </span><span style="color:#f1fa8c">{:?}</span><span style="color:#f1fa8c">&#34;</span>, request.remote_addr());
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> name <span style="color:#f92672">=</span> request.into_inner().name;
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> reply <span style="color:#f92672">=</span> hello_world::HelloReply {
-</span></span><span style="display:flex;"><span>            message: <span style="color:#a6e22e">format</span><span style="color:#f92672">!</span>(<span style="color:#e6db74">&#34;Hello {}!&#34;</span>, name.clone()),
+</span></span><span style="display:flex;"><span>        <span style="color:#8be9fd;font-style:italic">let</span> name <span style="color:#ff79c6">=</span> request.into_inner().name;
+</span></span><span style="display:flex;"><span>        <span style="color:#8be9fd;font-style:italic">let</span> reply <span style="color:#ff79c6">=</span> hello_world::HelloReply {
+</span></span><span style="display:flex;"><span>            message: <span style="color:#50fa7b">format</span><span style="color:#ff79c6">!</span>(<span style="color:#f1fa8c">&#34;Hello {}!&#34;</span>, name.clone()),
 </span></span><span style="display:flex;"><span>        };
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        self.tx.send(name).<span style="color:#66d9ef">await</span>;
-</span></span><span style="display:flex;"><span>        Ok(Response::new(reply))
+</span></span><span style="display:flex;"><span>        self.tx.send(name).<span style="color:#ff79c6">await</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#8be9fd;font-style:italic">Ok</span>(Response::new(reply))
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#[tokio::main]</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">main</span>() -&gt; Result<span style="color:#f92672">&lt;</span>(), Box<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">dyn</span> std::error::Error<span style="color:#f92672">&gt;&gt;</span> {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> (tx, <span style="color:#66d9ef">mut</span> rx) <span style="color:#f92672">=</span> mpsc::channel(<span style="color:#66d9ef">BUFFER_SIZE</span>);
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">#[tokio::main]</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">async</span> <span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">main</span>() -&gt; <span style="color:#8be9fd;font-style:italic">Result</span><span style="color:#ff79c6">&lt;</span>(), <span style="color:#8be9fd;font-style:italic">Box</span><span style="color:#ff79c6">&lt;</span><span style="color:#ff79c6">dyn</span> std::error::Error<span style="color:#ff79c6">&gt;&gt;</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">let</span> (tx, <span style="color:#ff79c6">mut</span> rx) <span style="color:#ff79c6">=</span> mpsc::channel(BUFFER_SIZE);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> addr <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;[::1]:50051&#34;</span>.parse().unwrap();
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> greeter <span style="color:#f92672">=</span> MyGreeter::new(tx);
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">let</span> addr <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;[::1]:50051&#34;</span>.parse().unwrap();
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">let</span> greeter <span style="color:#ff79c6">=</span> MyGreeter::new(tx);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    println!(<span style="color:#e6db74">&#34;GreeterServer listening on </span><span style="color:#e6db74">{}</span><span style="color:#e6db74">&#34;</span>, addr);
+</span></span><span style="display:flex;"><span>    println!(<span style="color:#f1fa8c">&#34;GreeterServer listening on </span><span style="color:#f1fa8c">{}</span><span style="color:#f1fa8c">&#34;</span>, addr);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    tokio::spawn(<span style="color:#66d9ef">async</span> <span style="color:#66d9ef">move</span> {
-</span></span><span style="display:flex;"><span>        println!(<span style="color:#e6db74">&#34;START RECEIVING MESSAGES&#34;</span>);
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">while</span> <span style="color:#66d9ef">let</span> Some(msg) <span style="color:#f92672">=</span> rx.recv().<span style="color:#66d9ef">await</span> {
-</span></span><span style="display:flex;"><span>            println!(<span style="color:#e6db74">&#34;received a message: </span><span style="color:#e6db74">{:?}</span><span style="color:#e6db74">&#34;</span>, msg);
+</span></span><span style="display:flex;"><span>    tokio::spawn(<span style="color:#ff79c6">async</span> <span style="color:#ff79c6">move</span> {
+</span></span><span style="display:flex;"><span>        println!(<span style="color:#f1fa8c">&#34;START RECEIVING MESSAGES&#34;</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">while</span> <span style="color:#8be9fd;font-style:italic">let</span> <span style="color:#8be9fd;font-style:italic">Some</span>(msg) <span style="color:#ff79c6">=</span> rx.recv().<span style="color:#ff79c6">await</span> {
+</span></span><span style="display:flex;"><span>            println!(<span style="color:#f1fa8c">&#34;received a message: </span><span style="color:#f1fa8c">{:?}</span><span style="color:#f1fa8c">&#34;</span>, msg);
 </span></span><span style="display:flex;"><span>        }
 </span></span><span style="display:flex;"><span>    });
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    Server::builder()
 </span></span><span style="display:flex;"><span>        .add_service(GreeterServer::new(greeter))
 </span></span><span style="display:flex;"><span>        .serve(addr)
-</span></span><span style="display:flex;"><span>        .<span style="color:#66d9ef">await</span><span style="color:#f92672">?</span>;
+</span></span><span style="display:flex;"><span>        .<span style="color:#ff79c6">await</span><span style="color:#ff79c6">?</span>;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    Ok(())
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">Ok</span>(())
 </span></span><span style="display:flex;"><span>} 
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p> 
  </p>
 <p><code>tokio::sync::mpsc</code>의 구현을 살펴 보면 그 이유를 알 수 있습니다. tokio mpsc queue의 <code>Sender</code> 구현은 아래와 같이 Arc와 Semaphore로 보호되어 있습니다.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -872,16 +872,16 @@ async rust에서 mpsc queue를 사용하는 방법을 알아보겠습니다.
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#75715e">// tokio::sync::mpsc 의 Sender
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Sender</span><span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> {
-</span></span><span style="display:flex;"><span>    chan: <span style="color:#a6e22e">chan</span>::Tx<span style="color:#f92672">&lt;</span>T, Semaphore<span style="color:#f92672">&gt;</span>,
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#6272a4">// tokio::sync::mpsc 의 Sender
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span><span style="color:#ff79c6">pub</span> <span style="color:#ff79c6">struct</span> <span style="color:#50fa7b">Sender</span><span style="color:#ff79c6">&lt;</span>T<span style="color:#ff79c6">&gt;</span> {
+</span></span><span style="display:flex;"><span>    chan: <span style="color:#50fa7b">chan</span>::Tx<span style="color:#ff79c6">&lt;</span>T, Semaphore<span style="color:#ff79c6">&gt;</span>,
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// ..
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// channel sender
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">pub</span>(<span style="color:#66d9ef">crate</span>) <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Tx</span><span style="color:#f92672">&lt;</span>T, S<span style="color:#f92672">&gt;</span> {
-</span></span><span style="display:flex;"><span>    inner: <span style="color:#a6e22e">Arc</span><span style="color:#f92672">&lt;</span>Chan<span style="color:#f92672">&lt;</span>T, S<span style="color:#f92672">&gt;&gt;</span>,
+</span></span><span style="display:flex;"><span><span style="color:#6272a4">// ..
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4">// channel sender
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span><span style="color:#ff79c6">pub</span>(<span style="color:#ff79c6">crate</span>) <span style="color:#ff79c6">struct</span> <span style="color:#50fa7b">Tx</span><span style="color:#ff79c6">&lt;</span>T, S<span style="color:#ff79c6">&gt;</span> {
+</span></span><span style="display:flex;"><span>    inner: <span style="color:#50fa7b">Arc</span><span style="color:#ff79c6">&lt;</span>Chan<span style="color:#ff79c6">&lt;</span>T, S<span style="color:#ff79c6">&gt;&gt;</span>,
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></td></tr></table>
 </div>
@@ -924,7 +924,7 @@ async rust에서 mpsc queue를 사용하는 방법을 알아보겠습니다.
     </main>
     
 <footer class="footer">
-    <span>&copy; 2023 <a href="http://huijeong-kim.github.io/">my dev note</a></span>
+    <span>&copy; 2024 <a href="http://huijeong-kim.github.io/">my dev note</a></span>
     <span>
         Powered by
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &

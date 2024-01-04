@@ -277,9 +277,9 @@ Asynchronous programming, or async for short, is a concurrent programming model 
 </ul>
 <p><code>async</code>는 <code>Future</code>를 리턴하는 asynchronous 동작(현재 thread를 blocking하지 않는 동작)을 의미하고, <code>Future</code>는 <code>Runtime</code>에서 실행될 수 있는 trait 입니다. <code>async</code> 키워드를 사용해 function, block expression, closure를 <code>Future</code>로 만들 수 있습니다. <code>Future</code> trait이 <code>Runtime</code>에서 어떻게 사용 되는지는 뒤에서 간단히 설명하겠습니다.</p>
 <p>다음은 async func, async block, async closure를 만들어 실행시키는 간단한 코드입니다. 기존의 function, block, closure에 <code>async</code> 키워드를 추가하였고, 이를 실행시킬 <code>Runtime</code>으로는 <code>futures</code> crate를 사용했습니다. 각 <code>Future</code>들은 <code>futures::executor::block_on</code>에 의해 실행됩니다.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -299,19 +299,19 @@ Asynchronous programming, or async for short, is a concurrent programming model 
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">use</span> futures::executor;
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">async_func</span>() {
-</span></span><span style="display:flex;"><span>    println!(<span style="color:#e6db74">&#34;async_func&#34;</span>);
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ff79c6">use</span> futures::executor;
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">async</span> <span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">async_func</span>() {
+</span></span><span style="display:flex;"><span>    println!(<span style="color:#f1fa8c">&#34;async_func&#34;</span>);
 </span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">main</span>() {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> future1 <span style="color:#f92672">=</span> async_func();
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> future2 <span style="color:#f92672">=</span> <span style="color:#66d9ef">async</span> {
-</span></span><span style="display:flex;"><span>        println!(<span style="color:#e6db74">&#34;async block&#34;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">main</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">let</span> future1 <span style="color:#ff79c6">=</span> async_func();
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">let</span> future2 <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">async</span> {
+</span></span><span style="display:flex;"><span>        println!(<span style="color:#f1fa8c">&#34;async block&#34;</span>);
 </span></span><span style="display:flex;"><span>    };
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> async_closure <span style="color:#f92672">=</span> <span style="color:#f92672">||</span> <span style="color:#66d9ef">async</span> {
-</span></span><span style="display:flex;"><span>        println!(<span style="color:#e6db74">&#34;async closure&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">let</span> async_closure <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">||</span> <span style="color:#ff79c6">async</span> {
+</span></span><span style="display:flex;"><span>        println!(<span style="color:#f1fa8c">&#34;async closure&#34;</span>);
 </span></span><span style="display:flex;"><span>    };
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> future3 <span style="color:#f92672">=</span> async_closure();
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">let</span> future3 <span style="color:#ff79c6">=</span> async_closure();
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    executor::block_on(future3);
 </span></span><span style="display:flex;"><span>    executor::block_on(future2);
@@ -320,14 +320,14 @@ Asynchronous programming, or async for short, is a concurrent programming model 
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>출력 결과</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>async closure
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>async closure
 </span></span><span style="display:flex;"><span>async block
 </span></span><span style="display:flex;"><span>async_func
 </span></span></code></pre></td></tr></table>
@@ -336,9 +336,9 @@ Asynchronous programming, or async for short, is a concurrent programming model 
 <p><code>await</code>는 Future의 동작이 완료되기를 기다릴 때 사용합니다. <code>async</code> 안에서만 사용될 수 있습니다. 다음은 3개의 task, 1) learn_song, 2) sing_song, 3) dance가 주어졌을 때, sing_song과 dance는 learn_song이 완료된 후에 실행되도록 하는 예제 코드입니다. sing_song, dance를 실행시키기 전에 <code>learn_song().await</code>를 사용하여 동작 완료를 기다립니다.</p>
 <p><img loading="lazy" src="./image04.png" alt="async-await"  />
 </p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -365,27 +365,27 @@ Asynchronous programming, or async for short, is a concurrent programming model 
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Song</span>(String);
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ff79c6">struct</span> <span style="color:#50fa7b">Song</span>(<span style="color:#8be9fd;font-style:italic">String</span>);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">learn_song</span>() -&gt; <span style="color:#a6e22e">Song</span> {
-</span></span><span style="display:flex;"><span>    println!(<span style="color:#e6db74">&#34;Learn song!&#34;</span>);
-</span></span><span style="display:flex;"><span>    Song(String::from(<span style="color:#e6db74">&#34;Hype boy&#34;</span>))
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">async</span> <span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">learn_song</span>() -&gt; <span style="color:#50fa7b">Song</span> {
+</span></span><span style="display:flex;"><span>    println!(<span style="color:#f1fa8c">&#34;Learn song!&#34;</span>);
+</span></span><span style="display:flex;"><span>    Song(<span style="color:#8be9fd;font-style:italic">String</span>::from(<span style="color:#f1fa8c">&#34;Hype boy&#34;</span>))
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">dance</span>(song: <span style="color:#66d9ef">&amp;</span><span style="color:#a6e22e">Song</span>) {
-</span></span><span style="display:flex;"><span>    println!(<span style="color:#e6db74">&#34;Dance to </span><span style="color:#e6db74">{}</span><span style="color:#e6db74">!!&#34;</span>, song.<span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">async</span> <span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">dance</span>(song: <span style="color:#ff79c6">&amp;</span><span style="color:#50fa7b">Song</span>) {
+</span></span><span style="display:flex;"><span>    println!(<span style="color:#f1fa8c">&#34;Dance to </span><span style="color:#f1fa8c">{}</span><span style="color:#f1fa8c">!!&#34;</span>, song.<span style="color:#bd93f9">0</span>);
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">sing_song</span>(song: <span style="color:#66d9ef">&amp;</span><span style="color:#a6e22e">Song</span>) {
-</span></span><span style="display:flex;"><span>    println!(<span style="color:#e6db74">&#34;Sing a song!! </span><span style="color:#e6db74">{}</span><span style="color:#e6db74">&#34;</span>, song.<span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">async</span> <span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">sing_song</span>(song: <span style="color:#ff79c6">&amp;</span><span style="color:#50fa7b">Song</span>) {
+</span></span><span style="display:flex;"><span>    println!(<span style="color:#f1fa8c">&#34;Sing a song!! </span><span style="color:#f1fa8c">{}</span><span style="color:#f1fa8c">&#34;</span>, song.<span style="color:#bd93f9">0</span>)
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">main</span>() {
-</span></span><span style="display:flex;"><span>    futures::executor::block_on(<span style="color:#66d9ef">async</span> {
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> song <span style="color:#f92672">=</span> learn_song().<span style="color:#66d9ef">await</span>;
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">main</span>() {
+</span></span><span style="display:flex;"><span>    futures::executor::block_on(<span style="color:#ff79c6">async</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#8be9fd;font-style:italic">let</span> song <span style="color:#ff79c6">=</span> learn_song().<span style="color:#ff79c6">await</span>;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> f1 <span style="color:#f92672">=</span> sing_song(<span style="color:#f92672">&amp;</span>song);
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> f2 <span style="color:#f92672">=</span> dance(<span style="color:#f92672">&amp;</span>song);
+</span></span><span style="display:flex;"><span>        <span style="color:#8be9fd;font-style:italic">let</span> f1 <span style="color:#ff79c6">=</span> sing_song(<span style="color:#ff79c6">&amp;</span>song);
+</span></span><span style="display:flex;"><span>        <span style="color:#8be9fd;font-style:italic">let</span> f2 <span style="color:#ff79c6">=</span> dance(<span style="color:#ff79c6">&amp;</span>song);
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>        futures::join!(f1, f2);
 </span></span><span style="display:flex;"><span>    });
@@ -393,14 +393,14 @@ Asynchronous programming, or async for short, is a concurrent programming model 
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>실행 결과</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>Learn song!
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>Learn song!
 </span></span><span style="display:flex;"><span>Sing a song!! Hype boy
 </span></span><span style="display:flex;"><span>Dance to Hype boy!!
 </span></span></code></pre></td></tr></table>
@@ -408,9 +408,9 @@ Asynchronous programming, or async for short, is a concurrent programming model 
 </div><p> </p>
 <p><code>await</code>을 사용하여 <!-- raw HTML omitted -->&lsquo;기다리는&rsquo;<!-- raw HTML omitted --> 동작은 현재 thread를 blocking 하지 않고 동작을 yield 하는 방식으로 이루어집니다. 위의 예제에서는 그 동작이 잘 보이지 않을 수 있지만, I/O intensive application을 생각해 보면 이해하기 쉬울 것 입니다.</p>
 <p>다음 예제는 rust의 대표적인 <code>Runtime</code>인 <code>tokio</code>를 사용한 TCP I/O 예시입니다. tokio runtime 생성 시  <code>new_current_thread</code>을 사용하여 현재 thread(단일 thread)만 사용하도록 했습니다. 단일 thread에서 Server 동작과 Client 동작 둘 다를 실행하고 있지만, Server 동작을 하는 async block에서 TcpListner가 <code>accept()</code>를 기다리는(await) 동안 thread를 blocking 하지 않고 동작을 yield 하므로 Client 동작의 async block에서 불리는 <code>connect()</code>가 실행될 수 있습니다.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -450,39 +450,39 @@ Asynchronous programming, or async for short, is a concurrent programming model 
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">use</span> tokio::io::{self, AsyncReadExt, AsyncWriteExt};
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">use</span> tokio::net::{TcpStream, TcpListener};
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ff79c6">use</span> tokio::io::{self, AsyncReadExt, AsyncWriteExt};
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">use</span> tokio::net::{TcpStream, TcpListener};
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">main</span>() {
 </span></span><span style="display:flex;"><span>    tokio::runtime::Builder::new_current_thread()
 </span></span><span style="display:flex;"><span>        .enable_all()
 </span></span><span style="display:flex;"><span>        .build()
 </span></span><span style="display:flex;"><span>        .unwrap()
-</span></span><span style="display:flex;"><span>        .block_on(<span style="color:#66d9ef">async</span> {
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">let</span> addr <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;127.0.0.1:6142&#34;</span>;
+</span></span><span style="display:flex;"><span>        .block_on(<span style="color:#ff79c6">async</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#8be9fd;font-style:italic">let</span> addr <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;127.0.0.1:6142&#34;</span>;
 </span></span><span style="display:flex;"><span>            
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">let</span> server <span style="color:#f92672">=</span> tokio::spawn(<span style="color:#66d9ef">async</span> <span style="color:#66d9ef">move</span> {
-</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">let</span> listener <span style="color:#f92672">=</span> TcpListener::bind(<span style="color:#f92672">&amp;</span>addr).<span style="color:#66d9ef">await</span><span style="color:#f92672">?</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#8be9fd;font-style:italic">let</span> server <span style="color:#ff79c6">=</span> tokio::spawn(<span style="color:#ff79c6">async</span> <span style="color:#ff79c6">move</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#8be9fd;font-style:italic">let</span> listener <span style="color:#ff79c6">=</span> TcpListener::bind(<span style="color:#ff79c6">&amp;</span>addr).<span style="color:#ff79c6">await</span><span style="color:#ff79c6">?</span>;
 </span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">loop</span> {
-</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">let</span> (<span style="color:#66d9ef">mut</span> socket, _) <span style="color:#f92672">=</span> listener.accept().<span style="color:#66d9ef">await</span><span style="color:#f92672">?</span>;
-</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">let</span> <span style="color:#66d9ef">mut</span> buf <span style="color:#f92672">=</span> vec![<span style="color:#ae81ff">0</span>; <span style="color:#ae81ff">1024</span>];
-</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">match</span> socket.read(<span style="color:#f92672">&amp;</span><span style="color:#66d9ef">mut</span> buf).<span style="color:#66d9ef">await</span> {
-</span></span><span style="display:flex;"><span>                        Ok(n) <span style="color:#f92672">=&gt;</span> { println!(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{:?}</span><span style="color:#e6db74">&#34;</span>, buf); }
-</span></span><span style="display:flex;"><span>                        _ <span style="color:#f92672">=&gt;</span> { <span style="color:#66d9ef">return</span> Ok::<span style="color:#f92672">&lt;</span>_, io::Error<span style="color:#f92672">&gt;</span>(()); }
+</span></span><span style="display:flex;"><span>                <span style="color:#ff79c6">loop</span> {
+</span></span><span style="display:flex;"><span>                    <span style="color:#8be9fd;font-style:italic">let</span> (<span style="color:#ff79c6">mut</span> socket, _) <span style="color:#ff79c6">=</span> listener.accept().<span style="color:#ff79c6">await</span><span style="color:#ff79c6">?</span>;
+</span></span><span style="display:flex;"><span>                    <span style="color:#8be9fd;font-style:italic">let</span> <span style="color:#ff79c6">mut</span> buf <span style="color:#ff79c6">=</span> vec![<span style="color:#bd93f9">0</span>; <span style="color:#bd93f9">1024</span>];
+</span></span><span style="display:flex;"><span>                    <span style="color:#ff79c6">match</span> socket.read(<span style="color:#ff79c6">&amp;</span><span style="color:#ff79c6">mut</span> buf).<span style="color:#ff79c6">await</span> {
+</span></span><span style="display:flex;"><span>                        <span style="color:#8be9fd;font-style:italic">Ok</span>(n) <span style="color:#ff79c6">=&gt;</span> { println!(<span style="color:#f1fa8c">&#34;</span><span style="color:#f1fa8c">{:?}</span><span style="color:#f1fa8c">&#34;</span>, buf); }
+</span></span><span style="display:flex;"><span>                        _ <span style="color:#ff79c6">=&gt;</span> { <span style="color:#ff79c6">return</span> <span style="color:#8be9fd;font-style:italic">Ok</span>::<span style="color:#ff79c6">&lt;</span>_, io::Error<span style="color:#ff79c6">&gt;</span>(()); }
 </span></span><span style="display:flex;"><span>                    }
 </span></span><span style="display:flex;"><span>                }
-</span></span><span style="display:flex;"><span>                Ok::<span style="color:#f92672">&lt;</span>_, io::Error<span style="color:#f92672">&gt;</span>(())
+</span></span><span style="display:flex;"><span>                <span style="color:#8be9fd;font-style:italic">Ok</span>::<span style="color:#ff79c6">&lt;</span>_, io::Error<span style="color:#ff79c6">&gt;</span>(())
 </span></span><span style="display:flex;"><span>            });
 </span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">let</span> client <span style="color:#f92672">=</span> tokio::spawn(<span style="color:#66d9ef">async</span> <span style="color:#66d9ef">move</span> {
-</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">let</span> socket <span style="color:#f92672">=</span> TcpStream::connect(<span style="color:#f92672">&amp;</span>addr).<span style="color:#66d9ef">await</span><span style="color:#f92672">?</span>;
-</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">let</span> (<span style="color:#66d9ef">mut</span> rd, <span style="color:#66d9ef">mut</span> wr) <span style="color:#f92672">=</span> io::split(socket);
+</span></span><span style="display:flex;"><span>            <span style="color:#8be9fd;font-style:italic">let</span> client <span style="color:#ff79c6">=</span> tokio::spawn(<span style="color:#ff79c6">async</span> <span style="color:#ff79c6">move</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#8be9fd;font-style:italic">let</span> socket <span style="color:#ff79c6">=</span> TcpStream::connect(<span style="color:#ff79c6">&amp;</span>addr).<span style="color:#ff79c6">await</span><span style="color:#ff79c6">?</span>;
+</span></span><span style="display:flex;"><span>                <span style="color:#8be9fd;font-style:italic">let</span> (<span style="color:#ff79c6">mut</span> rd, <span style="color:#ff79c6">mut</span> wr) <span style="color:#ff79c6">=</span> io::split(socket);
 </span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>                wr.write_all(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;hello</span><span style="color:#ae81ff">\r\n</span><span style="color:#e6db74">&#34;</span>).<span style="color:#66d9ef">await</span><span style="color:#f92672">?</span>;
-</span></span><span style="display:flex;"><span>                wr.write_all(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;world</span><span style="color:#ae81ff">\r\n</span><span style="color:#e6db74">&#34;</span>).<span style="color:#66d9ef">await</span><span style="color:#f92672">?</span>;
+</span></span><span style="display:flex;"><span>                wr.write_all(<span style="color:#f1fa8c">b</span><span style="color:#f1fa8c">&#34;hello</span><span style="color:#f1fa8c">\r\n</span><span style="color:#f1fa8c">&#34;</span>).<span style="color:#ff79c6">await</span><span style="color:#ff79c6">?</span>;
+</span></span><span style="display:flex;"><span>                wr.write_all(<span style="color:#f1fa8c">b</span><span style="color:#f1fa8c">&#34;world</span><span style="color:#f1fa8c">\r\n</span><span style="color:#f1fa8c">&#34;</span>).<span style="color:#ff79c6">await</span><span style="color:#ff79c6">?</span>;
 </span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>                Ok::<span style="color:#f92672">&lt;</span>_, io::Error<span style="color:#f92672">&gt;</span>(())
+</span></span><span style="display:flex;"><span>                <span style="color:#8be9fd;font-style:italic">Ok</span>::<span style="color:#ff79c6">&lt;</span>_, io::Error<span style="color:#ff79c6">&gt;</span>(())
 </span></span><span style="display:flex;"><span>            });
 </span></span><span style="display:flex;"><span>            
 </span></span><span style="display:flex;"><span>            tokio::join!(server, client);
@@ -497,9 +497,9 @@ Asynchronous programming, or async for short, is a concurrent programming model 
 <hr>
 <p><code>Runtime</code>은 <code>Future</code>를 실행할 수 있는 환경입니다. <code>async</code>를 실행시키는 주체이므로 <code>Async Executor</code>라고도 부르는 것 같습니다. <code>Runtime</code> 혹은 <code>Executor</code>는 <code>async</code>를 실행시킵니다. 만약 <code>async</code>가 완료될 수 없는 상태라면 추후 실행 가능할 때 재 실행하고, 그 동안 다른 실행 가능한 <code>async</code>를 실행시켜 줍니다. 일종의 non-preemptive async task scheduler 인 것 같습니다.</p>
 <p> </p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -524,36 +524,36 @@ Asynchronous programming, or async for short, is a concurrent programming model 
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#75715e">// Future trait
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">trait</span> Future {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Output</span>;
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#6272a4">// Future trait
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span><span style="color:#ff79c6">pub</span> <span style="color:#ff79c6">trait</span> Future {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">type</span> <span style="color:#50fa7b">Output</span>;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">poll</span>(self: <span style="color:#a6e22e">Pin</span><span style="color:#f92672">&lt;&amp;</span><span style="color:#66d9ef">mut</span> Self<span style="color:#f92672">&gt;</span>, cx: <span style="color:#66d9ef">&amp;</span><span style="color:#a6e22e">mut</span> Context<span style="color:#f92672">&lt;</span>&#39;_<span style="color:#f92672">&gt;</span>) -&gt; <span style="color:#a6e22e">Poll</span><span style="color:#f92672">&lt;</span>Self::Output<span style="color:#f92672">&gt;</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">poll</span>(self: <span style="color:#50fa7b">Pin</span><span style="color:#ff79c6">&lt;&amp;</span><span style="color:#ff79c6">mut</span> Self<span style="color:#ff79c6">&gt;</span>, cx: <span style="color:#ff79c6">&amp;</span><span style="color:#50fa7b">mut</span> Context<span style="color:#ff79c6">&lt;</span><span style="color:#8be9fd;font-style:italic">&#39;_</span><span style="color:#ff79c6">&gt;</span>) -&gt; <span style="color:#50fa7b">Poll</span><span style="color:#ff79c6">&lt;</span>Self::Output<span style="color:#ff79c6">&gt;</span>;
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// poll 함수의 결과값 enum
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">enum</span> <span style="color:#a6e22e">Poll</span><span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> {
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Represents that a value is immediately ready.
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">#[lang = </span><span style="color:#e6db74">&#34;Ready&#34;</span><span style="color:#75715e">]</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#[stable(feature = </span><span style="color:#e6db74">&#34;futures_api&#34;</span><span style="color:#75715e">, since = </span><span style="color:#e6db74">&#34;1.36.0&#34;</span><span style="color:#75715e">)]</span>
-</span></span><span style="display:flex;"><span>    Ready(<span style="color:#75715e">#[stable(feature = </span><span style="color:#e6db74">&#34;futures_api&#34;</span><span style="color:#75715e">, since = </span><span style="color:#e6db74">&#34;1.36.0&#34;</span><span style="color:#75715e">)]</span> T),
+</span></span><span style="display:flex;"><span><span style="color:#6272a4">// poll 함수의 결과값 enum
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span><span style="color:#ff79c6">pub</span> <span style="color:#ff79c6">enum</span> <span style="color:#50fa7b">Poll</span><span style="color:#ff79c6">&lt;</span>T<span style="color:#ff79c6">&gt;</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// Represents that a value is immediately ready.
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span>    <span style="color:#ff79c6">#[lang = </span><span style="color:#f1fa8c">&#34;Ready&#34;</span><span style="color:#ff79c6">]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">#[stable(feature = </span><span style="color:#f1fa8c">&#34;futures_api&#34;</span><span style="color:#ff79c6">, since = </span><span style="color:#f1fa8c">&#34;1.36.0&#34;</span><span style="color:#ff79c6">)]</span>
+</span></span><span style="display:flex;"><span>    Ready(<span style="color:#ff79c6">#[stable(feature = </span><span style="color:#f1fa8c">&#34;futures_api&#34;</span><span style="color:#ff79c6">, since = </span><span style="color:#f1fa8c">&#34;1.36.0&#34;</span><span style="color:#ff79c6">)]</span> T),
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Represents that a value is not ready yet.
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">//
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">// When a function returns `Pending`, the function *must* also
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">// ensure that the current task is scheduled to be awoken when
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">// progress can be made.
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">#[lang = </span><span style="color:#e6db74">&#34;Pending&#34;</span><span style="color:#75715e">]</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#[stable(feature = </span><span style="color:#e6db74">&#34;futures_api&#34;</span><span style="color:#75715e">, since = </span><span style="color:#e6db74">&#34;1.36.0&#34;</span><span style="color:#75715e">)]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// Represents that a value is not ready yet.
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span>    <span style="color:#6272a4">//
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span>    <span style="color:#6272a4">// When a function returns `Pending`, the function *must* also
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span>    <span style="color:#6272a4">// ensure that the current task is scheduled to be awoken when
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span>    <span style="color:#6272a4">// progress can be made.
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span>    <span style="color:#ff79c6">#[lang = </span><span style="color:#f1fa8c">&#34;Pending&#34;</span><span style="color:#ff79c6">]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">#[stable(feature = </span><span style="color:#f1fa8c">&#34;futures_api&#34;</span><span style="color:#ff79c6">, since = </span><span style="color:#f1fa8c">&#34;1.36.0&#34;</span><span style="color:#ff79c6">)]</span>
 </span></span><span style="display:flex;"><span>    Pending,
 </span></span><span style="display:flex;"><span>} 
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><code>async</code>를 실행시키는 것은, <code>async</code>가 구현하고 있는 <code>Future</code> trait의 <code>poll</code> 함수를 호출하는 것을 의미합니다. async function/block/closure는 <code>Future</code> trait, 즉 <code>poll</code> 함수를 구현하고 있습니다. <code>poll</code> 함수가 불리면 <code>async</code>에 구현된 동작을 실행시키는데, <code>async</code>의 모든 라인이 실행 되었다면 <code>Poll::Ready</code>를 리턴하며 동작 완료합니다. 하지만 다른 일을 기다리는 등의 이유(e.g., I/O)로 <code>async</code>가 바로 완료될 수 없다면 <code>Poll::Pending</code>을 리턴하며 추후 재 실행되기를 기대합니다.</p>
 <p> </p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
@@ -564,14 +564,14 @@ Asynchronous programming, or async for short, is a concurrent programming model 
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#75715e">// Future trait 실행 시 주어지는 Context. Waker는 virtual function table을 갖고 있다
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Context</span><span style="color:#f92672">&lt;</span><span style="color:#a6e22e">&#39;a</span><span style="color:#f92672">&gt;</span> {
-</span></span><span style="display:flex;"><span>    waker: <span style="color:#66d9ef">&amp;</span><span style="color:#a6e22e">&#39;a</span> <span style="color:#a6e22e">Waker</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Ensure we future-proof against variance changes by forcing
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">// the lifetime to be invariant (argument-position lifetimes
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">// are contravariant while return-position lifetimes are
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">// covariant).
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    _marker: <span style="color:#a6e22e">PhantomData</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">fn</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">&#39;a</span> ()) -&gt; <span style="color:#66d9ef">&amp;</span><span style="color:#a6e22e">&#39;a</span> ()<span style="color:#f92672">&gt;</span>,
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#6272a4">// Future trait 실행 시 주어지는 Context. Waker는 virtual function table을 갖고 있다
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span><span style="color:#ff79c6">pub</span> <span style="color:#ff79c6">struct</span> <span style="color:#50fa7b">Context</span><span style="color:#ff79c6">&lt;</span><span style="color:#50fa7b">&#39;a</span><span style="color:#ff79c6">&gt;</span> {
+</span></span><span style="display:flex;"><span>    waker: <span style="color:#ff79c6">&amp;</span><span style="color:#50fa7b">&#39;a</span> <span style="color:#50fa7b">Waker</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// Ensure we future-proof against variance changes by forcing
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span>    <span style="color:#6272a4">// the lifetime to be invariant (argument-position lifetimes
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span>    <span style="color:#6272a4">// are contravariant while return-position lifetimes are
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span>    <span style="color:#6272a4">// covariant).
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span>    _marker: <span style="color:#50fa7b">PhantomData</span><span style="color:#ff79c6">&lt;</span><span style="color:#ff79c6">fn</span>(<span style="color:#ff79c6">&amp;</span><span style="color:#50fa7b">&#39;a</span> ()) -&gt; <span style="color:#ff79c6">&amp;</span><span style="color:#50fa7b">&#39;a</span> ()<span style="color:#ff79c6">&gt;</span>,
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></td></tr></table>
 </div>
@@ -633,7 +633,7 @@ Asynchronous programming, or async for short, is a concurrent programming model 
     </main>
     
 <footer class="footer">
-    <span>&copy; 2023 <a href="http://huijeong-kim.github.io/">my dev note</a></span>
+    <span>&copy; 2024 <a href="http://huijeong-kim.github.io/">my dev note</a></span>
     <span>
         Powered by
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &

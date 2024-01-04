@@ -250,9 +250,9 @@ cpp 코드를 작성하던 습관 대로 Rust 코드를 작성하다 보면 막�
 <!-- raw HTML omitted -->
 <h2 id="trait을-사용한-composite-pattern-구현">Trait을 사용한 Composite Pattern 구현<a hidden class="anchor" aria-hidden="true" href="#trait을-사용한-composite-pattern-구현">#</a></h2>
 <p>아주 나이브하게는 interface를 trait으로 1:1 변환하여 다음과 같이 구현할 수 있을 것 같습니다.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -317,38 +317,38 @@ cpp 코드를 작성하던 습관 대로 Rust 코드를 작성하다 보면 막�
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">63
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">main</span>() {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> <span style="color:#66d9ef">mut</span> root_node <span style="color:#f92672">=</span> Directory::new(<span style="color:#e6db74">&#34;root&#34;</span>.to_string());
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">main</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">let</span> <span style="color:#ff79c6">mut</span> root_node <span style="color:#ff79c6">=</span> Directory::new(<span style="color:#f1fa8c">&#34;root&#34;</span>.to_string());
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> new_file <span style="color:#f92672">=</span> File::new(<span style="color:#e6db74">&#34;new_file&#34;</span>.to_string(), <span style="color:#ae81ff">1024</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">1024</span>);
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> new_directory <span style="color:#f92672">=</span> Directory::new(<span style="color:#e6db74">&#34;my_folder&#34;</span>.to_string());
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">let</span> new_file <span style="color:#ff79c6">=</span> File::new(<span style="color:#f1fa8c">&#34;new_file&#34;</span>.to_string(), <span style="color:#bd93f9">1024</span> <span style="color:#ff79c6">*</span> <span style="color:#bd93f9">1024</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">let</span> new_directory <span style="color:#ff79c6">=</span> Directory::new(<span style="color:#f1fa8c">&#34;my_folder&#34;</span>.to_string());
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    root_node.add_new_node(new_file);
 </span></span><span style="display:flex;"><span>    root_node.add_new_node(new_directory);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    assert_eq!(root_node.get_size(), <span style="color:#ae81ff">1024</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">1024</span>);
+</span></span><span style="display:flex;"><span>    assert_eq!(root_node.get_size(), <span style="color:#bd93f9">1024</span> <span style="color:#ff79c6">*</span> <span style="color:#bd93f9">1024</span>);
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">trait</span> Node {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">get_name</span>(<span style="color:#f92672">&amp;</span>self) -&gt; String;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">get_size</span>(<span style="color:#f92672">&amp;</span>self) -&gt; <span style="color:#66d9ef">u64</span>;
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">trait</span> Node {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">get_name</span>(<span style="color:#ff79c6">&amp;</span>self) -&gt; <span style="color:#8be9fd;font-style:italic">String</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">get_size</span>(<span style="color:#ff79c6">&amp;</span>self) -&gt; <span style="color:#8be9fd">u64</span>;
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">File</span> {
-</span></span><span style="display:flex;"><span>    name: String,
-</span></span><span style="display:flex;"><span>    size: <span style="color:#66d9ef">u64</span>,
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">struct</span> <span style="color:#50fa7b">File</span> {
+</span></span><span style="display:flex;"><span>    name: <span style="color:#8be9fd;font-style:italic">String</span>,
+</span></span><span style="display:flex;"><span>    size: <span style="color:#8be9fd">u64</span>,
 </span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">impl</span> Node <span style="color:#66d9ef">for</span> File {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">get_name</span>(<span style="color:#f92672">&amp;</span>self) -&gt; String {
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">impl</span> Node <span style="color:#ff79c6">for</span> File {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">get_name</span>(<span style="color:#ff79c6">&amp;</span>self) -&gt; <span style="color:#8be9fd;font-style:italic">String</span> {
 </span></span><span style="display:flex;"><span>        self.name.clone()
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">get_size</span>(<span style="color:#f92672">&amp;</span>self) -&gt; <span style="color:#66d9ef">u64</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">get_size</span>(<span style="color:#ff79c6">&amp;</span>self) -&gt; <span style="color:#8be9fd">u64</span> {
 </span></span><span style="display:flex;"><span>        self.size
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">impl</span> File {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">new</span>(name: String, size: <span style="color:#66d9ef">u64</span>) -&gt; <span style="color:#a6e22e">Self</span> {
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">impl</span> File {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">pub</span> <span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">new</span>(name: <span style="color:#8be9fd;font-style:italic">String</span>, size: <span style="color:#8be9fd">u64</span>) -&gt; <span style="color:#50fa7b">Self</span> {
 </span></span><span style="display:flex;"><span>        Self {
 </span></span><span style="display:flex;"><span>            name,
 </span></span><span style="display:flex;"><span>            size,
@@ -356,36 +356,36 @@ cpp 코드를 작성하던 습관 대로 Rust 코드를 작성하다 보면 막�
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Directory</span> {
-</span></span><span style="display:flex;"><span>    name: String,
-</span></span><span style="display:flex;"><span>    childs: Vec<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">dyn</span> Node<span style="color:#f92672">&gt;</span>,
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">struct</span> <span style="color:#50fa7b">Directory</span> {
+</span></span><span style="display:flex;"><span>    name: <span style="color:#8be9fd;font-style:italic">String</span>,
+</span></span><span style="display:flex;"><span>    childs: <span style="color:#8be9fd;font-style:italic">Vec</span><span style="color:#ff79c6">&lt;</span><span style="color:#ff79c6">dyn</span> Node<span style="color:#ff79c6">&gt;</span>,
 </span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">impl</span> Node <span style="color:#66d9ef">for</span> Directory {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">get_name</span>(<span style="color:#f92672">&amp;</span>self) -&gt; String {
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">impl</span> Node <span style="color:#ff79c6">for</span> Directory {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">get_name</span>(<span style="color:#ff79c6">&amp;</span>self) -&gt; <span style="color:#8be9fd;font-style:italic">String</span> {
 </span></span><span style="display:flex;"><span>        self.name.clone()
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">get_size</span>(<span style="color:#f92672">&amp;</span>self) -&gt; <span style="color:#66d9ef">u64</span> {
-</span></span><span style="display:flex;"><span>        self.childs.iter().fold(<span style="color:#ae81ff">0</span>, <span style="color:#f92672">|</span>acc, x<span style="color:#f92672">|</span> acc <span style="color:#f92672">+</span> x.get_size())
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">get_size</span>(<span style="color:#ff79c6">&amp;</span>self) -&gt; <span style="color:#8be9fd">u64</span> {
+</span></span><span style="display:flex;"><span>        self.childs.iter().fold(<span style="color:#bd93f9">0</span>, <span style="color:#ff79c6">|</span>acc, x<span style="color:#ff79c6">|</span> acc <span style="color:#ff79c6">+</span> x.get_size())
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">impl</span> Directory {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">new</span>(name: String) -&gt; <span style="color:#a6e22e">Self</span> {
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">impl</span> Directory {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">pub</span> <span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">new</span>(name: <span style="color:#8be9fd;font-style:italic">String</span>) -&gt; <span style="color:#50fa7b">Self</span> {
 </span></span><span style="display:flex;"><span>        Self {
 </span></span><span style="display:flex;"><span>            name,
-</span></span><span style="display:flex;"><span>            childs: Vec::new(),
+</span></span><span style="display:flex;"><span>            childs: <span style="color:#8be9fd;font-style:italic">Vec</span>::new(),
 </span></span><span style="display:flex;"><span>        }
 </span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">add_new_node</span>(<span style="color:#f92672">&amp;</span><span style="color:#66d9ef">mut</span> self, node: <span style="color:#a6e22e">dyn</span> Node) {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">pub</span> <span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">add_new_node</span>(<span style="color:#ff79c6">&amp;</span><span style="color:#ff79c6">mut</span> self, node: <span style="color:#50fa7b">dyn</span> Node) {
 </span></span><span style="display:flex;"><span>        self.childs.push(node);
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>이 코드는 사실 빌드 되지는 않습니다. 이유는 다음과 같습니다.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -401,26 +401,26 @@ cpp 코드를 작성하던 습관 대로 Rust 코드를 작성하다 보면 막�
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>error<span style="color:#f92672">[</span>E0277<span style="color:#f92672">]</span>: the size <span style="color:#66d9ef">for</span> values of type <span style="color:#e6db74">`</span><span style="color:#f92672">(</span>dyn Node + <span style="color:#e6db74">&#39;static)` cannot be known at compilation time
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   --&gt; src/bin/composite.rs:42:13
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    |
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">42  |     childs: Vec&lt;dyn Node&gt;,
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    |             ^^^^^^^^^^^^^ doesn&#39;</span>t have a size known at compile-time
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>error<span style="color:#ff79c6">[</span>E0277<span style="color:#ff79c6">]</span>: the size <span style="color:#ff79c6">for</span> values of <span style="color:#8be9fd;font-style:italic">type</span> <span style="color:#f1fa8c">`</span><span style="color:#ff79c6">(</span>dyn Node + <span style="color:#f1fa8c">&#39;static)` cannot be known at compilation time
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">   --&gt; src/bin/composite.rs:42:13
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">    |
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">42  |     childs: Vec&lt;dyn Node&gt;,
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">    |             ^^^^^^^^^^^^^ doesn&#39;</span>t have a size known at compile-time
 </span></span><span style="display:flex;"><span>    |
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">=</span> help: the trait <span style="color:#e6db74">`</span>Sized<span style="color:#e6db74">`</span> is not implemented <span style="color:#66d9ef">for</span> <span style="color:#e6db74">`</span><span style="color:#f92672">(</span>dyn Node + <span style="color:#960050;background-color:#1e0010">&#39;</span>static<span style="color:#f92672">)</span><span style="color:#e6db74">`</span>
-</span></span><span style="display:flex;"><span>note: required by a bound in <span style="color:#e6db74">`</span>Vec<span style="color:#e6db74">`</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">=</span> help: the trait <span style="color:#f1fa8c">`</span>Sized<span style="color:#f1fa8c">`</span> is not implemented <span style="color:#ff79c6">for</span> <span style="color:#f1fa8c">`</span><span style="color:#ff79c6">(</span>dyn Node + &#39;static<span style="color:#ff79c6">)</span><span style="color:#f1fa8c">`</span>
+</span></span><span style="display:flex;"><span>note: required by a bound in <span style="color:#f1fa8c">`</span>Vec<span style="color:#f1fa8c">`</span>
 </span></span><span style="display:flex;"><span>   --&gt; /Users/huijeongkim/.rustup/toolchains/stable-aarch64-apple-darwin/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:400:16
 </span></span><span style="display:flex;"><span>    |
-</span></span><span style="display:flex;"><span><span style="color:#ae81ff">400</span> | pub struct Vec&lt;T, <span style="color:#75715e">#[unstable(feature = &#34;allocator_api&#34;, issue = &#34;32838&#34;)] A: Allocator = Global&gt; {</span>
-</span></span><span style="display:flex;"><span>    |                ^ required by this bound in <span style="color:#e6db74">`</span>Vec<span style="color:#e6db74">`</span>
+</span></span><span style="display:flex;"><span><span style="color:#bd93f9">400</span> | pub struct Vec&lt;T, <span style="color:#6272a4">#[unstable(feature = &#34;allocator_api&#34;, issue = &#34;32838&#34;)] A: Allocator = Global&gt; {</span>
+</span></span><span style="display:flex;"><span>    |                ^ required by this bound in <span style="color:#f1fa8c">`</span>Vec<span style="color:#f1fa8c">`</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>For more information about this error, try <span style="color:#e6db74">`</span>rustc --explain E0277<span style="color:#e6db74">`</span>.
+</span></span><span style="display:flex;"><span>For more information about this error, try <span style="color:#f1fa8c">`</span>rustc --explain E0277<span style="color:#f1fa8c">`</span>.
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><code>dyn Node</code>는 compile time에 크기를 알 수 없기 때문에 Vector에 넣을 수 없다는 것 입니다. 이를 아주 간단하게 해결할 수 있는 방법은, 객체 자체가 아닌 객체를 가리키는 포인터를 Vector에 넣는 것 입니다. <code>dyn Node</code>가 아닌 Heap으로 옮겨 진 <code>Box&lt;dyn Node&gt;</code>의 리스트를 갖도록 수정하면 에러는 사라지고 컴파일 성공하게 됩니다.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -437,18 +437,18 @@ cpp 코드를 작성하던 습관 대로 Rust 코드를 작성하다 보면 막�
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#75715e">// main 함수 수정
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>root_node.add_new_node(Box::new(new_file));
-</span></span><span style="display:flex;"><span>root_node.add_new_node(Box::new(new_directory));
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#6272a4">// main 함수 수정
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span>root_node.add_new_node(<span style="color:#8be9fd;font-style:italic">Box</span>::new(new_file));
+</span></span><span style="display:flex;"><span>root_node.add_new_node(<span style="color:#8be9fd;font-style:italic">Box</span>::new(new_directory));
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// Directory 수정
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Directory</span> {
-</span></span><span style="display:flex;"><span>    name: String,
-</span></span><span style="display:flex;"><span>    childs: Vec<span style="color:#f92672">&lt;</span>Box<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">dyn</span> Node<span style="color:#f92672">&gt;&gt;</span>,
+</span></span><span style="display:flex;"><span><span style="color:#6272a4">// Directory 수정
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span><span style="color:#ff79c6">struct</span> <span style="color:#50fa7b">Directory</span> {
+</span></span><span style="display:flex;"><span>    name: <span style="color:#8be9fd;font-style:italic">String</span>,
+</span></span><span style="display:flex;"><span>    childs: <span style="color:#8be9fd;font-style:italic">Vec</span><span style="color:#ff79c6">&lt;</span><span style="color:#8be9fd;font-style:italic">Box</span><span style="color:#ff79c6">&lt;</span><span style="color:#ff79c6">dyn</span> Node<span style="color:#ff79c6">&gt;&gt;</span>,
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">impl</span> Directory {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">add_new_node</span>(<span style="color:#f92672">&amp;</span><span style="color:#66d9ef">mut</span> self, node: Box<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">dyn</span> Node<span style="color:#f92672">&gt;</span>) {
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">impl</span> Directory {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">pub</span> <span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">add_new_node</span>(<span style="color:#ff79c6">&amp;</span><span style="color:#ff79c6">mut</span> self, node: <span style="color:#8be9fd;font-style:italic">Box</span><span style="color:#ff79c6">&lt;</span><span style="color:#ff79c6">dyn</span> Node<span style="color:#ff79c6">&gt;</span>) {
 </span></span><span style="display:flex;"><span>        self.childs.push(node);
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>}
@@ -457,9 +457,9 @@ cpp 코드를 작성하던 습관 대로 Rust 코드를 작성하다 보면 막�
 </div><!-- raw HTML omitted -->
 <h2 id="trait-clone">Trait Clone<a hidden class="anchor" aria-hidden="true" href="#trait-clone">#</a></h2>
 <p>여기서 File, Directory 를 clone 하도록 수정해 보겠습니다. <code>#[derive(Clone)]</code> 매크로를 사용하면 손쉽게 Clone trait을 구현할 수 있습니다. 하지만 여기서 다시 한 번 컴파일 에러를 만나게 됩니다.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -476,28 +476,28 @@ cpp 코드를 작성하던 습관 대로 Rust 코드를 작성하다 보면 막�
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>error<span style="color:#f92672">[</span>E0277<span style="color:#f92672">]</span>: the trait bound <span style="color:#e6db74">`</span>dyn Node: Clone<span style="color:#e6db74">`</span> is not satisfied
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>error<span style="color:#ff79c6">[</span>E0277<span style="color:#ff79c6">]</span>: the trait bound <span style="color:#f1fa8c">`</span>dyn Node: Clone<span style="color:#f1fa8c">`</span> is not satisfied
 </span></span><span style="display:flex;"><span> --&gt; src/bin/composite.rs:51:5
 </span></span><span style="display:flex;"><span>  |
-</span></span><span style="display:flex;"><span><span style="color:#ae81ff">48</span> | <span style="color:#75715e">#[derive(Clone)]</span>
+</span></span><span style="display:flex;"><span><span style="color:#bd93f9">48</span> | <span style="color:#6272a4">#[derive(Clone)]</span>
 </span></span><span style="display:flex;"><span>  |          ----- in this derive macro expansion
 </span></span><span style="display:flex;"><span>...
-</span></span><span style="display:flex;"><span><span style="color:#ae81ff">51</span> |     childs: Vec&lt;Box&lt;dyn Node&gt;&gt;,
-</span></span><span style="display:flex;"><span>  |     ^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait <span style="color:#e6db74">`</span>Clone<span style="color:#e6db74">`</span> is not implemented <span style="color:#66d9ef">for</span> <span style="color:#e6db74">`</span>dyn Node<span style="color:#e6db74">`</span>
+</span></span><span style="display:flex;"><span><span style="color:#bd93f9">51</span> |     childs: Vec&lt;Box&lt;dyn Node&gt;&gt;,
+</span></span><span style="display:flex;"><span>  |     ^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait <span style="color:#f1fa8c">`</span>Clone<span style="color:#f1fa8c">`</span> is not implemented <span style="color:#ff79c6">for</span> <span style="color:#f1fa8c">`</span>dyn Node<span style="color:#f1fa8c">`</span>
 </span></span><span style="display:flex;"><span>  |
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">=</span> note: required because of the requirements on the impl of <span style="color:#e6db74">`</span>Clone<span style="color:#e6db74">`</span> <span style="color:#66d9ef">for</span> <span style="color:#e6db74">`</span>Box&lt;dyn Node&gt;<span style="color:#e6db74">`</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">=</span> note: <span style="color:#ae81ff">1</span> redundant requirement hidden
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">=</span> note: required because of the requirements on the impl of <span style="color:#e6db74">`</span>Clone<span style="color:#e6db74">`</span> <span style="color:#66d9ef">for</span> <span style="color:#e6db74">`</span>Vec&lt;Box&lt;dyn Node&gt;&gt;<span style="color:#e6db74">`</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">=</span> note: this error originates in the derive macro <span style="color:#e6db74">`</span>Clone<span style="color:#e6db74">`</span> <span style="color:#f92672">(</span>in Nightly builds, run with -Z macro-backtrace <span style="color:#66d9ef">for</span> more info<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ff79c6">=</span> note: required because of the requirements on the impl of <span style="color:#f1fa8c">`</span>Clone<span style="color:#f1fa8c">`</span> <span style="color:#ff79c6">for</span> <span style="color:#f1fa8c">`</span>Box&lt;dyn Node&gt;<span style="color:#f1fa8c">`</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ff79c6">=</span> note: <span style="color:#bd93f9">1</span> redundant requirement <span style="color:#8be9fd;font-style:italic">hidden</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ff79c6">=</span> note: required because of the requirements on the impl of <span style="color:#f1fa8c">`</span>Clone<span style="color:#f1fa8c">`</span> <span style="color:#ff79c6">for</span> <span style="color:#f1fa8c">`</span>Vec&lt;Box&lt;dyn Node&gt;&gt;<span style="color:#f1fa8c">`</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ff79c6">=</span> note: this error originates in the derive macro <span style="color:#f1fa8c">`</span>Clone<span style="color:#f1fa8c">`</span> <span style="color:#ff79c6">(</span>in Nightly builds, run with -Z macro-backtrace <span style="color:#ff79c6">for</span> more info<span style="color:#ff79c6">)</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>For more information about this error, try <span style="color:#e6db74">`</span>rustc --explain E0277<span style="color:#e6db74">`</span>.
+</span></span><span style="display:flex;"><span>For more information about this error, try <span style="color:#f1fa8c">`</span>rustc --explain E0277<span style="color:#f1fa8c">`</span>.
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><code>dyn Node</code>에 대한 clone 이 구현되어 있지 않다는 것 입니다. Directory가 clone 가능하려면 그 내부의 모든 멤버도 clone 가능해야 합니다. 따라서 <code>dyn Node</code>의 clone을 구현해 줘야 합니다.</p>
 <p>derive 매크로는 struct, enum, union에만 사용 가능하므로 <code>trait Node</code>에는 <code>#[derive(Clone)]</code>을 추가할 수 없습니다. 대신 다음과 같이 구현할 수 있습니다. 참고로 clone 함수의 리턴이 <code>dyn Node</code>가 되면 첫 번째 에러와 동일한 이유, compile time에 size를 알 수 없다는 문제로 에러가 발생하기 때문에 이 또한 Box 로 clone하도록 구현하였고, 이 때문에  <code>Box&lt;dyn Node&gt;</code>에 대한 clone 구현도 추가하였습니다.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -536,49 +536,49 @@ cpp 코드를 작성하던 습관 대로 Rust 코드를 작성하다 보면 막�
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#75715e">// Box&lt;dyn Node&gt; 에 대한 clone을 추가
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">trait</span> Node : <span style="color:#a6e22e">CloneNode</span> {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">get_name</span>(<span style="color:#f92672">&amp;</span>self) -&gt; String;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">get_size</span>(<span style="color:#f92672">&amp;</span>self) -&gt; <span style="color:#66d9ef">u64</span>;
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#6272a4">// Box&lt;dyn Node&gt; 에 대한 clone을 추가
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span><span style="color:#ff79c6">trait</span> Node : <span style="color:#50fa7b">CloneNode</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">get_name</span>(<span style="color:#ff79c6">&amp;</span>self) -&gt; <span style="color:#8be9fd;font-style:italic">String</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">get_size</span>(<span style="color:#ff79c6">&amp;</span>self) -&gt; <span style="color:#8be9fd">u64</span>;
 </span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">trait</span> CloneNode {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">clone_box</span>(<span style="color:#f92672">&amp;</span>self) -&gt; Box<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">dyn</span> Node<span style="color:#f92672">&gt;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">trait</span> CloneNode {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">clone_box</span>(<span style="color:#ff79c6">&amp;</span>self) -&gt; <span style="color:#8be9fd;font-style:italic">Box</span><span style="color:#ff79c6">&lt;</span><span style="color:#ff79c6">dyn</span> Node<span style="color:#ff79c6">&gt;</span>;
 </span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">impl</span> Clone <span style="color:#66d9ef">for</span> Box<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">dyn</span> Node<span style="color:#f92672">&gt;</span> {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">clone</span>(<span style="color:#f92672">&amp;</span>self) -&gt; <span style="color:#a6e22e">Self</span> {
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">impl</span> <span style="color:#8be9fd;font-style:italic">Clone</span> <span style="color:#ff79c6">for</span> <span style="color:#8be9fd;font-style:italic">Box</span><span style="color:#ff79c6">&lt;</span><span style="color:#ff79c6">dyn</span> Node<span style="color:#ff79c6">&gt;</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">clone</span>(<span style="color:#ff79c6">&amp;</span>self) -&gt; <span style="color:#50fa7b">Self</span> {
 </span></span><span style="display:flex;"><span>        self.clone_box()
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// File에 CloneNode 추가
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#[derive(Clone)]</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">File</span> {
-</span></span><span style="display:flex;"><span>    name: String,
-</span></span><span style="display:flex;"><span>    size: <span style="color:#66d9ef">u64</span>,
+</span></span><span style="display:flex;"><span><span style="color:#6272a4">// File에 CloneNode 추가
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span><span style="color:#ff79c6">#[derive(Clone)]</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">struct</span> <span style="color:#50fa7b">File</span> {
+</span></span><span style="display:flex;"><span>    name: <span style="color:#8be9fd;font-style:italic">String</span>,
+</span></span><span style="display:flex;"><span>    size: <span style="color:#8be9fd">u64</span>,
 </span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">impl</span> CloneNode <span style="color:#66d9ef">for</span> File {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">clone_box</span>(<span style="color:#f92672">&amp;</span>self) -&gt; Box<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">dyn</span> Node<span style="color:#f92672">&gt;</span> {
-</span></span><span style="display:flex;"><span>        Box::new(self.clone())
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">impl</span> CloneNode <span style="color:#ff79c6">for</span> File {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">clone_box</span>(<span style="color:#ff79c6">&amp;</span>self) -&gt; <span style="color:#8be9fd;font-style:italic">Box</span><span style="color:#ff79c6">&lt;</span><span style="color:#ff79c6">dyn</span> Node<span style="color:#ff79c6">&gt;</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#8be9fd;font-style:italic">Box</span>::new(self.clone())
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// Directory에 CloneNode 추가
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#[derive(Clone)]</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Directory</span> {
-</span></span><span style="display:flex;"><span>    name: String,
-</span></span><span style="display:flex;"><span>    childs: Vec<span style="color:#f92672">&lt;</span>Box<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">dyn</span> Node<span style="color:#f92672">&gt;&gt;</span>,
+</span></span><span style="display:flex;"><span><span style="color:#6272a4">// Directory에 CloneNode 추가
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span><span style="color:#ff79c6">#[derive(Clone)]</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">struct</span> <span style="color:#50fa7b">Directory</span> {
+</span></span><span style="display:flex;"><span>    name: <span style="color:#8be9fd;font-style:italic">String</span>,
+</span></span><span style="display:flex;"><span>    childs: <span style="color:#8be9fd;font-style:italic">Vec</span><span style="color:#ff79c6">&lt;</span><span style="color:#8be9fd;font-style:italic">Box</span><span style="color:#ff79c6">&lt;</span><span style="color:#ff79c6">dyn</span> Node<span style="color:#ff79c6">&gt;&gt;</span>,
 </span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">impl</span> CloneNode <span style="color:#66d9ef">for</span> Directory {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">clone_box</span>(<span style="color:#f92672">&amp;</span>self) -&gt; Box<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">dyn</span> Node<span style="color:#f92672">&gt;</span> {
-</span></span><span style="display:flex;"><span>        Box::new(self.clone())
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">impl</span> CloneNode <span style="color:#ff79c6">for</span> Directory {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">clone_box</span>(<span style="color:#ff79c6">&amp;</span>self) -&gt; <span style="color:#8be9fd;font-style:italic">Box</span><span style="color:#ff79c6">&lt;</span><span style="color:#ff79c6">dyn</span> Node<span style="color:#ff79c6">&gt;</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#8be9fd;font-style:italic">Box</span>::new(self.clone())
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><code>clone_box</code> 함수를 만드는 패턴은 생각보다 자주 반복 사용되어 boilerplate 코드가 되기도 합니다. 이럴 때 <a href="https://docs.rs/dyn-clone/latest/dyn_clone/">dyn_clone</a> crate를 사용하면 이 코드들을 제거할 수 있습니다.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
@@ -586,10 +586,10 @@ cpp 코드를 작성하던 습관 대로 Rust 코드를 작성하다 보면 막�
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">use</span> dyn_clone::DynClone;
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">trait</span> Node : <span style="color:#a6e22e">DynClone</span> {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">get_name</span>(<span style="color:#f92672">&amp;</span>self) -&gt; String;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">get_size</span>(<span style="color:#f92672">&amp;</span>self) -&gt; <span style="color:#66d9ef">u64</span>;
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ff79c6">use</span> dyn_clone::DynClone;
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">trait</span> Node : <span style="color:#50fa7b">DynClone</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">get_name</span>(<span style="color:#ff79c6">&amp;</span>self) -&gt; <span style="color:#8be9fd;font-style:italic">String</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">get_size</span>(<span style="color:#ff79c6">&amp;</span>self) -&gt; <span style="color:#8be9fd">u64</span>;
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>dyn_clone::clone_trait_object!(Node);
 </span></span></code></pre></td></tr></table>
@@ -598,9 +598,9 @@ cpp 코드를 작성하던 습관 대로 Rust 코드를 작성하다 보면 막�
 <!-- raw HTML omitted -->
 <h2 id="generic을-활용하기">Generic을 활용하기<a hidden class="anchor" aria-hidden="true" href="#generic을-활용하기">#</a></h2>
 <p>Rust 에서 polymorphism을 활용하는 또 다른 방법은 Generic을 사용하는 것 입니다. Directory에 적용해 보면 다음과 같습니다.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -627,48 +627,48 @@ cpp 코드를 작성하던 습관 대로 Rust 코드를 작성하다 보면 막�
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#75715e">#[derive(Clone)]</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Directory</span><span style="color:#f92672">&lt;</span>N: <span style="color:#a6e22e">Node</span><span style="color:#f92672">&gt;</span> {
-</span></span><span style="display:flex;"><span>    name: String,
-</span></span><span style="display:flex;"><span>    childs: Vec<span style="color:#f92672">&lt;</span>Box<span style="color:#f92672">&lt;</span>N<span style="color:#f92672">&gt;&gt;</span>,
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ff79c6">#[derive(Clone)]</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">struct</span> <span style="color:#50fa7b">Directory</span><span style="color:#ff79c6">&lt;</span>N: <span style="color:#50fa7b">Node</span><span style="color:#ff79c6">&gt;</span> {
+</span></span><span style="display:flex;"><span>    name: <span style="color:#8be9fd;font-style:italic">String</span>,
+</span></span><span style="display:flex;"><span>    childs: <span style="color:#8be9fd;font-style:italic">Vec</span><span style="color:#ff79c6">&lt;</span><span style="color:#8be9fd;font-style:italic">Box</span><span style="color:#ff79c6">&lt;</span>N<span style="color:#ff79c6">&gt;&gt;</span>,
 </span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">impl</span><span style="color:#f92672">&lt;</span>N: <span style="color:#a6e22e">Node</span> <span style="color:#f92672">+</span> Clone<span style="color:#f92672">&gt;</span> Node <span style="color:#66d9ef">for</span> Directory<span style="color:#f92672">&lt;</span>N<span style="color:#f92672">&gt;</span> {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">get_name</span>(<span style="color:#f92672">&amp;</span>self) -&gt; String {
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">impl</span><span style="color:#ff79c6">&lt;</span>N: <span style="color:#50fa7b">Node</span> <span style="color:#ff79c6">+</span> <span style="color:#8be9fd;font-style:italic">Clone</span><span style="color:#ff79c6">&gt;</span> Node <span style="color:#ff79c6">for</span> Directory<span style="color:#ff79c6">&lt;</span>N<span style="color:#ff79c6">&gt;</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">get_name</span>(<span style="color:#ff79c6">&amp;</span>self) -&gt; <span style="color:#8be9fd;font-style:italic">String</span> {
 </span></span><span style="display:flex;"><span>        self.name.clone()
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">get_size</span>(<span style="color:#f92672">&amp;</span>self) -&gt; <span style="color:#66d9ef">u64</span> {
-</span></span><span style="display:flex;"><span>        self.childs.iter().fold(<span style="color:#ae81ff">0</span>, <span style="color:#f92672">|</span>acc, x<span style="color:#f92672">|</span> acc <span style="color:#f92672">+</span> x.get_size())
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">get_size</span>(<span style="color:#ff79c6">&amp;</span>self) -&gt; <span style="color:#8be9fd">u64</span> {
+</span></span><span style="display:flex;"><span>        self.childs.iter().fold(<span style="color:#bd93f9">0</span>, <span style="color:#ff79c6">|</span>acc, x<span style="color:#ff79c6">|</span> acc <span style="color:#ff79c6">+</span> x.get_size())
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">impl</span><span style="color:#f92672">&lt;</span>N: <span style="color:#a6e22e">Node</span><span style="color:#f92672">&gt;</span> Directory<span style="color:#f92672">&lt;</span>N<span style="color:#f92672">&gt;</span> {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">new</span>(name: String) -&gt; <span style="color:#a6e22e">Self</span> {
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">impl</span><span style="color:#ff79c6">&lt;</span>N: <span style="color:#50fa7b">Node</span><span style="color:#ff79c6">&gt;</span> Directory<span style="color:#ff79c6">&lt;</span>N<span style="color:#ff79c6">&gt;</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">pub</span> <span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">new</span>(name: <span style="color:#8be9fd;font-style:italic">String</span>) -&gt; <span style="color:#50fa7b">Self</span> {
 </span></span><span style="display:flex;"><span>        Self {
 </span></span><span style="display:flex;"><span>            name,
-</span></span><span style="display:flex;"><span>            childs: Vec::new(),
+</span></span><span style="display:flex;"><span>            childs: <span style="color:#8be9fd;font-style:italic">Vec</span>::new(),
 </span></span><span style="display:flex;"><span>        }
 </span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">add_new_node</span>(<span style="color:#f92672">&amp;</span><span style="color:#66d9ef">mut</span> self, node: Box<span style="color:#f92672">&lt;</span>N<span style="color:#f92672">&gt;</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">pub</span> <span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">add_new_node</span>(<span style="color:#ff79c6">&amp;</span><span style="color:#ff79c6">mut</span> self, node: <span style="color:#8be9fd;font-style:italic">Box</span><span style="color:#ff79c6">&lt;</span>N<span style="color:#ff79c6">&gt;</span>) {
 </span></span><span style="display:flex;"><span>        self.childs.push(node);
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>이렇게 작성했을 때의 문제는 <code>N: Node</code>가 File 혹은 Directory 중 하나만 될 수 있다는 것 입니다. main 함수에서 다음과 같이 <code>add_new_node</code>를 File, Directory 에 대해 호출한다면,</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span>root_node.add_new_node(Box::new(new_file));
-</span></span><span style="display:flex;"><span>root_node.add_new_node(Box::new(new_directory));
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span>root_node.add_new_node(<span style="color:#8be9fd;font-style:italic">Box</span>::new(new_file));
+</span></span><span style="display:flex;"><span>root_node.add_new_node(<span style="color:#8be9fd;font-style:italic">Box</span>::new(new_directory));
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>다음과 같이 컴파일 에러가 발생하게 됩니다.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -687,32 +687,32 @@ cpp 코드를 작성하던 습관 대로 Rust 코드를 작성하다 보면 막�
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>error<span style="color:#f92672">[</span>E0308<span style="color:#f92672">]</span>: mismatched types
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>error<span style="color:#ff79c6">[</span>E0308<span style="color:#ff79c6">]</span>: mismatched types
 </span></span><span style="display:flex;"><span>   --&gt; src/bin/composite.rs:10:37
 </span></span><span style="display:flex;"><span>    |
-</span></span><span style="display:flex;"><span><span style="color:#ae81ff">10</span>  |     root_node.add_new_node<span style="color:#f92672">(</span>Box::new<span style="color:#f92672">(</span>new_directory<span style="color:#f92672">))</span>;
-</span></span><span style="display:flex;"><span>    |                            -------- ^^^^^^^^^^^^^ expected struct <span style="color:#e6db74">`</span>File<span style="color:#e6db74">`</span>, found struct <span style="color:#e6db74">`</span>Directory<span style="color:#e6db74">`</span>
+</span></span><span style="display:flex;"><span><span style="color:#bd93f9">10</span>  |     root_node.add_new_node<span style="color:#ff79c6">(</span>Box::new<span style="color:#ff79c6">(</span>new_directory<span style="color:#ff79c6">))</span>;
+</span></span><span style="display:flex;"><span>    |                            -------- ^^^^^^^^^^^^^ expected struct <span style="color:#f1fa8c">`</span>File<span style="color:#f1fa8c">`</span>, found struct <span style="color:#f1fa8c">`</span>Directory<span style="color:#f1fa8c">`</span>
 </span></span><span style="display:flex;"><span>    |                            |
-</span></span><span style="display:flex;"><span>    |                            arguments to this <span style="color:#66d9ef">function</span> are incorrect
+</span></span><span style="display:flex;"><span>    |                            arguments to this <span style="color:#ff79c6">function</span> are incorrect
 </span></span><span style="display:flex;"><span>    |
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">=</span> note: expected struct <span style="color:#e6db74">`</span>File<span style="color:#e6db74">`</span>
-</span></span><span style="display:flex;"><span>               found struct <span style="color:#e6db74">`</span>Directory&lt;_&gt;<span style="color:#e6db74">`</span>
-</span></span><span style="display:flex;"><span>note: associated <span style="color:#66d9ef">function</span> defined here
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">=</span> note: expected struct <span style="color:#f1fa8c">`</span>File<span style="color:#f1fa8c">`</span>
+</span></span><span style="display:flex;"><span>               found struct <span style="color:#f1fa8c">`</span>Directory&lt;_&gt;<span style="color:#f1fa8c">`</span>
+</span></span><span style="display:flex;"><span>note: associated <span style="color:#ff79c6">function</span> defined here
 </span></span><span style="display:flex;"><span>   --&gt; /Users/huijeongkim/.rustup/toolchains/stable-aarch64-apple-darwin/lib/rustlib/src/rust/library/alloc/src/boxed.rs:213:12
 </span></span><span style="display:flex;"><span>    |
-</span></span><span style="display:flex;"><span><span style="color:#ae81ff">213</span> |     pub fn new<span style="color:#f92672">(</span>x: T<span style="color:#f92672">)</span> -&gt; Self <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#bd93f9">213</span> |     pub fn new<span style="color:#ff79c6">(</span>x: T<span style="color:#ff79c6">)</span> -&gt; Self <span style="color:#ff79c6">{</span>
 </span></span><span style="display:flex;"><span>    |            ^^^
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>For more information about this error, try <span style="color:#e6db74">`</span>rustc --explain E0308<span style="color:#e6db74">`</span>.
+</span></span><span style="display:flex;"><span>For more information about this error, try <span style="color:#f1fa8c">`</span>rustc --explain E0308<span style="color:#f1fa8c">`</span>.
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>구체 객체가 run-time에 결정되어야 하는 이런 예제에서는 generic은 적합하지 않은 것이죠. 이 문제를 해결하기 위해서 enum을 사용해 볼 수 있겠습니다.</p>
 <!-- raw HTML omitted -->
 <h2 id="enum으로-감싸기">Enum으로 감싸기<a hidden class="anchor" aria-hidden="true" href="#enum으로-감싸기">#</a></h2>
 <p>Rust 의 enum 또한 polymorphism을 활용할 수 있는 방법 중 하나입니다. 다음과 같이 trait의 구현체들을 enum value로 넣어줄 수 있습니다.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -731,29 +731,29 @@ cpp 코드를 작성하던 습관 대로 Rust 코드를 작성하다 보면 막�
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#75715e">// enum을 하나 추가하고
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#[derive(Clone)]</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">enum</span> <span style="color:#a6e22e">NodeType</span> {
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#6272a4">// enum을 하나 추가하고
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span><span style="color:#ff79c6">#[derive(Clone)]</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">enum</span> <span style="color:#50fa7b">NodeType</span> {
 </span></span><span style="display:flex;"><span>    FileNode(File),
 </span></span><span style="display:flex;"><span>    DirectoryNode(Directory),
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// Directory는 boxed trait 대신 enum을 갖도록 수정,
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#[derive(Clone)]</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Directory</span> {
-</span></span><span style="display:flex;"><span>    name: String,
-</span></span><span style="display:flex;"><span>    childs: Vec<span style="color:#f92672">&lt;</span>NodeType<span style="color:#f92672">&gt;</span>,
+</span></span><span style="display:flex;"><span><span style="color:#6272a4">// Directory는 boxed trait 대신 enum을 갖도록 수정,
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span><span style="color:#ff79c6">#[derive(Clone)]</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">struct</span> <span style="color:#50fa7b">Directory</span> {
+</span></span><span style="display:flex;"><span>    name: <span style="color:#8be9fd;font-style:italic">String</span>,
+</span></span><span style="display:flex;"><span>    childs: <span style="color:#8be9fd;font-style:italic">Vec</span><span style="color:#ff79c6">&lt;</span>NodeType<span style="color:#ff79c6">&gt;</span>,
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// main 함수에서는 다음과 같이 node를 추가합니다.
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>root_node.add_new_node(NodeType::FileNode(new_file));
+</span></span><span style="display:flex;"><span><span style="color:#6272a4">// main 함수에서는 다음과 같이 node를 추가합니다.
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span>root_node.add_new_node(NodeType::FileNode(new_file));
 </span></span><span style="display:flex;"><span>root_node.add_new_node(NodeType::DirectoryNode(new_directory));
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>이 떄 enum 내의 value를 꺼내서 trait 함수를 부르기 번거로우므로, enum에도 <code>Node</code> trait을 구현해 줍니다.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -770,27 +770,27 @@ cpp 코드를 작성하던 습관 대로 Rust 코드를 작성하다 보면 막�
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">impl</span> Node <span style="color:#66d9ef">for</span> NodeType {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">get_name</span>(<span style="color:#f92672">&amp;</span>self) -&gt; String {
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">match</span> <span style="color:#f92672">&amp;</span>self {
-</span></span><span style="display:flex;"><span>            NodeType::FileNode(f) <span style="color:#f92672">=&gt;</span> f.get_name(),
-</span></span><span style="display:flex;"><span>            NodeType::DirectoryNode(d) <span style="color:#f92672">=&gt;</span> d.get_name(),
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ff79c6">impl</span> Node <span style="color:#ff79c6">for</span> NodeType {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">get_name</span>(<span style="color:#ff79c6">&amp;</span>self) -&gt; <span style="color:#8be9fd;font-style:italic">String</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">match</span> <span style="color:#ff79c6">&amp;</span>self {
+</span></span><span style="display:flex;"><span>            NodeType::FileNode(f) <span style="color:#ff79c6">=&gt;</span> f.get_name(),
+</span></span><span style="display:flex;"><span>            NodeType::DirectoryNode(d) <span style="color:#ff79c6">=&gt;</span> d.get_name(),
 </span></span><span style="display:flex;"><span>        }
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">get_size</span>(<span style="color:#f92672">&amp;</span>self) -&gt; <span style="color:#66d9ef">u64</span> {
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">match</span> <span style="color:#f92672">&amp;</span>self {
-</span></span><span style="display:flex;"><span>            NodeType::FileNode(f) <span style="color:#f92672">=&gt;</span> f.get_size(),
-</span></span><span style="display:flex;"><span>            NodeType::DirectoryNode(d) <span style="color:#f92672">=&gt;</span> d.get_size(),
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">get_size</span>(<span style="color:#ff79c6">&amp;</span>self) -&gt; <span style="color:#8be9fd">u64</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">match</span> <span style="color:#ff79c6">&amp;</span>self {
+</span></span><span style="display:flex;"><span>            NodeType::FileNode(f) <span style="color:#ff79c6">=&gt;</span> f.get_size(),
+</span></span><span style="display:flex;"><span>            NodeType::DirectoryNode(d) <span style="color:#ff79c6">=&gt;</span> d.get_size(),
 </span></span><span style="display:flex;"><span>        }
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>이런 패턴 또한 굉장히 많이 사용되는 것 같습니다. 이 코드도 <a href="https://docs.rs/enum_dispatch/0.3.11/enum_dispatch/">enum_dispatch</a> crate를 사용하면 단순화할 수 있습니다.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -807,18 +807,18 @@ cpp 코드를 작성하던 습관 대로 Rust 코드를 작성하다 보면 막�
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">use</span> enum_dispatch::enum_dispatch;
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ff79c6">use</span> enum_dispatch::enum_dispatch;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#[enum_dispatch]</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">trait</span> Node : <span style="color:#a6e22e">DynClone</span> {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">get_name</span>(<span style="color:#f92672">&amp;</span>self) -&gt; String;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">get_size</span>(<span style="color:#f92672">&amp;</span>self) -&gt; <span style="color:#66d9ef">u64</span>;
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">#[enum_dispatch]</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">trait</span> Node : <span style="color:#50fa7b">DynClone</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">get_name</span>(<span style="color:#ff79c6">&amp;</span>self) -&gt; <span style="color:#8be9fd;font-style:italic">String</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">get_size</span>(<span style="color:#ff79c6">&amp;</span>self) -&gt; <span style="color:#8be9fd">u64</span>;
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>dyn_clone::clone_trait_object!(Node);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#[derive(Clone)]</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#[enum_dispatch(Node)]</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">enum</span> <span style="color:#a6e22e">NodeType</span> {
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">#[derive(Clone)]</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">#[enum_dispatch(Node)]</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">enum</span> <span style="color:#50fa7b">NodeType</span> {
 </span></span><span style="display:flex;"><span>    FileNode(File),
 </span></span><span style="display:flex;"><span>    DirectoryNode(Directory),
 </span></span><span style="display:flex;"><span>}
@@ -827,9 +827,9 @@ cpp 코드를 작성하던 습관 대로 Rust 코드를 작성하다 보면 막�
 </div><!-- raw HTML omitted -->
 <h2 id="최종-코드">최종 코드<a hidden class="anchor" aria-hidden="true" href="#최종-코드">#</a></h2>
 <p>여태까지 수정한 내용을 모두 반영한 최종 코드는 다음과 같습니다.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -908,51 +908,51 @@ cpp 코드를 작성하던 습관 대로 Rust 코드를 작성하다 보면 막�
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">77
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">main</span>() {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> <span style="color:#66d9ef">mut</span> root_node <span style="color:#f92672">=</span> Directory::new(<span style="color:#e6db74">&#34;root&#34;</span>.to_string());
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">main</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">let</span> <span style="color:#ff79c6">mut</span> root_node <span style="color:#ff79c6">=</span> Directory::new(<span style="color:#f1fa8c">&#34;root&#34;</span>.to_string());
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> new_file <span style="color:#f92672">=</span> File::new(<span style="color:#e6db74">&#34;new_file&#34;</span>.to_string(), <span style="color:#ae81ff">1024</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">1024</span>);
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> new_directory <span style="color:#f92672">=</span> Directory::new(<span style="color:#e6db74">&#34;my_folder&#34;</span>.to_string());
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">let</span> new_file <span style="color:#ff79c6">=</span> File::new(<span style="color:#f1fa8c">&#34;new_file&#34;</span>.to_string(), <span style="color:#bd93f9">1024</span> <span style="color:#ff79c6">*</span> <span style="color:#bd93f9">1024</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">let</span> new_directory <span style="color:#ff79c6">=</span> Directory::new(<span style="color:#f1fa8c">&#34;my_folder&#34;</span>.to_string());
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    root_node.add_new_node(NodeType::FileNode(new_file));
 </span></span><span style="display:flex;"><span>    root_node.add_new_node(NodeType::DirectoryNode(new_directory));
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    assert_eq!(root_node.get_size(), <span style="color:#ae81ff">1024</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">1024</span>);
+</span></span><span style="display:flex;"><span>    assert_eq!(root_node.get_size(), <span style="color:#bd93f9">1024</span> <span style="color:#ff79c6">*</span> <span style="color:#bd93f9">1024</span>);
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">use</span> dyn_clone::DynClone;
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">use</span> enum_dispatch::enum_dispatch;
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">use</span> dyn_clone::DynClone;
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">use</span> enum_dispatch::enum_dispatch;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#[enum_dispatch]</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">trait</span> Node : <span style="color:#a6e22e">DynClone</span> {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">get_name</span>(<span style="color:#f92672">&amp;</span>self) -&gt; String;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">get_size</span>(<span style="color:#f92672">&amp;</span>self) -&gt; <span style="color:#66d9ef">u64</span>;
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">#[enum_dispatch]</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">trait</span> Node : <span style="color:#50fa7b">DynClone</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">get_name</span>(<span style="color:#ff79c6">&amp;</span>self) -&gt; <span style="color:#8be9fd;font-style:italic">String</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">get_size</span>(<span style="color:#ff79c6">&amp;</span>self) -&gt; <span style="color:#8be9fd">u64</span>;
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>dyn_clone::clone_trait_object!(Node);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#[derive(Clone)]</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#[enum_dispatch(Node)]</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">enum</span> <span style="color:#a6e22e">NodeType</span> {
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">#[derive(Clone)]</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">#[enum_dispatch(Node)]</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">enum</span> <span style="color:#50fa7b">NodeType</span> {
 </span></span><span style="display:flex;"><span>    FileNode(File),
 </span></span><span style="display:flex;"><span>    DirectoryNode(Directory),
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#[derive(Clone)]</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">File</span> {
-</span></span><span style="display:flex;"><span>    name: String,
-</span></span><span style="display:flex;"><span>    size: <span style="color:#66d9ef">u64</span>,
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">#[derive(Clone)]</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">struct</span> <span style="color:#50fa7b">File</span> {
+</span></span><span style="display:flex;"><span>    name: <span style="color:#8be9fd;font-style:italic">String</span>,
+</span></span><span style="display:flex;"><span>    size: <span style="color:#8be9fd">u64</span>,
 </span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">impl</span> Node <span style="color:#66d9ef">for</span> File {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">get_name</span>(<span style="color:#f92672">&amp;</span>self) -&gt; String {
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">impl</span> Node <span style="color:#ff79c6">for</span> File {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">get_name</span>(<span style="color:#ff79c6">&amp;</span>self) -&gt; <span style="color:#8be9fd;font-style:italic">String</span> {
 </span></span><span style="display:flex;"><span>        self.name.clone()
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">get_size</span>(<span style="color:#f92672">&amp;</span>self) -&gt; <span style="color:#66d9ef">u64</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">get_size</span>(<span style="color:#ff79c6">&amp;</span>self) -&gt; <span style="color:#8be9fd">u64</span> {
 </span></span><span style="display:flex;"><span>        self.size
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">impl</span> File {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">new</span>(name: String, size: <span style="color:#66d9ef">u64</span>) -&gt; <span style="color:#a6e22e">Self</span> {
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">impl</span> File {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">pub</span> <span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">new</span>(name: <span style="color:#8be9fd;font-style:italic">String</span>, size: <span style="color:#8be9fd">u64</span>) -&gt; <span style="color:#50fa7b">Self</span> {
 </span></span><span style="display:flex;"><span>        Self {
 </span></span><span style="display:flex;"><span>            name,
 </span></span><span style="display:flex;"><span>            size,
@@ -960,28 +960,28 @@ cpp 코드를 작성하던 습관 대로 Rust 코드를 작성하다 보면 막�
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#[derive(Clone)]</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Directory</span> {
-</span></span><span style="display:flex;"><span>    name: String,
-</span></span><span style="display:flex;"><span>    childs: Vec<span style="color:#f92672">&lt;</span>NodeType<span style="color:#f92672">&gt;</span>,
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">#[derive(Clone)]</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">struct</span> <span style="color:#50fa7b">Directory</span> {
+</span></span><span style="display:flex;"><span>    name: <span style="color:#8be9fd;font-style:italic">String</span>,
+</span></span><span style="display:flex;"><span>    childs: <span style="color:#8be9fd;font-style:italic">Vec</span><span style="color:#ff79c6">&lt;</span>NodeType<span style="color:#ff79c6">&gt;</span>,
 </span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">impl</span> Node <span style="color:#66d9ef">for</span> Directory {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">get_name</span>(<span style="color:#f92672">&amp;</span>self) -&gt; String {
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">impl</span> Node <span style="color:#ff79c6">for</span> Directory {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">get_name</span>(<span style="color:#ff79c6">&amp;</span>self) -&gt; <span style="color:#8be9fd;font-style:italic">String</span> {
 </span></span><span style="display:flex;"><span>        self.name.clone()
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">get_size</span>(<span style="color:#f92672">&amp;</span>self) -&gt; <span style="color:#66d9ef">u64</span> {
-</span></span><span style="display:flex;"><span>        self.childs.iter().fold(<span style="color:#ae81ff">0</span>, <span style="color:#f92672">|</span>acc, x<span style="color:#f92672">|</span> acc <span style="color:#f92672">+</span> x.get_size())
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">get_size</span>(<span style="color:#ff79c6">&amp;</span>self) -&gt; <span style="color:#8be9fd">u64</span> {
+</span></span><span style="display:flex;"><span>        self.childs.iter().fold(<span style="color:#bd93f9">0</span>, <span style="color:#ff79c6">|</span>acc, x<span style="color:#ff79c6">|</span> acc <span style="color:#ff79c6">+</span> x.get_size())
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">impl</span> Directory {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">new</span>(name: String) -&gt; <span style="color:#a6e22e">Self</span> {
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">impl</span> Directory {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">pub</span> <span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">new</span>(name: <span style="color:#8be9fd;font-style:italic">String</span>) -&gt; <span style="color:#50fa7b">Self</span> {
 </span></span><span style="display:flex;"><span>        Self {
 </span></span><span style="display:flex;"><span>            name,
-</span></span><span style="display:flex;"><span>            childs: Vec::new(),
+</span></span><span style="display:flex;"><span>            childs: <span style="color:#8be9fd;font-style:italic">Vec</span>::new(),
 </span></span><span style="display:flex;"><span>        }
 </span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">add_new_node</span>(<span style="color:#f92672">&amp;</span><span style="color:#66d9ef">mut</span> self, node: <span style="color:#a6e22e">NodeType</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">pub</span> <span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">add_new_node</span>(<span style="color:#ff79c6">&amp;</span><span style="color:#ff79c6">mut</span> self, node: <span style="color:#50fa7b">NodeType</span>) {
 </span></span><span style="display:flex;"><span>        self.childs.push(node);
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>}
@@ -1024,7 +1024,7 @@ cpp 코드를 작성하던 습관 대로 Rust 코드를 작성하다 보면 막�
     </main>
     
 <footer class="footer">
-    <span>&copy; 2023 <a href="http://huijeong-kim.github.io/">my dev note</a></span>
+    <span>&copy; 2024 <a href="http://huijeong-kim.github.io/">my dev note</a></span>
     <span>
         Powered by
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &

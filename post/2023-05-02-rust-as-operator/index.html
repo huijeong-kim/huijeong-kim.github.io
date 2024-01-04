@@ -256,53 +256,53 @@ if (!doNotTrack) {
 </ul>
 <!-- raw HTML omitted -->
 <p>제가 최근에 습관적으로 <code>as</code>를 사용하였는데, 이 경우 특별한 경고(compile error/warning 등) 없이 값을 잃을 수 있더라고요. <code>as</code>는 type 변환이 아닌 <strong>casting</strong>을 해 주는 것 이기 때문에 사용에 주의해야 할 것 같습니다.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">let</span> number: <span style="color:#66d9ef">u64</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">u64</span>::<span style="color:#66d9ef">MAX</span>;
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> cast_as <span style="color:#f92672">=</span> number <span style="color:#66d9ef">as</span> <span style="color:#66d9ef">u32</span>;
-</span></span><span style="display:flex;"><span>println!(<span style="color:#e6db74">&#34;Numbers: </span><span style="color:#e6db74">{:x}</span><span style="color:#e6db74">, </span><span style="color:#e6db74">{:x}</span><span style="color:#e6db74">&#34;</span>, number, cast_as);
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">let</span> number: <span style="color:#8be9fd">u64</span> <span style="color:#ff79c6">=</span> <span style="color:#8be9fd">u64</span>::MAX;
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">let</span> cast_as <span style="color:#ff79c6">=</span> number <span style="color:#ff79c6">as</span> <span style="color:#8be9fd">u32</span>;
+</span></span><span style="display:flex;"><span>println!(<span style="color:#f1fa8c">&#34;Numbers: </span><span style="color:#f1fa8c">{:x}</span><span style="color:#f1fa8c">, </span><span style="color:#f1fa8c">{:x}</span><span style="color:#f1fa8c">&#34;</span>, number, cast_as);
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>실행 결과</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>Numbers: ffffffffffffffff, ffffffff
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>Numbers: ffffffffffffffff, ffffffff
 </span></span></code></pre></td></tr></table>
 </div>
 </div><!-- raw HTML omitted -->
 <p>Numeric casting 하고 싶을 때는 <code>as</code>를 사용한 casting 대신 <code>into()</code> 혹은 <code>try_into()</code>를 사용하여 type conversion을 하는 것이 좋겠습니다.
 위와 같은 예제에서 <code>into()</code>를 사용하면, <code>u32</code>에 대한 <code>From&lt;u64&gt;</code>는 구현되어 있지 않다는 이유로 compile error가 발생합니다. 물론 직접 <code>into()</code> 함수를 구현할 수도 있겠지만 굳이 그럴 필욘 없겠지요. <code>try_into()</code>를 사용한다면 결과값은 <code>TryFromIntError</code> 에러가 됩니다.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#75715e">// error[E0277]: the trait bound `u32: From&lt;u64&gt;` is not satisfied
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//let cast_into: u32 = number.into();
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> cast_into: Result<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">u32</span>, _<span style="color:#f92672">&gt;</span> <span style="color:#f92672">=</span> number.try_into();
-</span></span><span style="display:flex;"><span>println!(<span style="color:#e6db74">&#34;Conversion result: </span><span style="color:#e6db74">{:?}</span><span style="color:#e6db74">&#34;</span>, cast_into);
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#6272a4">// error[E0277]: the trait bound `u32: From&lt;u64&gt;` is not satisfied
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4">//let cast_into: u32 = number.into();
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span>    
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">let</span> cast_into: <span style="color:#8be9fd;font-style:italic">Result</span><span style="color:#ff79c6">&lt;</span><span style="color:#8be9fd">u32</span>, _<span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">=</span> number.try_into();
+</span></span><span style="display:flex;"><span>println!(<span style="color:#f1fa8c">&#34;Conversion result: </span><span style="color:#f1fa8c">{:?}</span><span style="color:#f1fa8c">&#34;</span>, cast_into);
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>실행 결과</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>Conversion result: Err<span style="color:#f92672">(</span>TryFromIntError<span style="color:#f92672">(()))</span>
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>Conversion result: Err<span style="color:#ff79c6">(</span>TryFromIntError<span style="color:#ff79c6">(()))</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><!-- raw HTML omitted -->
@@ -315,9 +315,9 @@ if (!doNotTrack) {
 </ul>
 <!-- raw HTML omitted -->
 <p><a href="https://doc.rust-lang.org/reference/items/enumerations.html#field-less-enum">Field-less enum</a>은 <em>&ldquo;no constructors contain fields&rdquo;</em> 인 enum 입니다. Tuple, Struct 와 같은 enum 값이 있더라도 그 안에 field가 없는 경우를 말하는 것 같습니다. 이 경우에는 explicit discriminants(<code>=3</code> 과 같은 값 지정)가 없어야만 numeric casting 가능합니다.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -330,33 +330,33 @@ if (!doNotTrack) {
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#75715e">#[derive(Debug)]</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">enum</span> <span style="color:#a6e22e">FieldOnlyEnum</span> {
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ff79c6">#[derive(Debug)]</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">enum</span> <span style="color:#50fa7b">FieldOnlyEnum</span> {
 </span></span><span style="display:flex;"><span>    Tuple(),
 </span></span><span style="display:flex;"><span>    Struct{},
 </span></span><span style="display:flex;"><span>    Unit,
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>println!(<span style="color:#e6db74">&#34;FieldOnlyEnum: Tuple </span><span style="color:#e6db74">{:?}</span><span style="color:#e6db74">, Struct </span><span style="color:#e6db74">{:?}</span><span style="color:#e6db74">, Unit </span><span style="color:#e6db74">{}</span><span style="color:#e6db74">&#34;</span>,
-</span></span><span style="display:flex;"><span>    FieldOnlyEnum::Tuple() <span style="color:#66d9ef">as</span> <span style="color:#66d9ef">u8</span>, 
-</span></span><span style="display:flex;"><span>    FieldOnlyEnum::Struct{} <span style="color:#66d9ef">as</span> <span style="color:#66d9ef">u32</span>, 
-</span></span><span style="display:flex;"><span>    FieldOnlyEnum::Unit <span style="color:#66d9ef">as</span> <span style="color:#66d9ef">u8</span>);
+</span></span><span style="display:flex;"><span>println!(<span style="color:#f1fa8c">&#34;FieldOnlyEnum: Tuple </span><span style="color:#f1fa8c">{:?}</span><span style="color:#f1fa8c">, Struct </span><span style="color:#f1fa8c">{:?}</span><span style="color:#f1fa8c">, Unit </span><span style="color:#f1fa8c">{}</span><span style="color:#f1fa8c">&#34;</span>,
+</span></span><span style="display:flex;"><span>    FieldOnlyEnum::Tuple() <span style="color:#ff79c6">as</span> <span style="color:#8be9fd">u8</span>, 
+</span></span><span style="display:flex;"><span>    FieldOnlyEnum::Struct{} <span style="color:#ff79c6">as</span> <span style="color:#8be9fd">u32</span>, 
+</span></span><span style="display:flex;"><span>    FieldOnlyEnum::Unit <span style="color:#ff79c6">as</span> <span style="color:#8be9fd">u8</span>);
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>실행 결과</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>FieldOnlyEnum: Tuple 0, Struct 1, Unit <span style="color:#ae81ff">2</span>
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>FieldOnlyEnum: Tuple 0, Struct 1, Unit <span style="color:#bd93f9">2</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><!-- raw HTML omitted -->
 <p>여기에 <code>FieldOnlyEnum::Unit</code>에 <code>Unit = 1,</code>과 같이 명시적으로 값을 지정하면 <em>&ldquo;discriminant value <code>1</code> assigned more than once&rdquo;</em> 에러가 발생합니다. 하지만 enum에 <code>#[repr(u8)]</code> 지정할 경우 explicit discriminant가 있는 field-less enum에서도 numeric casting 가능하다고 합니다. 이 때 tuple type이나 struct type에 discriminant value 지정하는 경우에는 *&ldquo;non-primitive cast&rdquo;*로 compile error 발생합니다.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -371,37 +371,37 @@ if (!doNotTrack) {
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#75715e">#[derive(Debug)]</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#[repr(u8)]</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">enum</span> <span style="color:#a6e22e">FieldOnlyEnum2</span> {
-</span></span><span style="display:flex;"><span>    OtherUnit <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>,
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ff79c6">#[derive(Debug)]</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">#[repr(u8)]</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">enum</span> <span style="color:#50fa7b">FieldOnlyEnum2</span> {
+</span></span><span style="display:flex;"><span>    OtherUnit <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">3</span>,
 </span></span><span style="display:flex;"><span>    Tuple(),
 </span></span><span style="display:flex;"><span>    Struct{},
 </span></span><span style="display:flex;"><span>    Unit,
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>println!(<span style="color:#e6db74">&#34;FieldOnlyEnum2: Tuple </span><span style="color:#e6db74">{:?}</span><span style="color:#e6db74">, Struct </span><span style="color:#e6db74">{:?}</span><span style="color:#e6db74">, Unit </span><span style="color:#e6db74">{}</span><span style="color:#e6db74">&#34;</span>,
-</span></span><span style="display:flex;"><span>    FieldOnlyEnum2::Tuple() <span style="color:#66d9ef">as</span> <span style="color:#66d9ef">u8</span>, 
-</span></span><span style="display:flex;"><span>    FieldOnlyEnum2::Struct{} <span style="color:#66d9ef">as</span> <span style="color:#66d9ef">u32</span>, 
-</span></span><span style="display:flex;"><span>    FieldOnlyEnum2::Unit <span style="color:#66d9ef">as</span> <span style="color:#66d9ef">u8</span>);
+</span></span><span style="display:flex;"><span>println!(<span style="color:#f1fa8c">&#34;FieldOnlyEnum2: Tuple </span><span style="color:#f1fa8c">{:?}</span><span style="color:#f1fa8c">, Struct </span><span style="color:#f1fa8c">{:?}</span><span style="color:#f1fa8c">, Unit </span><span style="color:#f1fa8c">{}</span><span style="color:#f1fa8c">&#34;</span>,
+</span></span><span style="display:flex;"><span>    FieldOnlyEnum2::Tuple() <span style="color:#ff79c6">as</span> <span style="color:#8be9fd">u8</span>, 
+</span></span><span style="display:flex;"><span>    FieldOnlyEnum2::Struct{} <span style="color:#ff79c6">as</span> <span style="color:#8be9fd">u32</span>, 
+</span></span><span style="display:flex;"><span>    FieldOnlyEnum2::Unit <span style="color:#ff79c6">as</span> <span style="color:#8be9fd">u8</span>);
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>실행 결과</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>FieldOnlyEnum2: Tuple 4, Struct 5, Unit <span style="color:#ae81ff">6</span>
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>FieldOnlyEnum2: Tuple 4, Struct 5, Unit <span style="color:#bd93f9">6</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><!-- raw HTML omitted -->
 <p>여기서 또 한 가지 신기한 점은, casting 시 <code>FieldOnlyEnum::Struct as u8</code> 와 같이 작성하는 경우(생성자 사용 X)엔 compile error 가 발생하고, <code>FieldOnlyEnum::Tuple as u8</code> 로 작성하면 빌드는 성공하나 값이 이상하게 <code>FieldOnlyEnum: Tuple 224, Struct 1, Unit 2</code> 로 나오더라고요. 혼란스럽지만 이런 enum type casting이 얼마나 필요할 지 모르겠으니 그냥 넘어가 보겠습니다..</p>
 <!-- raw HTML omitted -->
 <p>Unit-only enum은 field-less enum 중 unit으로만 이루어진 경우입니다. 이 때는 Field-only enum과 다르게 *&ldquo;explicit discriminant value&rdquo;*를 갖고 있어도 상관 없습니다. 아래 코드에서 주석 처리 된 것 처럼 <code>UnitNum3</code>이 <code>i32</code>란 field를 갖고 있는 경우(unit-only enum이 아닌 경우), 모든 type casting에서 에러가 발생합니다.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -424,38 +424,38 @@ if (!doNotTrack) {
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#[derive(Debug)]</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">enum</span> <span style="color:#a6e22e">UnitOnlyEnum1</span> {
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">#[derive(Debug)]</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">enum</span> <span style="color:#50fa7b">UnitOnlyEnum1</span> {
 </span></span><span style="display:flex;"><span>    UnitNum,
 </span></span><span style="display:flex;"><span>    UnitNum2,
-</span></span><span style="display:flex;"><span>    UnitNum3, <span style="color:#75715e">//UnitNum3(i32), =&gt; error[E0605]: non-primitive cast: `UnitOnlyEnum1` as `u32`
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
-</span></span><span style="display:flex;"><span>println!(<span style="color:#e6db74">&#34;UnitOnlyEnum: UnitNum </span><span style="color:#e6db74">{}</span><span style="color:#e6db74">, UnitNum2 </span><span style="color:#e6db74">{}</span><span style="color:#e6db74"> UnitNum3 </span><span style="color:#e6db74">{}</span><span style="color:#e6db74">&#34;</span>,
-</span></span><span style="display:flex;"><span>    UnitOnlyEnum1::UnitNum <span style="color:#66d9ef">as</span> <span style="color:#66d9ef">u8</span>,
-</span></span><span style="display:flex;"><span>    UnitOnlyEnum1::UnitNum2 <span style="color:#66d9ef">as</span> <span style="color:#66d9ef">u16</span>,
-</span></span><span style="display:flex;"><span>    UnitOnlyEnum1::UnitNum3 <span style="color:#66d9ef">as</span> <span style="color:#66d9ef">u32</span>,
+</span></span><span style="display:flex;"><span>    UnitNum3, <span style="color:#6272a4">//UnitNum3(i32), =&gt; error[E0605]: non-primitive cast: `UnitOnlyEnum1` as `u32`
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span>}
+</span></span><span style="display:flex;"><span>println!(<span style="color:#f1fa8c">&#34;UnitOnlyEnum: UnitNum </span><span style="color:#f1fa8c">{}</span><span style="color:#f1fa8c">, UnitNum2 </span><span style="color:#f1fa8c">{}</span><span style="color:#f1fa8c"> UnitNum3 </span><span style="color:#f1fa8c">{}</span><span style="color:#f1fa8c">&#34;</span>,
+</span></span><span style="display:flex;"><span>    UnitOnlyEnum1::UnitNum <span style="color:#ff79c6">as</span> <span style="color:#8be9fd">u8</span>,
+</span></span><span style="display:flex;"><span>    UnitOnlyEnum1::UnitNum2 <span style="color:#ff79c6">as</span> <span style="color:#8be9fd">u16</span>,
+</span></span><span style="display:flex;"><span>    UnitOnlyEnum1::UnitNum3 <span style="color:#ff79c6">as</span> <span style="color:#8be9fd">u32</span>,
 </span></span><span style="display:flex;"><span>);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">enum</span> <span style="color:#a6e22e">UnitOnlyEnum2</span> {
-</span></span><span style="display:flex;"><span>    UnitNum <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>,
-</span></span><span style="display:flex;"><span>    UnitNum2 <span style="color:#f92672">=</span> <span style="color:#ae81ff">4</span>,
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">enum</span> <span style="color:#50fa7b">UnitOnlyEnum2</span> {
+</span></span><span style="display:flex;"><span>    UnitNum <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">1</span>,
+</span></span><span style="display:flex;"><span>    UnitNum2 <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">4</span>,
 </span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span>println!(<span style="color:#e6db74">&#34;UnitOnlyEnum2: UnitNum </span><span style="color:#e6db74">{}</span><span style="color:#e6db74">, UnitNum2 </span><span style="color:#e6db74">{}</span><span style="color:#e6db74">&#34;</span>,
-</span></span><span style="display:flex;"><span>    UnitOnlyEnum2::UnitNum <span style="color:#66d9ef">as</span> <span style="color:#66d9ef">u32</span>,
-</span></span><span style="display:flex;"><span>    UnitOnlyEnum2::UnitNum2 <span style="color:#66d9ef">as</span> <span style="color:#66d9ef">u32</span>,
+</span></span><span style="display:flex;"><span>println!(<span style="color:#f1fa8c">&#34;UnitOnlyEnum2: UnitNum </span><span style="color:#f1fa8c">{}</span><span style="color:#f1fa8c">, UnitNum2 </span><span style="color:#f1fa8c">{}</span><span style="color:#f1fa8c">&#34;</span>,
+</span></span><span style="display:flex;"><span>    UnitOnlyEnum2::UnitNum <span style="color:#ff79c6">as</span> <span style="color:#8be9fd">u32</span>,
+</span></span><span style="display:flex;"><span>    UnitOnlyEnum2::UnitNum2 <span style="color:#ff79c6">as</span> <span style="color:#8be9fd">u32</span>,
 </span></span><span style="display:flex;"><span>);
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>실행 결과</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>UnitOnlyEnum: UnitNum 0, UnitNum2 1, UnitNum3 <span style="color:#ae81ff">2</span>
-</span></span><span style="display:flex;"><span>UnitOnlyEnum2: UnitNum 1, UnitNum2 <span style="color:#ae81ff">4</span>
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>UnitOnlyEnum: UnitNum 0, UnitNum2 1, UnitNum3 <span style="color:#bd93f9">2</span>
+</span></span><span style="display:flex;"><span>UnitOnlyEnum2: UnitNum 1, UnitNum2 <span style="color:#bd93f9">4</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><!-- raw HTML omitted -->
@@ -471,9 +471,9 @@ if (!doNotTrack) {
 <p><strong>업데이트 (23.5.7)</strong>
 <code>char</code> 타입은 &ldquo;Unicode scalar value&rdquo; 를 의미하며, 1B로 표현 됩니다. Unicode 글자만이 <code>char</code>로 type casting 가능하다고 보면 될 것 같습니다.</p>
 <!-- raw HTML omitted -->
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -495,32 +495,32 @@ if (!doNotTrack) {
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span>println!(<span style="color:#e6db74">&#34;False as u8: </span><span style="color:#e6db74">{}</span><span style="color:#e6db74">&#34;</span>, <span style="color:#66d9ef">false</span> <span style="color:#66d9ef">as</span> <span style="color:#66d9ef">u8</span>);
-</span></span><span style="display:flex;"><span>println!(<span style="color:#e6db74">&#34;True as u8: </span><span style="color:#e6db74">{}</span><span style="color:#e6db74">&#34;</span>, <span style="color:#66d9ef">true</span> <span style="color:#66d9ef">as</span> <span style="color:#66d9ef">u8</span>);
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span>println!(<span style="color:#f1fa8c">&#34;False as u8: </span><span style="color:#f1fa8c">{}</span><span style="color:#f1fa8c">&#34;</span>, <span style="color:#ff79c6">false</span> <span style="color:#ff79c6">as</span> <span style="color:#8be9fd">u8</span>);
+</span></span><span style="display:flex;"><span>println!(<span style="color:#f1fa8c">&#34;True as u8: </span><span style="color:#f1fa8c">{}</span><span style="color:#f1fa8c">&#34;</span>, <span style="color:#ff79c6">true</span> <span style="color:#ff79c6">as</span> <span style="color:#8be9fd">u8</span>);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>println!(<span style="color:#e6db74">&#34;&#39;C&#39; as u8: </span><span style="color:#e6db74">{}</span><span style="color:#e6db74">&#34;</span>, <span style="color:#e6db74">&#39;C&#39;</span> <span style="color:#66d9ef">as</span> <span style="color:#66d9ef">u8</span>);
-</span></span><span style="display:flex;"><span>println!(<span style="color:#e6db74">&#34;67 as char: </span><span style="color:#e6db74">{}</span><span style="color:#e6db74">&#34;</span>, <span style="color:#ae81ff">67</span> <span style="color:#66d9ef">as</span> <span style="color:#66d9ef">char</span>);
+</span></span><span style="display:flex;"><span>println!(<span style="color:#f1fa8c">&#34;&#39;C&#39; as u8: </span><span style="color:#f1fa8c">{}</span><span style="color:#f1fa8c">&#34;</span>, <span style="color:#f1fa8c">&#39;C&#39;</span> <span style="color:#ff79c6">as</span> <span style="color:#8be9fd">u8</span>);
+</span></span><span style="display:flex;"><span>println!(<span style="color:#f1fa8c">&#34;67 as char: </span><span style="color:#f1fa8c">{}</span><span style="color:#f1fa8c">&#34;</span>, <span style="color:#bd93f9">67</span> <span style="color:#ff79c6">as</span> <span style="color:#8be9fd">char</span>);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>println!(<span style="color:#e6db74">&#34;&#39;❤️&#39; as u32: </span><span style="color:#e6db74">{}</span><span style="color:#e6db74">&#34;</span>, <span style="color:#e6db74">&#39;❤&#39;</span> <span style="color:#66d9ef">as</span> <span style="color:#66d9ef">u32</span>);
+</span></span><span style="display:flex;"><span>println!(<span style="color:#f1fa8c">&#34;&#39;❤️&#39; as u32: </span><span style="color:#f1fa8c">{}</span><span style="color:#f1fa8c">&#34;</span>, <span style="color:#f1fa8c">&#39;❤&#39;</span> <span style="color:#ff79c6">as</span> <span style="color:#8be9fd">u32</span>);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// error: only `u8` can be cast into `char`
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//println!(&#34;10084 as char: {}&#34;, 10084 as char);
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">//error[E0604]: only `u8` can be cast as `char`, not `u32`
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//println!(&#34;10084 as char: {}&#34;, 10084u32 as char);
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> result: Result<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">char</span>, _<span style="color:#f92672">&gt;</span> <span style="color:#f92672">=</span> (<span style="color:#ae81ff">10084</span> <span style="color:#66d9ef">as</span> <span style="color:#66d9ef">u32</span>).try_into();
-</span></span><span style="display:flex;"><span>println!(<span style="color:#e6db74">&#34;Converting result: </span><span style="color:#e6db74">{:?}</span><span style="color:#e6db74">&#34;</span>, result);
+</span></span><span style="display:flex;"><span><span style="color:#6272a4">// error: only `u8` can be cast into `char`
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4">//println!(&#34;10084 as char: {}&#34;, 10084 as char);
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4">//error[E0604]: only `u8` can be cast as `char`, not `u32`
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4">//println!(&#34;10084 as char: {}&#34;, 10084u32 as char);
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">let</span> result: <span style="color:#8be9fd;font-style:italic">Result</span><span style="color:#ff79c6">&lt;</span><span style="color:#8be9fd">char</span>, _<span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">=</span> (<span style="color:#bd93f9">10084</span> <span style="color:#ff79c6">as</span> <span style="color:#8be9fd">u32</span>).try_into();
+</span></span><span style="display:flex;"><span>println!(<span style="color:#f1fa8c">&#34;Converting result: </span><span style="color:#f1fa8c">{:?}</span><span style="color:#f1fa8c">&#34;</span>, result);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// error[E0277]: the trait bound `char: From&lt;u32&gt;` is not satisfied
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// let result: char = (10084 as u32).into();
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// println!(&#34;Converting result: {:?}&#34;, result);
+</span></span><span style="display:flex;"><span><span style="color:#6272a4">// error[E0277]: the trait bound `char: From&lt;u32&gt;` is not satisfied
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4">// let result: char = (10084 as u32).into();
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4">// println!(&#34;Converting result: {:?}&#34;, result);
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><p>실행 결과</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
@@ -528,43 +528,43 @@ if (!doNotTrack) {
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>False as u8: <span style="color:#ae81ff">0</span>
-</span></span><span style="display:flex;"><span>True as u8: <span style="color:#ae81ff">1</span>
-</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;C&#39;</span> as u8: <span style="color:#ae81ff">67</span>
-</span></span><span style="display:flex;"><span><span style="color:#ae81ff">67</span> as char: C
-</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;❤️&#39;</span> as u32: <span style="color:#ae81ff">10084</span>
-</span></span><span style="display:flex;"><span>Converting result: Ok<span style="color:#f92672">(</span><span style="color:#e6db74">&#39;❤&#39;</span><span style="color:#f92672">)</span>
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>False as u8: <span style="color:#bd93f9">0</span>
+</span></span><span style="display:flex;"><span>True as u8: <span style="color:#bd93f9">1</span>
+</span></span><span style="display:flex;"><span><span style="color:#f1fa8c">&#39;C&#39;</span> as u8: <span style="color:#bd93f9">67</span>
+</span></span><span style="display:flex;"><span><span style="color:#bd93f9">67</span> as char: C
+</span></span><span style="display:flex;"><span><span style="color:#f1fa8c">&#39;❤️&#39;</span> as u32: <span style="color:#bd93f9">10084</span>
+</span></span><span style="display:flex;"><span>Converting result: Ok<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#39;❤&#39;</span><span style="color:#ff79c6">)</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><!-- raw HTML omitted -->
 <p>pointer to address cast의 경우 예상하는 바와 유사한 것 같습니다. casting 되는 type에 따라 값이 truncate 되어 잘못된 주소를 반환할 수 있으니 주의해야 합니다. <code>usize</code> 로 casting 하거나, 다음과 같이 <code>_</code>를 사용하여 컴파일러가 추론하게 만들 수도 있습니다.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">let</span> num <span style="color:#f92672">=</span> <span style="color:#ae81ff">42</span>;
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> address <span style="color:#f92672">=</span> <span style="color:#f92672">&amp;</span>num <span style="color:#66d9ef">as</span> <span style="color:#f92672">*</span><span style="color:#66d9ef">const</span> _;
-</span></span><span style="display:flex;"><span>println!(<span style="color:#e6db74">&#34;The address of num is </span><span style="color:#e6db74">{:?}</span><span style="color:#e6db74">&#34;</span>, address);
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">let</span> num <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">42</span>;
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">let</span> address <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">&amp;</span>num <span style="color:#ff79c6">as</span> <span style="color:#ff79c6">*</span><span style="color:#ff79c6">const</span> _;
+</span></span><span style="display:flex;"><span>println!(<span style="color:#f1fa8c">&#34;The address of num is </span><span style="color:#f1fa8c">{:?}</span><span style="color:#f1fa8c">&#34;</span>, address);
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>실행 결과</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>The address of num is <span style="color:#ae81ff">0x7fffd6002dfc</span>
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>The address of num is <span style="color:#bd93f9">0x7fffd6002dfc</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
 <h2 id="type-coercions">Type coercions<a hidden class="anchor" aria-hidden="true" href="#type-coercions">#</a></h2>
 <p>Type 을 강제할 때 사용합니다. 흔히 사용하는 literal 에 type 지정하는 경우가 그 예입니다. 이 때 잘못된 casting을 하면 (e.g., 너무 큰 값을 u8로 casting) compile error가 발생합니다.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
@@ -572,28 +572,28 @@ if (!doNotTrack) {
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">let</span> number_coercions <span style="color:#f92672">=</span> <span style="color:#ae81ff">123</span> <span style="color:#66d9ef">as</span> <span style="color:#66d9ef">u8</span>;
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">let</span> number_coercions <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">123</span> <span style="color:#ff79c6">as</span> <span style="color:#8be9fd">u8</span>;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// error: literal out of range for `u8`
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//let number_coercions2 = 10002 as u8;
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
-</span></span><span style="display:flex;"><span>println!(<span style="color:#e6db74">&#34;numbers: </span><span style="color:#e6db74">{}</span><span style="color:#e6db74">&#34;</span>, number_coercions);
+</span></span><span style="display:flex;"><span><span style="color:#6272a4">// error: literal out of range for `u8`
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4">//let number_coercions2 = 10002 as u8;
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span>
+</span></span><span style="display:flex;"><span>println!(<span style="color:#f1fa8c">&#34;numbers: </span><span style="color:#f1fa8c">{}</span><span style="color:#f1fa8c">&#34;</span>, number_coercions);
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>실행 결과</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>numbers: <span style="color:#ae81ff">123</span>
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>numbers: <span style="color:#bd93f9">123</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><!-- raw HTML omitted -->
 <p>또 다른 예는 Trait 으로의 변환입니다. 다음과 같이 <code>&amp;dyn Animal</code> trait 으로 casting 하여 해당 trait의 함수를 사용할 수 있습니다.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -618,45 +618,45 @@ if (!doNotTrack) {
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">use</span> std::any::Any;
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ff79c6">use</span> std::any::Any;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">trait</span> Animal {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">speak</span>(<span style="color:#f92672">&amp;</span>self);
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">trait</span> Animal {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">speak</span>(<span style="color:#ff79c6">&amp;</span>self);
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#[derive(Debug)]</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Dog</span> {
-</span></span><span style="display:flex;"><span>    name: String,
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">#[derive(Debug)]</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">struct</span> <span style="color:#50fa7b">Dog</span> {
+</span></span><span style="display:flex;"><span>    name: <span style="color:#8be9fd;font-style:italic">String</span>,
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">impl</span> Animal <span style="color:#66d9ef">for</span> Dog {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">speak</span>(<span style="color:#f92672">&amp;</span>self) {
-</span></span><span style="display:flex;"><span>        println!(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{}</span><span style="color:#e6db74"> says woof!&#34;</span>, self.name);
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">impl</span> Animal <span style="color:#ff79c6">for</span> Dog {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">speak</span>(<span style="color:#ff79c6">&amp;</span>self) {
+</span></span><span style="display:flex;"><span>        println!(<span style="color:#f1fa8c">&#34;</span><span style="color:#f1fa8c">{}</span><span style="color:#f1fa8c"> says woof!&#34;</span>, self.name);
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">trait_coercions</span>() {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> dog <span style="color:#f92672">=</span> Dog { name: String::from(<span style="color:#e6db74">&#34;Happy&#34;</span>) };
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">trait_coercions</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">let</span> dog <span style="color:#ff79c6">=</span> Dog { name: <span style="color:#8be9fd;font-style:italic">String</span>::from(<span style="color:#f1fa8c">&#34;Happy&#34;</span>) };
 </span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> animal <span style="color:#f92672">=</span> <span style="color:#f92672">&amp;</span>dog <span style="color:#66d9ef">as</span> <span style="color:#f92672">&amp;</span><span style="color:#66d9ef">dyn</span> Animal;
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">let</span> animal <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">&amp;</span>dog <span style="color:#ff79c6">as</span> <span style="color:#ff79c6">&amp;</span><span style="color:#ff79c6">dyn</span> Animal;
 </span></span><span style="display:flex;"><span>    animal.speak();
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>실행 결과</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>Happy says woof<span style="color:#f92672">!</span>
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>Happy says woof<span style="color:#ff79c6">!</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><!-- raw HTML omitted -->
 <p>근데 casting 없이 그냥 호출해도 되고, 다음과 같이 함수 인자로 전달하면 자연스럽게(암묵적으로) casting 되는데, 위와 같이 <code>as Trait</code> 을 사용하는 경우가 어떤 경우인지 감이 오질 않네요.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
@@ -666,31 +666,31 @@ if (!doNotTrack) {
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">trait_coercions</span>() {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> dog <span style="color:#f92672">=</span> Dog { name: String::from(<span style="color:#e6db74">&#34;Happy&#34;</span>) };
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">trait_coercions</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">let</span> dog <span style="color:#ff79c6">=</span> Dog { name: <span style="color:#8be9fd;font-style:italic">String</span>::from(<span style="color:#f1fa8c">&#34;Happy&#34;</span>) };
 </span></span><span style="display:flex;"><span>    let_animal_speak(dog);
 </span></span><span style="display:flex;"><span>    
 </span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">let_animal_speak</span>(animal: <span style="color:#66d9ef">&amp;</span><span style="color:#a6e22e">dyn</span> Animal) {
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">let_animal_speak</span>(animal: <span style="color:#ff79c6">&amp;</span><span style="color:#50fa7b">dyn</span> Animal) {
 </span></span><span style="display:flex;"><span>    animal.speak();
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>실행 결과</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>Happy says woof<span style="color:#f92672">!</span>
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>Happy says woof<span style="color:#ff79c6">!</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><!-- raw HTML omitted -->
 <p>이 보다는 Trait을 downcasting를 하고 싶은 경우가 더 많을 것 같습니다. 꼭 downcasting을 해야 하겠느냐고 하면 할 말이 없지만(다른 방식으로 해결하는 게 좋은 경우가 더 많지만) 그래도 현실적으로 필요할 때가 종종 있습니다. 이 땐 <code>std::any::Any::downcast_ref</code>를 사용할 수 있습니다(<a href="https://bennett.dev/rust/downcast-trait-object/">참고</a>). 이 과정에서 <code>animal as &amp;dyn Any</code>와 같이 casting 하면 downcast가 정상 동작하지 않는 등 예상대로 동작하지 않는데요.  <code>as_any()</code> 의 신비는 다음에 기회 되면 알아보고 정리해 보겠습니다.</p>
 <p>다음 예제에서 Dog, Cat은 <code>Animal</code> trait을 구현하고 있고, Desk는 구현하고 있지 않습니다.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -725,54 +725,54 @@ if (!doNotTrack) {
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">trait</span> Animal {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">speak</span>(<span style="color:#f92672">&amp;</span>self);
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">as_any</span>(<span style="color:#f92672">&amp;</span>self) -&gt; <span style="color:#66d9ef">&amp;</span><span style="color:#a6e22e">dyn</span> Any;
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ff79c6">trait</span> Animal {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">speak</span>(<span style="color:#ff79c6">&amp;</span>self);
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">as_any</span>(<span style="color:#ff79c6">&amp;</span>self) -&gt; <span style="color:#ff79c6">&amp;</span><span style="color:#50fa7b">dyn</span> Any;
 </span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// .. 생략 ..
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">impl</span> Animal <span style="color:#66d9ef">for</span> Dog {
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// .. 생략 ..
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">as_any</span>(<span style="color:#f92672">&amp;</span>self) -&gt; <span style="color:#66d9ef">&amp;</span><span style="color:#a6e22e">dyn</span> Any {
+</span></span><span style="display:flex;"><span><span style="color:#6272a4">// .. 생략 ..
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">impl</span> Animal <span style="color:#ff79c6">for</span> Dog {
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// .. 생략 ..
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">as_any</span>(<span style="color:#ff79c6">&amp;</span>self) -&gt; <span style="color:#ff79c6">&amp;</span><span style="color:#50fa7b">dyn</span> Any {
 </span></span><span style="display:flex;"><span>        self
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// .. 생략 ..
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> animal_vec: Vec<span style="color:#f92672">&lt;</span>Box<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">dyn</span> Animal<span style="color:#f92672">&gt;&gt;</span> <span style="color:#f92672">=</span> vec![
-</span></span><span style="display:flex;"><span>    Box::new(Dog { name: String::from(<span style="color:#e6db74">&#34;Fido&#34;</span>) }),
-</span></span><span style="display:flex;"><span>    Box::new(Cat { name: String::from(<span style="color:#e6db74">&#34;Whiskers&#34;</span>) }),
+</span></span><span style="display:flex;"><span><span style="color:#6272a4">// .. 생략 ..
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">let</span> animal_vec: <span style="color:#8be9fd;font-style:italic">Vec</span><span style="color:#ff79c6">&lt;</span><span style="color:#8be9fd;font-style:italic">Box</span><span style="color:#ff79c6">&lt;</span><span style="color:#ff79c6">dyn</span> Animal<span style="color:#ff79c6">&gt;&gt;</span> <span style="color:#ff79c6">=</span> vec![
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">Box</span>::new(Dog { name: <span style="color:#8be9fd;font-style:italic">String</span>::from(<span style="color:#f1fa8c">&#34;Fido&#34;</span>) }),
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">Box</span>::new(Cat { name: <span style="color:#8be9fd;font-style:italic">String</span>::from(<span style="color:#f1fa8c">&#34;Whiskers&#34;</span>) }),
 </span></span><span style="display:flex;"><span>];
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> animal <span style="color:#66d9ef">in</span> animal_vec {
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">for</span> animal <span style="color:#ff79c6">in</span> animal_vec {
 </span></span><span style="display:flex;"><span>    animal.speak();
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#66d9ef">let</span> Some(dog) <span style="color:#f92672">=</span> animal.as_any().downcast_ref::<span style="color:#f92672">&lt;</span>Dog<span style="color:#f92672">&gt;</span>() {
-</span></span><span style="display:flex;"><span>        println!(<span style="color:#e6db74">&#34;animal&#39;s name is </span><span style="color:#e6db74">{}</span><span style="color:#e6db74">&#34;</span>, dog.name);    
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">if</span> <span style="color:#8be9fd;font-style:italic">let</span> <span style="color:#8be9fd;font-style:italic">Some</span>(dog) <span style="color:#ff79c6">=</span> animal.as_any().downcast_ref::<span style="color:#ff79c6">&lt;</span>Dog<span style="color:#ff79c6">&gt;</span>() {
+</span></span><span style="display:flex;"><span>        println!(<span style="color:#f1fa8c">&#34;animal&#39;s name is </span><span style="color:#f1fa8c">{}</span><span style="color:#f1fa8c">&#34;</span>, dog.name);    
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> desk <span style="color:#f92672">=</span> Desk { name: String::from(<span style="color:#e6db74">&#34;birch&#34;</span>) };
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> desk_as_any <span style="color:#f92672">=</span> <span style="color:#f92672">&amp;</span>desk <span style="color:#66d9ef">as</span> <span style="color:#f92672">&amp;</span><span style="color:#66d9ef">dyn</span> Any;
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> is_dog <span style="color:#f92672">=</span> desk_as_any.downcast_ref::<span style="color:#f92672">&lt;</span>Dog<span style="color:#f92672">&gt;</span>();
-</span></span><span style="display:flex;"><span>println!(<span style="color:#e6db74">&#34;desk is dog?: </span><span style="color:#e6db74">{:?}</span><span style="color:#e6db74">&#34;</span>, is_dog);
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">let</span> desk <span style="color:#ff79c6">=</span> Desk { name: <span style="color:#8be9fd;font-style:italic">String</span>::from(<span style="color:#f1fa8c">&#34;birch&#34;</span>) };
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">let</span> desk_as_any <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">&amp;</span>desk <span style="color:#ff79c6">as</span> <span style="color:#ff79c6">&amp;</span><span style="color:#ff79c6">dyn</span> Any;
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">let</span> is_dog <span style="color:#ff79c6">=</span> desk_as_any.downcast_ref::<span style="color:#ff79c6">&lt;</span>Dog<span style="color:#ff79c6">&gt;</span>();
+</span></span><span style="display:flex;"><span>println!(<span style="color:#f1fa8c">&#34;desk is dog?: </span><span style="color:#f1fa8c">{:?}</span><span style="color:#f1fa8c">&#34;</span>, is_dog);
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>실행 결과</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>Fido says woof<span style="color:#f92672">!</span>
-</span></span><span style="display:flex;"><span>animal<span style="color:#960050;background-color:#1e0010">&#39;</span>s name is Fido
-</span></span><span style="display:flex;"><span>Whiskers says meow<span style="color:#f92672">!</span>
-</span></span><span style="display:flex;"><span>desk is dog<span style="color:#f92672">?:</span> None
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>Fido says woof<span style="color:#ff79c6">!</span>
+</span></span><span style="display:flex;"><span>animal&#39;s name is Fido
+</span></span><span style="display:flex;"><span>Whiskers says meow<span style="color:#ff79c6">!</span>
+</span></span><span style="display:flex;"><span>desk is dog<span style="color:#ff79c6">?:</span> None
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
@@ -818,7 +818,7 @@ if (!doNotTrack) {
     </main>
     
 <footer class="footer">
-    <span>&copy; 2023 <a href="http://huijeong-kim.github.io/">my dev note</a></span>
+    <span>&copy; 2024 <a href="http://huijeong-kim.github.io/">my dev note</a></span>
     <span>
         Powered by
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &

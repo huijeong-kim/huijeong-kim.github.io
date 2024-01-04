@@ -240,22 +240,22 @@ Rust로 간단한 함수의 parameterised test를 작성해 보고, rust의 test
  </p>
 <h3 id="parameterised-test">Parameterised Test<a hidden class="anchor" aria-hidden="true" href="#parameterised-test">#</a></h3>
 <p>다음과 같은 아주 아주 간단한 함수의 테스트를 작성해 본다고 합시다.(<code>test-case</code> crate repo의 기본 예시 입니다 ^^) 두 개의 <code>i8</code> 값을 받아 두 수의 곱의 절대값을 반환하는 함수입니다.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">multiplication</span>(x: <span style="color:#66d9ef">i8</span>, y: <span style="color:#66d9ef">i8</span>) -&gt; <span style="color:#66d9ef">i8</span> {
-</span></span><span style="display:flex;"><span>    (x <span style="color:#f92672">*</span> y).abs()
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ff79c6">pub</span> <span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">multiplication</span>(x: <span style="color:#8be9fd">i8</span>, y: <span style="color:#8be9fd">i8</span>) -&gt; <span style="color:#8be9fd">i8</span> {
+</span></span><span style="display:flex;"><span>    (x <span style="color:#ff79c6">*</span> y).abs()
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>Input의 두 <code>i8</code> 각각이 음수 &amp; 양수일 때 절대값을 돌려주는 지 확인하는 테스트를 작성해 보겠습니다. 너무 간단해서 와닿지 않을 수 있겠지만 예시로만 참고해 주세요.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -297,52 +297,52 @@ Rust로 간단한 함수의 parameterised test를 작성해 보고, rust의 test
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#75715e">#[cfg(test)]</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">mod</span> tests {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">use</span> <span style="color:#66d9ef">super</span>::<span style="color:#f92672">*</span>;
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ff79c6">#[cfg(test)]</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">mod</span> tests {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">use</span> <span style="color:#ff79c6">super</span>::<span style="color:#ff79c6">*</span>;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#[test]</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">multiplication_tests_negative_negative</span>() {
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> x <span style="color:#f92672">=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">2</span>;
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> y <span style="color:#f92672">=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">4</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">#[test]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">multiplication_tests_negative_negative</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#8be9fd;font-style:italic">let</span> x <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">-</span><span style="color:#bd93f9">2</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#8be9fd;font-style:italic">let</span> y <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">-</span><span style="color:#bd93f9">4</span>;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> actual <span style="color:#f92672">=</span> multiplication(x, y);
-</span></span><span style="display:flex;"><span>        assert_eq!(<span style="color:#ae81ff">8</span>, actual);
+</span></span><span style="display:flex;"><span>        <span style="color:#8be9fd;font-style:italic">let</span> actual <span style="color:#ff79c6">=</span> multiplication(x, y);
+</span></span><span style="display:flex;"><span>        assert_eq!(<span style="color:#bd93f9">8</span>, actual);
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#[test]</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">multiplication_tests_negative_positive</span>() {
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> x <span style="color:#f92672">=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">2</span>;
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> y <span style="color:#f92672">=</span> <span style="color:#ae81ff">4</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">#[test]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">multiplication_tests_negative_positive</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#8be9fd;font-style:italic">let</span> x <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">-</span><span style="color:#bd93f9">2</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#8be9fd;font-style:italic">let</span> y <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">4</span>;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> actual <span style="color:#f92672">=</span> multiplication(x, y);
-</span></span><span style="display:flex;"><span>        assert_eq!(<span style="color:#f92672">-</span><span style="color:#ae81ff">8</span>, actual);
+</span></span><span style="display:flex;"><span>        <span style="color:#8be9fd;font-style:italic">let</span> actual <span style="color:#ff79c6">=</span> multiplication(x, y);
+</span></span><span style="display:flex;"><span>        assert_eq!(<span style="color:#ff79c6">-</span><span style="color:#bd93f9">8</span>, actual);
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#[test]</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">multiplication_tests_positive_negative</span>() {
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> x <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>;
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> y <span style="color:#f92672">=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">4</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">#[test]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">multiplication_tests_positive_negative</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#8be9fd;font-style:italic">let</span> x <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">2</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#8be9fd;font-style:italic">let</span> y <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">-</span><span style="color:#bd93f9">4</span>;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> actual <span style="color:#f92672">=</span> multiplication(x, y);
-</span></span><span style="display:flex;"><span>        assert_eq!(<span style="color:#f92672">-</span><span style="color:#ae81ff">8</span>, actual);
+</span></span><span style="display:flex;"><span>        <span style="color:#8be9fd;font-style:italic">let</span> actual <span style="color:#ff79c6">=</span> multiplication(x, y);
+</span></span><span style="display:flex;"><span>        assert_eq!(<span style="color:#ff79c6">-</span><span style="color:#bd93f9">8</span>, actual);
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#[test]</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">multiplication_tests_positive_positive</span>() {
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> x <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>;
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> y <span style="color:#f92672">=</span> <span style="color:#ae81ff">4</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">#[test]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">multiplication_tests_positive_positive</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#8be9fd;font-style:italic">let</span> x <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">2</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#8be9fd;font-style:italic">let</span> y <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">4</span>;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> actual <span style="color:#f92672">=</span> multiplication(x, y);
-</span></span><span style="display:flex;"><span>        assert_eq!(<span style="color:#ae81ff">8</span>, actual);
+</span></span><span style="display:flex;"><span>        <span style="color:#8be9fd;font-style:italic">let</span> actual <span style="color:#ff79c6">=</span> multiplication(x, y);
+</span></span><span style="display:flex;"><span>        assert_eq!(<span style="color:#bd93f9">8</span>, actual);
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><strong>실행 결과</strong></p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
@@ -351,21 +351,21 @@ Rust로 간단한 함수의 parameterised test를 작성해 보고, rust의 test
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>running <span style="color:#ae81ff">4</span> tests
-</span></span><span style="display:flex;"><span>test tests::multiplication_tests_negative_negative ... ok
-</span></span><span style="display:flex;"><span>test tests::multiplication_tests_negative_positive ... ok
-</span></span><span style="display:flex;"><span>test tests::multiplication_tests_positive_negative ... ok
-</span></span><span style="display:flex;"><span>test tests::multiplication_tests_positive_positive ... ok
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>running <span style="color:#bd93f9">4</span> tests
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">test</span> tests::multiplication_tests_negative_negative ... ok
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">test</span> tests::multiplication_tests_negative_positive ... ok
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">test</span> tests::multiplication_tests_positive_negative ... ok
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">test</span> tests::multiplication_tests_positive_positive ... ok
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>test result: ok. <span style="color:#ae81ff">4</span> passed; <span style="color:#ae81ff">0</span> failed; <span style="color:#ae81ff">0</span> ignored; <span style="color:#ae81ff">0</span> measured; <span style="color:#ae81ff">0</span> filtered out; finished in 0.00s
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">test</span> result: ok. <span style="color:#bd93f9">4</span> passed; <span style="color:#bd93f9">0</span> failed; <span style="color:#bd93f9">0</span> ignored; <span style="color:#bd93f9">0</span> measured; <span style="color:#bd93f9">0</span> filtered out; finished in 0.00s
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>양수, 음수의 조합 4가지를 테스트로 작성하였습니다. 간단한 함수의 테스트인데 꽤 많은 코드가 필요합니다. 게다가 테스트 fail 발생할 경우 각 테스트를 하나 하나 읽으며 의도를 파악해야 합니다. 이 예제는 간단하여 금방 의도를 파악할 수 있겠으나, 코드가 조금만 더 복잡해진다면 배로 힘들어 질 것 같습니다. 게다가 만약 이 함수가 절대값이 아닌 곱셈 결과를 반환하도록 바뀌어야 한다면, 테스트 케이스 중 바뀌어야 하는 expected 값을 찾는 게 조금 힘들 수 있겠습니다.</p>
 <p> </p>
 <p>이를 개선하기 위해 여기에 parameterised test를 적용하면 테스트 코드는 다음과 같이 바뀌게 됩니다.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -386,31 +386,31 @@ Rust로 간단한 함수의 parameterised test를 작성해 보고, rust의 test
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#75715e">#[cfg(test)]</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">mod</span> tests {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">use</span> <span style="color:#66d9ef">super</span>::<span style="color:#f92672">*</span>;
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ff79c6">#[cfg(test)]</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">mod</span> tests {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">use</span> <span style="color:#ff79c6">super</span>::<span style="color:#ff79c6">*</span>;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#[test]</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">multiplication_tests</span>() {
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> test_cases <span style="color:#f92672">=</span> vec![
-</span></span><span style="display:flex;"><span>            (<span style="color:#f92672">-</span><span style="color:#ae81ff">2</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">8</span>, <span style="color:#e6db74">&#34;when negative-negative value provided&#34;</span>),
-</span></span><span style="display:flex;"><span>            (<span style="color:#f92672">-</span><span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">8</span>, <span style="color:#e6db74">&#34;when negative-positive value provided&#34;</span>),
-</span></span><span style="display:flex;"><span>            (<span style="color:#ae81ff">2</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">8</span>, <span style="color:#e6db74">&#34;when positive-negative value provided&#34;</span>),
-</span></span><span style="display:flex;"><span>            (<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">8</span>, <span style="color:#e6db74">&#34;when positive-positive value provided&#34;</span>),
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">#[test]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">multiplication_tests</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#8be9fd;font-style:italic">let</span> test_cases <span style="color:#ff79c6">=</span> vec![
+</span></span><span style="display:flex;"><span>            (<span style="color:#ff79c6">-</span><span style="color:#bd93f9">2</span>, <span style="color:#ff79c6">-</span><span style="color:#bd93f9">4</span>, <span style="color:#bd93f9">8</span>, <span style="color:#f1fa8c">&#34;when negative-negative value provided&#34;</span>),
+</span></span><span style="display:flex;"><span>            (<span style="color:#ff79c6">-</span><span style="color:#bd93f9">2</span>, <span style="color:#bd93f9">4</span>, <span style="color:#bd93f9">8</span>, <span style="color:#f1fa8c">&#34;when negative-positive value provided&#34;</span>),
+</span></span><span style="display:flex;"><span>            (<span style="color:#bd93f9">2</span>, <span style="color:#ff79c6">-</span><span style="color:#bd93f9">4</span>, <span style="color:#bd93f9">8</span>, <span style="color:#f1fa8c">&#34;when positive-negative value provided&#34;</span>),
+</span></span><span style="display:flex;"><span>            (<span style="color:#bd93f9">2</span>, <span style="color:#bd93f9">4</span>, <span style="color:#bd93f9">8</span>, <span style="color:#f1fa8c">&#34;when positive-positive value provided&#34;</span>),
 </span></span><span style="display:flex;"><span>        ];
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> (arg1, arg2, expected, err_msg) <span style="color:#66d9ef">in</span> test_cases {
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">let</span> actual <span style="color:#f92672">=</span> multiplication(arg1, arg2);
-</span></span><span style="display:flex;"><span>            assert_eq!(expected, actual, <span style="color:#e6db74">&#34;Result is wrong {}&#34;</span>, err_msg);
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">for</span> (arg1, arg2, expected, err_msg) <span style="color:#ff79c6">in</span> test_cases {
+</span></span><span style="display:flex;"><span>            <span style="color:#8be9fd;font-style:italic">let</span> actual <span style="color:#ff79c6">=</span> multiplication(arg1, arg2);
+</span></span><span style="display:flex;"><span>            assert_eq!(expected, actual, <span style="color:#f1fa8c">&#34;Result is wrong {}&#34;</span>, err_msg);
 </span></span><span style="display:flex;"><span>        }
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>test case table에 input값, 예상 값과 함께 실패했을 경우 출력할 error message를 정의하였습니다. Fail 발생 시 적절한 error message를 출력하기 위해서 입니다. 만약 <code>multiplication</code> 함수에서 <code>abs()</code>를 제거한다면 다음과 같이 적절한 에러 메시지가 출력될 것 입니다.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -430,24 +430,24 @@ Rust로 간단한 함수의 parameterised test를 작성해 보고, rust의 test
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>running <span style="color:#ae81ff">1</span> test
-</span></span><span style="display:flex;"><span>test tests::multiplication_tests ... FAILED
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>running <span style="color:#bd93f9">1</span> <span style="color:#8be9fd;font-style:italic">test</span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">test</span> tests::multiplication_tests ... FAILED
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>failures:
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>---- tests::multiplication_tests stdout ----
-</span></span><span style="display:flex;"><span>thread <span style="color:#e6db74">&#39;tests::multiplication_tests&#39;</span> panicked at <span style="color:#e6db74">&#39;assertion failed: `(left == right)`
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">left: `8`,
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">right: `-8`: Result is wrong when negative-positive value provided&#39;</span>, src/bin/test-cases.rs:21:13
-</span></span><span style="display:flex;"><span>note: run with <span style="color:#e6db74">`</span>RUST_BACKTRACE<span style="color:#f92672">=</span>1<span style="color:#e6db74">`</span> environment variable to display a backtrace
+</span></span><span style="display:flex;"><span>thread <span style="color:#f1fa8c">&#39;tests::multiplication_tests&#39;</span> panicked at <span style="color:#f1fa8c">&#39;assertion failed: `(left == right)`
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">left: `8`,
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">right: `-8`: Result is wrong when negative-positive value provided&#39;</span>, src/bin/test-cases.rs:21:13
+</span></span><span style="display:flex;"><span>note: run with <span style="color:#f1fa8c">`</span><span style="color:#8be9fd;font-style:italic">RUST_BACKTRACE</span><span style="color:#ff79c6">=</span>1<span style="color:#f1fa8c">`</span> environment variable to display a backtrace
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>failures:
 </span></span><span style="display:flex;"><span>tests::multiplication_tests
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>test result: FAILED. <span style="color:#ae81ff">0</span> passed; <span style="color:#ae81ff">1</span> failed; <span style="color:#ae81ff">0</span> ignored; <span style="color:#ae81ff">0</span> measured; <span style="color:#ae81ff">0</span> filtered out; finished in 0.00s
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">test</span> result: FAILED. <span style="color:#bd93f9">0</span> passed; <span style="color:#bd93f9">1</span> failed; <span style="color:#bd93f9">0</span> ignored; <span style="color:#bd93f9">0</span> measured; <span style="color:#bd93f9">0</span> filtered out; finished in 0.00s
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>error: test failed, to rerun pass <span style="color:#e6db74">&#39;--bin test-cases&#39;</span> 
+</span></span><span style="display:flex;"><span>error: <span style="color:#8be9fd;font-style:italic">test</span> failed, to rerun pass <span style="color:#f1fa8c">&#39;--bin test-cases&#39;</span> 
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>test case table을 만드는 것 만으로도 테스트 코드가 간결해 졌습니다. 다른 모든 unit test code에도 동일하게 적용할 수 있겠습니다. 다만 매 번 table 을 만들고 for loop 를 만드는 수고로움이 있습니다. 이 부분은 test case table 생성을 도와주는 rust crate들의 도움을 받을 수 있습니다!</p>
@@ -455,9 +455,9 @@ Rust로 간단한 함수의 parameterised test를 작성해 보고, rust의 test
  </p>
 <h3 id="test-case">test-case<a hidden class="anchor" aria-hidden="true" href="#test-case">#</a></h3>
 <p><a href="https://github.com/frondeus/test-case">test-case</a> crate를 사용하면 macro로 test case table을 만들 수 있습니다. 위에서 작성한 test case table을 <code>test_case</code> macro를 사용하여 수정하면 다음과 같습니다.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -473,26 +473,26 @@ Rust로 간단한 함수의 parameterised test를 작성해 보고, rust의 test
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#75715e">#[cfg(test)]</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">mod</span> tests {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">use</span> <span style="color:#66d9ef">super</span>::<span style="color:#f92672">*</span>;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">use</span> test_case::test_case;
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ff79c6">#[cfg(test)]</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">mod</span> tests {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">use</span> <span style="color:#ff79c6">super</span>::<span style="color:#ff79c6">*</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">use</span> test_case::test_case;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#[test_case(-2, -4 =&gt; 8; </span><span style="color:#e6db74">&#34;when negative-negative value provided&#34;</span><span style="color:#75715e">)]</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#[test_case(-2, 4 =&gt; 8; </span><span style="color:#e6db74">&#34;when negative-positive value provided&#34;</span><span style="color:#75715e">)]</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#[test_case(2, -4 =&gt; 8; </span><span style="color:#e6db74">&#34;when positive-negative value provided&#34;</span><span style="color:#75715e">)]</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#[test_case(2, 4 =&gt; 8; </span><span style="color:#e6db74">&#34;when positive-positive value provided&#34;</span><span style="color:#75715e">)]</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">multiplication_test</span>(x: <span style="color:#66d9ef">i8</span>, y: <span style="color:#66d9ef">i8</span>) {
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> actual <span style="color:#f92672">=</span> multiplication(x, y);
-</span></span><span style="display:flex;"><span>        assert_eq!(<span style="color:#ae81ff">8</span>, actual)
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">#[test_case(-2, -4 =&gt; 8; </span><span style="color:#f1fa8c">&#34;when negative-negative value provided&#34;</span><span style="color:#ff79c6">)]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">#[test_case(-2, 4 =&gt; 8; </span><span style="color:#f1fa8c">&#34;when negative-positive value provided&#34;</span><span style="color:#ff79c6">)]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">#[test_case(2, -4 =&gt; 8; </span><span style="color:#f1fa8c">&#34;when positive-negative value provided&#34;</span><span style="color:#ff79c6">)]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">#[test_case(2, 4 =&gt; 8; </span><span style="color:#f1fa8c">&#34;when positive-positive value provided&#34;</span><span style="color:#ff79c6">)]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">multiplication_test</span>(x: <span style="color:#8be9fd">i8</span>, y: <span style="color:#8be9fd">i8</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#8be9fd;font-style:italic">let</span> actual <span style="color:#ff79c6">=</span> multiplication(x, y);
+</span></span><span style="display:flex;"><span>        assert_eq!(<span style="color:#bd93f9">8</span>, actual)
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>실행 결과는 다음과 같습니다. 실행 결과에서 유추할 수 있듯, 각 macro의 마지막에 적은 string 이 곧 test case 이름이 됩니다.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
@@ -501,19 +501,19 @@ Rust로 간단한 함수의 parameterised test를 작성해 보고, rust의 test
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>running <span style="color:#ae81ff">4</span> tests
-</span></span><span style="display:flex;"><span>test tests::multiplication_test::when_negative_negative_value_provided ... ok
-</span></span><span style="display:flex;"><span>test tests::multiplication_test::when_positive_positive_value_provided ... ok
-</span></span><span style="display:flex;"><span>test tests::multiplication_test::when_negative_positive_value_provided ... ok
-</span></span><span style="display:flex;"><span>test tests::multiplication_test::when_positive_negative_value_provided ... ok
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>running <span style="color:#bd93f9">4</span> tests
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">test</span> tests::multiplication_test::when_negative_negative_value_provided ... ok
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">test</span> tests::multiplication_test::when_positive_positive_value_provided ... ok
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">test</span> tests::multiplication_test::when_negative_positive_value_provided ... ok
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">test</span> tests::multiplication_test::when_positive_negative_value_provided ... ok
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>test result: ok. <span style="color:#ae81ff">4</span> passed; <span style="color:#ae81ff">0</span> failed; <span style="color:#ae81ff">0</span> ignored; <span style="color:#ae81ff">0</span> measured; <span style="color:#ae81ff">0</span> filtered out; finished in 0.00s
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">test</span> result: ok. <span style="color:#bd93f9">4</span> passed; <span style="color:#bd93f9">0</span> failed; <span style="color:#bd93f9">0</span> ignored; <span style="color:#bd93f9">0</span> measured; <span style="color:#bd93f9">0</span> filtered out; finished in 0.00s
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>test case 이름을 지정하지 않으면 test case name은 input, output 값을 가지고 test case를 생성해 냅니다. 여기서 i8 input의 positive/negative는 구별하지 못하는 것 같더라고요. (-2, 4 =&gt; 8)과 (2, 4 =&gt; 8)이 같은 이름으로 생성되 에러가 발생하니 참고하세요.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
@@ -522,18 +522,18 @@ Rust로 간단한 함수의 parameterised test를 작성해 보고, rust의 test
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#75715e">#[test_case(-2, -4 =&gt; 8)]</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#[test_case(-3, 4 =&gt; 12)]</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#[test_case(1, -4 =&gt; 4)]</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#[test_case(6, 4 =&gt; 24)]</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">multiplication_test</span>(x: <span style="color:#66d9ef">i8</span>, y: <span style="color:#66d9ef">i8</span>) -&gt; <span style="color:#66d9ef">i8</span>{
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ff79c6">#[test_case(-2, -4 =&gt; 8)]</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">#[test_case(-3, 4 =&gt; 12)]</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">#[test_case(1, -4 =&gt; 4)]</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">#[test_case(6, 4 =&gt; 24)]</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">multiplication_test</span>(x: <span style="color:#8be9fd">i8</span>, y: <span style="color:#8be9fd">i8</span>) -&gt; <span style="color:#8be9fd">i8</span>{
 </span></span><span style="display:flex;"><span>    multiplication(x, y)
 </span></span><span style="display:flex;"><span>} 
 </span></span></code></pre></td></tr></table>
 </div>
-</div><div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+</div><div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
@@ -542,13 +542,13 @@ Rust로 간단한 함수의 parameterised test를 작성해 보고, rust의 test
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>running <span style="color:#ae81ff">4</span> tests
-</span></span><span style="display:flex;"><span>test tests::multiplication_test::_1_4_expects_4 ... ok
-</span></span><span style="display:flex;"><span>test tests::multiplication_test::_2_4_expects_8 ... ok
-</span></span><span style="display:flex;"><span>test tests::multiplication_test::_3_4_expects_12 ... ok
-</span></span><span style="display:flex;"><span>test tests::multiplication_test::_6_4_expects_24 ... ok
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>running <span style="color:#bd93f9">4</span> tests
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">test</span> tests::multiplication_test::_1_4_expects_4 ... ok
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">test</span> tests::multiplication_test::_2_4_expects_8 ... ok
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">test</span> tests::multiplication_test::_3_4_expects_12 ... ok
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">test</span> tests::multiplication_test::_6_4_expects_24 ... ok
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>test result: ok. <span style="color:#ae81ff">4</span> passed; <span style="color:#ae81ff">0</span> failed; <span style="color:#ae81ff">0</span> ignored; <span style="color:#ae81ff">0</span> measured; <span style="color:#ae81ff">0</span> filtered out; finished in 0.00s 
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">test</span> result: ok. <span style="color:#bd93f9">4</span> passed; <span style="color:#bd93f9">0</span> failed; <span style="color:#bd93f9">0</span> ignored; <span style="color:#bd93f9">0</span> measured; <span style="color:#bd93f9">0</span> filtered out; finished in 0.00s 
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>그 외에도 expect panic, assert function 지정 등 재미있는 syntax들이 많습니다. 더 자세한 사용법은 <a href="https://github.com/frondeus/test-case/wiki/Syntax">link</a>를 참고해 주세요.</p>
@@ -557,9 +557,9 @@ Rust로 간단한 함수의 parameterised test를 작성해 보고, rust의 test
 <h3 id="rtest">rtest<a hidden class="anchor" aria-hidden="true" href="#rtest">#</a></h3>
 <p><a href="https://github.com/la10736/rstest">rstest</a>는 test fixture, parameterised test 등을 제공하는 crate 입니다. 앞에서 소개한 test-case 보다 다양한 기능이 있는 것 같습니다. 오늘은 그 중 parameterised test 작성 부분만 살펴보겠습니다.</p>
 <p>위에서 작성한 코드를 그대로 rstest를 사용하여 작성하면 다음과 같습니다. 자동 생성 된 Test case 명이 아쉬운데, 테스트 명을 변경하는 방법은 찾지 못하였어요.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -575,25 +575,25 @@ Rust로 간단한 함수의 parameterised test를 작성해 보고, rust의 test
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#75715e">#[cfg(test)]</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">mod</span> tests {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">use</span> <span style="color:#66d9ef">super</span>::<span style="color:#f92672">*</span>;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">use</span> rstest::rstest;
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ff79c6">#[cfg(test)]</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">mod</span> tests {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">use</span> <span style="color:#ff79c6">super</span>::<span style="color:#ff79c6">*</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">use</span> rstest::rstest;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#[rstest]</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#[case(-2, -4, 8)]</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#[case(2, -4, 8)]</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#[case(-2, 4, 8)]</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#[case(2, 4, 8)]</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">multiplication_test</span>(<span style="color:#75715e">#[case]</span> x: <span style="color:#66d9ef">i8</span>, <span style="color:#75715e">#[case]</span> y: <span style="color:#66d9ef">i8</span>, <span style="color:#75715e">#[case]</span> expected: <span style="color:#66d9ef">i8</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">#[rstest]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">#[case(-2, -4, 8)]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">#[case(2, -4, 8)]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">#[case(-2, 4, 8)]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">#[case(2, 4, 8)]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">multiplication_test</span>(<span style="color:#ff79c6">#[case]</span> x: <span style="color:#8be9fd">i8</span>, <span style="color:#ff79c6">#[case]</span> y: <span style="color:#8be9fd">i8</span>, <span style="color:#ff79c6">#[case]</span> expected: <span style="color:#8be9fd">i8</span>) {
 </span></span><span style="display:flex;"><span>        assert_eq!(multiplication(x, y), expected);
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>} 
 </span></span></code></pre></td></tr></table>
 </div>
-</div><div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+</div><div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
@@ -602,13 +602,13 @@ Rust로 간단한 함수의 parameterised test를 작성해 보고, rust의 test
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>running <span style="color:#ae81ff">4</span> tests
-</span></span><span style="display:flex;"><span>test tests::multiplication_test::case_1 ... ok
-</span></span><span style="display:flex;"><span>test tests::multiplication_test::case_2 ... ok
-</span></span><span style="display:flex;"><span>test tests::multiplication_test::case_3 ... ok
-</span></span><span style="display:flex;"><span>test tests::multiplication_test::case_4 ... ok
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>running <span style="color:#bd93f9">4</span> tests
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">test</span> tests::multiplication_test::case_1 ... ok
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">test</span> tests::multiplication_test::case_2 ... ok
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">test</span> tests::multiplication_test::case_3 ... ok
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">test</span> tests::multiplication_test::case_4 ... ok
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>test result: ok. <span style="color:#ae81ff">4</span> passed; <span style="color:#ae81ff">0</span> failed; <span style="color:#ae81ff">0</span> ignored; <span style="color:#ae81ff">0</span> measured; <span style="color:#ae81ff">0</span> filtered out; finished in 0.00s
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">test</span> result: ok. <span style="color:#bd93f9">4</span> passed; <span style="color:#bd93f9">0</span> failed; <span style="color:#bd93f9">0</span> ignored; <span style="color:#bd93f9">0</span> measured; <span style="color:#bd93f9">0</span> filtered out; finished in 0.00s
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>사용법도 조금 더 귀찮고 아쉽운 부분이 있긴 한데, <code>rstest</code>는 Test fixture 제공, Test timeout 설정하기 등등 다른 유용한 기능들이 많습니다. 이 기능들은 좀 더 사용해 보고 공유하겠습니다 :)</p>
@@ -648,7 +648,7 @@ Rust로 간단한 함수의 parameterised test를 작성해 보고, rust의 test
     </main>
     
 <footer class="footer">
-    <span>&copy; 2023 <a href="http://huijeong-kim.github.io/">my dev note</a></span>
+    <span>&copy; 2024 <a href="http://huijeong-kim.github.io/">my dev note</a></span>
     <span>
         Powered by
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &

@@ -267,18 +267,18 @@ Rust에서는 C와 같이 null-terminating string 개념을 사용하지 않습�
 <h1 id="2-str-vs-str">2. str vs. &amp;str<a hidden class="anchor" aria-hidden="true" href="#2-str-vs-str">#</a></h1>
 <p><code>str</code> 타입은 단독으로 쓰이는 경우는 거의 없습니다. 주로 <code>&amp;str</code> 과 같은 reference 타입으로 사용됩니다.</p>
 <p>다음과 같이 <code>str</code> 타입을 사용하려 하면 compile error 가 발생합니다.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">let</span> <span style="color:#66d9ef">str</span>: <span style="color:#66d9ef">str</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;hello world&#34;</span>;
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">let</span> <span style="color:#8be9fd">str</span>: <span style="color:#8be9fd">str</span> <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;hello world&#34;</span>;
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>컴파일 결과</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -306,41 +306,41 @@ Rust에서는 C와 같이 null-terminating string 개념을 사용하지 않습�
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>   Compiling playground v0.0.1 <span style="color:#f92672">(</span>/playground<span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>error<span style="color:#f92672">[</span>E0308<span style="color:#f92672">]</span>: mismatched types
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>   Compiling playground v0.0.1 <span style="color:#ff79c6">(</span>/playground<span style="color:#ff79c6">)</span>
+</span></span><span style="display:flex;"><span>error<span style="color:#ff79c6">[</span>E0308<span style="color:#ff79c6">]</span>: mismatched types
 </span></span><span style="display:flex;"><span> --&gt; src/main.rs:2:20
 </span></span><span style="display:flex;"><span>  |
-</span></span><span style="display:flex;"><span><span style="color:#ae81ff">2</span> |     let str: str <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;hello world&#34;</span>;
-</span></span><span style="display:flex;"><span>  |              ---   ^^^^^^^^^^^^^ expected <span style="color:#e6db74">`</span>str<span style="color:#e6db74">`</span>, found <span style="color:#e6db74">`</span>&amp;str<span style="color:#e6db74">`</span>
+</span></span><span style="display:flex;"><span><span style="color:#bd93f9">2</span> |     <span style="color:#8be9fd;font-style:italic">let</span> str: <span style="color:#8be9fd;font-style:italic">str</span> <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;hello world&#34;</span>;
+</span></span><span style="display:flex;"><span>  |              ---   ^^^^^^^^^^^^^ expected <span style="color:#f1fa8c">`</span>str<span style="color:#f1fa8c">`</span>, found <span style="color:#f1fa8c">`</span>&amp;str<span style="color:#f1fa8c">`</span>
 </span></span><span style="display:flex;"><span>  |              |
 </span></span><span style="display:flex;"><span>  |              expected due to this
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>error<span style="color:#f92672">[</span>E0277<span style="color:#f92672">]</span>: the size <span style="color:#66d9ef">for</span> values of type <span style="color:#e6db74">`</span>str<span style="color:#e6db74">`</span> cannot be known at compilation time
+</span></span><span style="display:flex;"><span>error<span style="color:#ff79c6">[</span>E0277<span style="color:#ff79c6">]</span>: the size <span style="color:#ff79c6">for</span> values of <span style="color:#8be9fd;font-style:italic">type</span> <span style="color:#f1fa8c">`</span>str<span style="color:#f1fa8c">`</span> cannot be known at compilation <span style="color:#8be9fd;font-style:italic">time</span>
 </span></span><span style="display:flex;"><span> --&gt; src/main.rs:2:9
 </span></span><span style="display:flex;"><span>  |
-</span></span><span style="display:flex;"><span><span style="color:#ae81ff">2</span> |     let str: str <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;hello world&#34;</span>;
-</span></span><span style="display:flex;"><span>  |         ^^^ doesn<span style="color:#960050;background-color:#1e0010">&#39;</span>t have a size known at compile-time
+</span></span><span style="display:flex;"><span><span style="color:#bd93f9">2</span> |     <span style="color:#8be9fd;font-style:italic">let</span> str: <span style="color:#8be9fd;font-style:italic">str</span> <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;hello world&#34;</span>;
+</span></span><span style="display:flex;"><span>  |         ^^^ doesn&#39;t have a size known at compile-time
 </span></span><span style="display:flex;"><span>  |
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">=</span> help: the trait <span style="color:#e6db74">`</span>Sized<span style="color:#e6db74">`</span> is not implemented <span style="color:#66d9ef">for</span> <span style="color:#e6db74">`</span>str<span style="color:#e6db74">`</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">=</span> note: all local variables must have a statically known size
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">=</span> help: unsized locals are gated as an unstable feature
+</span></span><span style="display:flex;"><span>  <span style="color:#ff79c6">=</span> help: the trait <span style="color:#f1fa8c">`</span>Sized<span style="color:#f1fa8c">`</span> is not implemented <span style="color:#ff79c6">for</span> <span style="color:#f1fa8c">`</span>str<span style="color:#f1fa8c">`</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ff79c6">=</span> note: all <span style="color:#8be9fd;font-style:italic">local</span> variables must have a statically known <span style="color:#8be9fd;font-style:italic">size</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ff79c6">=</span> help: unsized locals are gated as an unstable feature
 </span></span><span style="display:flex;"><span>help: consider borrowing here
 </span></span><span style="display:flex;"><span>  |
-</span></span><span style="display:flex;"><span><span style="color:#ae81ff">2</span> |     let str: &amp;str <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;hello world&#34;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#bd93f9">2</span> |     <span style="color:#8be9fd;font-style:italic">let</span> str: &amp;<span style="color:#8be9fd;font-style:italic">str</span> <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;hello world&#34;</span>;
 </span></span><span style="display:flex;"><span>  |              +
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>Some errors have detailed explanations: E0277, E0308.
-</span></span><span style="display:flex;"><span>For more information about an error, try <span style="color:#e6db74">`</span>rustc --explain E0277<span style="color:#e6db74">`</span>.
-</span></span><span style="display:flex;"><span>error: could not compile <span style="color:#e6db74">`</span>playground<span style="color:#e6db74">`</span> due to <span style="color:#ae81ff">2</span> previous errors
+</span></span><span style="display:flex;"><span>For more information about an error, try <span style="color:#f1fa8c">`</span>rustc --explain E0277<span style="color:#f1fa8c">`</span>.
+</span></span><span style="display:flex;"><span>error: could not compile <span style="color:#f1fa8c">`</span>playground<span style="color:#f1fa8c">`</span> due to <span style="color:#bd93f9">2</span> previous errors
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>문제는 두 가지 입니다. 첫 번째는 대입하고자 하는 데이터인 &ldquo;hello world&quot;가 <code>str</code>가 아닌 <code>&amp;str</code> 타입이라는 것 이고, 두 번째는 <code>str</code> 타입의 크기는 compile type에 알 수 없다는 것 입니다.</p>
 <p>&ldquo;hello world&quot;와 같은 <strong>string literal</strong>은 <code>&amp;str</code> 타입입니다. 실행 파일의 text 영역에 하드코딩 된 문자열을 참조하는 형태기 때문입니다.</p>
 <p><code>str</code> 은 <strong>string slice</strong>로 DST(Dynamic Sized Type) 중 하나 입니다. <a href="https://doc.rust-lang.org/reference/dynamically-sized-types.html">DST</a>는 compile time에 그 크기를 알 수 없는 타입으로, <code>Slice</code>, <code>Trait</code> 이 대표적인 예 입니다. 해당 타입들은 그냥 사용할 순 없고, <code>Box</code>를 사용하여 heap 에 위치시키거나, reference 로 Sized object를 가리키도록 하는 등의 방식으로 사용해야 합니다. <code>Vec&lt;dyn Trait&gt;</code>을 사용할 때 발생하는 컴파일 에러는 <a href="https://huijeong-kim.github.io/rust-polymorphism/">이전 포스트</a>에서 살펴본 적 있습니다.</p>
 <p><code>str</code>은 reference 형태로 많이 사용되고, reference 대상은 <!-- raw HTML omitted -->Heap-allocated String<!-- raw HTML omitted -->, <!-- raw HTML omitted -->String literal<!-- raw HTML omitted --> 등이 됩니다.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
@@ -350,37 +350,37 @@ Rust에서는 C와 같이 null-terminating string 개념을 사용하지 않습�
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">let</span> heap_allocated_strings <span style="color:#f92672">=</span> String::from(<span style="color:#e6db74">&#34;Hello from heap&#34;</span>);
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> <span style="color:#66d9ef">str</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Hello from binary&#34;</span>;
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">let</span> heap_allocated_strings <span style="color:#ff79c6">=</span> <span style="color:#8be9fd;font-style:italic">String</span>::from(<span style="color:#f1fa8c">&#34;Hello from heap&#34;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">let</span> <span style="color:#8be9fd">str</span> <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;Hello from binary&#34;</span>;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> ref_to_heap: <span style="color:#66d9ef">&amp;</span><span style="color:#66d9ef">str</span> <span style="color:#f92672">=</span> <span style="color:#f92672">&amp;</span>heap_allocated_strings;
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> ref_to_literal: <span style="color:#66d9ef">&amp;</span><span style="color:#66d9ef">str</span> <span style="color:#f92672">=</span> <span style="color:#f92672">&amp;</span><span style="color:#66d9ef">str</span>;
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">let</span> ref_to_heap: <span style="color:#ff79c6">&amp;</span><span style="color:#8be9fd">str</span> <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">&amp;</span>heap_allocated_strings;
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">let</span> ref_to_literal: <span style="color:#ff79c6">&amp;</span><span style="color:#8be9fd">str</span> <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">&amp;</span><span style="color:#8be9fd">str</span>;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>println!(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{}</span><span style="color:#e6db74">&#34;</span>, ref_to_heap);
-</span></span><span style="display:flex;"><span>println!(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{}</span><span style="color:#e6db74">&#34;</span>, ref_to_literal);
+</span></span><span style="display:flex;"><span>println!(<span style="color:#f1fa8c">&#34;</span><span style="color:#f1fa8c">{}</span><span style="color:#f1fa8c">&#34;</span>, ref_to_heap);
+</span></span><span style="display:flex;"><span>println!(<span style="color:#f1fa8c">&#34;</span><span style="color:#f1fa8c">{}</span><span style="color:#f1fa8c">&#34;</span>, ref_to_literal);
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>실행결과</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>Hello from heap
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>Hello from heap
 </span></span><span style="display:flex;"><span>Hello from binary
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p> </p>
 <p>String literal은 프로그램 실행 시간 전체에서 유효한 값으로, 그 lifetime은 static 입니다. 위의 예시 코드에서 string literal에 다음과 같이 lifetime을 명시할 수도 있습니다.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">let</span> <span style="color:#66d9ef">str</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Hello world from bin&#34;</span>;
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> ref_to_literal: <span style="color:#66d9ef">&amp;</span>&#39;static <span style="color:#66d9ef">str</span> <span style="color:#f92672">=</span> <span style="color:#f92672">&amp;</span><span style="color:#66d9ef">str</span>;
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">let</span> <span style="color:#8be9fd">str</span> <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;Hello world from bin&#34;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">let</span> ref_to_literal: <span style="color:#ff79c6">&amp;</span><span style="color:#8be9fd;font-style:italic">&#39;static</span> <span style="color:#8be9fd">str</span> <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">&amp;</span><span style="color:#8be9fd">str</span>;
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p> </p>
@@ -388,20 +388,20 @@ Rust에서는 C와 같이 null-terminating string 개념을 사용하지 않습�
 <h1 id="3-string-vs-boxstr">3. String vs. Box&lt;str&gt;<a hidden class="anchor" aria-hidden="true" href="#3-string-vs-boxstr">#</a></h1>
 <p>DST인 <code>str</code>을 reference 형태가 아닌 <code>Box</code> 형태로 heap에 할당, 이를 가리키도록 할 수 있습니다. 이 경우, 애초에 heap에 메모리 할당받는 <code>String</code> 타입과 유사해 집니다.</p>
 <p>이를 위해 단순히 <code>Box&lt;str&gt;</code> 타입을 <code>&amp;str</code> 타입으로부터 생성하려 하면 컴파일 에러가 발생합니다.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">let</span> boxed_str: Box<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">str</span><span style="color:#f92672">&gt;</span> <span style="color:#f92672">=</span> Box::new(<span style="color:#e6db74">&#34;hello world&#34;</span>);
-</span></span><span style="display:flex;"><span>println!(<span style="color:#e6db74">&#34;boxed_str: </span><span style="color:#e6db74">{}</span><span style="color:#e6db74">&#34;</span>, boxed_str);
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">let</span> boxed_str: <span style="color:#8be9fd;font-style:italic">Box</span><span style="color:#ff79c6">&lt;</span><span style="color:#8be9fd">str</span><span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">=</span> <span style="color:#8be9fd;font-style:italic">Box</span>::new(<span style="color:#f1fa8c">&#34;hello world&#34;</span>);
+</span></span><span style="display:flex;"><span>println!(<span style="color:#f1fa8c">&#34;boxed_str: </span><span style="color:#f1fa8c">{}</span><span style="color:#f1fa8c">&#34;</span>, boxed_str);
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>컴파일 결과</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -416,33 +416,33 @@ Rust에서는 C와 같이 null-terminating string 개념을 사용하지 않습�
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>error<span style="color:#f92672">[</span>E0308<span style="color:#f92672">]</span>: mismatched types
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>error<span style="color:#ff79c6">[</span>E0308<span style="color:#ff79c6">]</span>: mismatched types
 </span></span><span style="display:flex;"><span>  --&gt; src/main.rs:15:31
 </span></span><span style="display:flex;"><span>   |
-</span></span><span style="display:flex;"><span><span style="color:#ae81ff">15</span> |     let boxed_str: Box&lt;str&gt; <span style="color:#f92672">=</span> Box::new<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;hello world&#34;</span><span style="color:#f92672">)</span>;
-</span></span><span style="display:flex;"><span>   |                    --------   ^^^^^^^^^^^^^^^^^^^^^^^ expected <span style="color:#e6db74">`</span>Box&lt;str&gt;<span style="color:#e6db74">`</span>, found <span style="color:#e6db74">`</span>Box&lt;&amp;str&gt;<span style="color:#e6db74">`</span>
+</span></span><span style="display:flex;"><span><span style="color:#bd93f9">15</span> |     <span style="color:#8be9fd;font-style:italic">let</span> boxed_str: Box&lt;str&gt; <span style="color:#ff79c6">=</span> Box::new<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;hello world&#34;</span><span style="color:#ff79c6">)</span>;
+</span></span><span style="display:flex;"><span>   |                    --------   ^^^^^^^^^^^^^^^^^^^^^^^ expected <span style="color:#f1fa8c">`</span>Box&lt;str&gt;<span style="color:#f1fa8c">`</span>, found <span style="color:#f1fa8c">`</span>Box&lt;&amp;str&gt;<span style="color:#f1fa8c">`</span>
 </span></span><span style="display:flex;"><span>   |                    |
 </span></span><span style="display:flex;"><span>   |                    expected due to this
 </span></span><span style="display:flex;"><span>   |
-</span></span><span style="display:flex;"><span>   <span style="color:#f92672">=</span> note: expected struct <span style="color:#e6db74">`</span>Box&lt;str&gt;<span style="color:#e6db74">`</span>
-</span></span><span style="display:flex;"><span>              found struct <span style="color:#e6db74">`</span>Box&lt;&amp;str&gt;<span style="color:#e6db74">`</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#ff79c6">=</span> note: expected struct <span style="color:#f1fa8c">`</span>Box&lt;str&gt;<span style="color:#f1fa8c">`</span>
+</span></span><span style="display:flex;"><span>              found struct <span style="color:#f1fa8c">`</span>Box&lt;&amp;str&gt;<span style="color:#f1fa8c">`</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>For more information about this error, try <span style="color:#e6db74">`</span>rustc --explain E0308<span style="color:#e6db74">`</span>.
-</span></span><span style="display:flex;"><span>error: could not compile <span style="color:#e6db74">`</span>playground<span style="color:#e6db74">`</span> due to previous error
+</span></span><span style="display:flex;"><span>For more information about this error, try <span style="color:#f1fa8c">`</span>rustc --explain E0308<span style="color:#f1fa8c">`</span>.
+</span></span><span style="display:flex;"><span>error: could not compile <span style="color:#f1fa8c">`</span>playground<span style="color:#f1fa8c">`</span> due to previous error
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p> </p>
 <p>대신 <code>&amp;str</code>을 <code>String</code> 타입으로 변환(heap 영역 할당 후 복사)한 뒤 이를 <code>into_boxed_str()</code>로 변환할 수 있습니다.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">let</span> string: Box<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">str</span><span style="color:#f92672">&gt;</span> <span style="color:#f92672">=</span> String::from(<span style="color:#e6db74">&#34;Hello&#34;</span>).into_boxed_str();
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> string: Box<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">str</span><span style="color:#f92672">&gt;</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Hello&#34;</span>.to_string().into_boxed_str();
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> string: Box<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">str</span><span style="color:#f92672">&gt;</span> <span style="color:#f92672">=</span> Box::from(<span style="color:#e6db74">&#34;Hello&#34;</span>);
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">let</span> string: <span style="color:#8be9fd;font-style:italic">Box</span><span style="color:#ff79c6">&lt;</span><span style="color:#8be9fd">str</span><span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">=</span> <span style="color:#8be9fd;font-style:italic">String</span>::from(<span style="color:#f1fa8c">&#34;Hello&#34;</span>).into_boxed_str();
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">let</span> string: <span style="color:#8be9fd;font-style:italic">Box</span><span style="color:#ff79c6">&lt;</span><span style="color:#8be9fd">str</span><span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;Hello&#34;</span>.to_string().into_boxed_str();
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">let</span> string: <span style="color:#8be9fd;font-style:italic">Box</span><span style="color:#ff79c6">&lt;</span><span style="color:#8be9fd">str</span><span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">=</span> <span style="color:#8be9fd;font-style:italic">Box</span>::from(<span style="color:#f1fa8c">&#34;Hello&#34;</span>);
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>세 번째 방식인 <code>Box::from(&amp;str)</code> 타입 또한 내부적으로 heap에 메모리를 할당받고 값을 복사합니다. (참고: <a href="https://doc.rust-lang.org/std/boxed/struct.Box.html#impl-From%3C%26str%3E-for-Box%3Cstr,+Global%3E">docs</a>)</p>
@@ -453,16 +453,16 @@ Rust에서는 C와 같이 null-terminating string 개념을 사용하지 않습�
 <p><code>String</code>은 mutable, growable 합니다. 값 변경/추가가 필요한 경우라면 <code>Box&lt;str&gt;</code>가 아닌 <code>String</code>을 사용해야 합니다.</p>
 <p><code>String</code>과 <code>Box&lt;str&gt;</code>의 또 다른 차이점은 자료구조 형태입니다. <code>String</code>은 <code>Vec&lt;u8&gt;</code> 형태로 문자를 저장하고, <code>Vec</code> 는 dynamic array로 실제 데이터의 크기와 자료구조 크기(capacity)는 다를 수 있습니다. 따라서 <code>String</code>은 실제 데이터보다 많은 메모리를 사용할 수 있고, &ldquo;데이터 포인터, 크기(len), 용량(capacity)&ldquo;를 저장하므로 동일 문자열을 저장하더라도 포인터의 크기가 더 큽니다.</p>
 <p>다음과 같이 두 타입의 크기를 출력해 보면, <code>Box&lt;str&gt;</code>는 문자열 포인터와 문자열 길이를 포함하여 16Bytes, <code>String</code>은 capacity 까지 포함하여 24Bytes 임을 확인할 수 있습니다.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span>println!(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{}</span><span style="color:#e6db74">&#34;</span>, core::mem::size_of::<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">usize</span><span style="color:#f92672">&gt;</span>()); <span style="color:#75715e">// 8
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>println!(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{}</span><span style="color:#e6db74">&#34;</span>, core::mem::size_of::<span style="color:#f92672">&lt;</span>Box<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">str</span><span style="color:#f92672">&gt;&gt;</span>()); <span style="color:#75715e">// 16
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>println!(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{}</span><span style="color:#e6db74">&#34;</span>, core::mem::size_of::<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span>()); <span style="color:#75715e">// 24
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span>println!(<span style="color:#f1fa8c">&#34;</span><span style="color:#f1fa8c">{}</span><span style="color:#f1fa8c">&#34;</span>, core::mem::size_of::<span style="color:#ff79c6">&lt;</span><span style="color:#8be9fd">usize</span><span style="color:#ff79c6">&gt;</span>()); <span style="color:#6272a4">// 8
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span>println!(<span style="color:#f1fa8c">&#34;</span><span style="color:#f1fa8c">{}</span><span style="color:#f1fa8c">&#34;</span>, core::mem::size_of::<span style="color:#ff79c6">&lt;</span><span style="color:#8be9fd;font-style:italic">Box</span><span style="color:#ff79c6">&lt;</span><span style="color:#8be9fd">str</span><span style="color:#ff79c6">&gt;&gt;</span>()); <span style="color:#6272a4">// 16
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span>println!(<span style="color:#f1fa8c">&#34;</span><span style="color:#f1fa8c">{}</span><span style="color:#f1fa8c">&#34;</span>, core::mem::size_of::<span style="color:#ff79c6">&lt;</span><span style="color:#8be9fd;font-style:italic">String</span><span style="color:#ff79c6">&gt;</span>()); <span style="color:#6272a4">// 24
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><p><a href="https://doc.rust-lang.org/std/string/struct.String.html#method.into_boxed_str">문서</a>에 나와있는 것과 같이, <code>String</code>을 <code>Box&lt;str&gt;</code>로 변환 시 빈 공간 (남아 있는 capacity)는 drop 될 수 있습니다.</p>
@@ -491,9 +491,9 @@ Rust에서는 C와 같이 null-terminating string 개념을 사용하지 않습�
 <p> </p>
 <p><strong>move, lifetime 이슈를 피하기 위한 clone</strong></p>
 <p>다음과 같이 self 내에 정의된 <code>String</code> 타입을 계속해서 재활용할 때, move가 일어나지 않도록, 혹은 lifetime 이슈가 발생하지 않도록 clone을 할 수도 있습니다.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
@@ -501,37 +501,37 @@ Rust에서는 C와 같이 null-terminating string 개념을 사용하지 않습�
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">do_something</span>(<span style="color:#f92672">&amp;</span>self, path: <span style="color:#66d9ef">&amp;</span>String) {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> new_dir <span style="color:#f92672">=</span> self.name.clone();
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> path <span style="color:#f92672">=</span> Path::new(path.clone());
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">do_something</span>(<span style="color:#ff79c6">&amp;</span>self, path: <span style="color:#ff79c6">&amp;</span><span style="color:#8be9fd;font-style:italic">String</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">let</span> new_dir <span style="color:#ff79c6">=</span> self.name.clone();
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">let</span> path <span style="color:#ff79c6">=</span> Path::new(path.clone());
 </span></span><span style="display:flex;"><span>    path.push(new_dir);
-</span></span><span style="display:flex;"><span>    std::fs::create_dir(<span style="color:#f92672">&amp;</span>path);
+</span></span><span style="display:flex;"><span>    std::fs::create_dir(<span style="color:#ff79c6">&amp;</span>path);
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>하지만 대부분의 경우 reference 값으로 원하는 결과를 만들 수 있습니다. 필요 이상으로 clone하지 않도록 노력하는 게 좋은 것 같습니다.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">do_something</span>(<span style="color:#f92672">&amp;</span>self, path: <span style="color:#66d9ef">&amp;</span>String) {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> path <span style="color:#f92672">=</span> Path::new(path);
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> path <span style="color:#f92672">=</span> path.join(<span style="color:#f92672">&amp;</span>self.filename);
-</span></span><span style="display:flex;"><span>    std::fs::create_dir(<span style="color:#f92672">&amp;</span>path);
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">do_something</span>(<span style="color:#ff79c6">&amp;</span>self, path: <span style="color:#ff79c6">&amp;</span><span style="color:#8be9fd;font-style:italic">String</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">let</span> path <span style="color:#ff79c6">=</span> Path::new(path);
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">let</span> path <span style="color:#ff79c6">=</span> path.join(<span style="color:#ff79c6">&amp;</span>self.filename);
+</span></span><span style="display:flex;"><span>    std::fs::create_dir(<span style="color:#ff79c6">&amp;</span>path);
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p> </p>
 <p><code>&amp;String</code> <strong>타입을 clone</strong></p>
 <p>이 경우는 조금 헷갈리긴 하지만, reference를 clone하는 것은 직관적인 것 같진 않습니다.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -548,27 +548,27 @@ Rust에서는 C와 같이 null-terminating string 개념을 사용하지 않습�
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">create_something</span>(name: <span style="color:#66d9ef">&amp;</span>String) -&gt; <span style="color:#a6e22e">SomeStruct</span> {
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">create_something</span>(name: <span style="color:#ff79c6">&amp;</span><span style="color:#8be9fd;font-style:italic">String</span>) -&gt; <span style="color:#50fa7b">SomeStruct</span> {
 </span></span><span style="display:flex;"><span>    SomeStruct {
-</span></span><span style="display:flex;"><span>        name: <span style="color:#a6e22e">name</span>.clone(),
+</span></span><span style="display:flex;"><span>        name: <span style="color:#50fa7b">name</span>.clone(),
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">create_other</span>(name: <span style="color:#66d9ef">&amp;</span>String) -&gt; <span style="color:#a6e22e">OtherStruct</span> {
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">create_other</span>(name: <span style="color:#ff79c6">&amp;</span><span style="color:#8be9fd;font-style:italic">String</span>) -&gt; <span style="color:#50fa7b">OtherStruct</span> {
 </span></span><span style="display:flex;"><span>    OtherStruct {
-</span></span><span style="display:flex;"><span>        name: <span style="color:#a6e22e">name</span>.clone(),
+</span></span><span style="display:flex;"><span>        name: <span style="color:#50fa7b">name</span>.clone(),
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">main</span>() {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> my_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;hailey&#34;</span>.to_string();
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> some <span style="color:#f92672">=</span> create_something(<span style="color:#f92672">&amp;</span>my_name);
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> other <span style="color:#f92672">=</span> create_other(<span style="color:#f92672">&amp;</span>my_name);
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">main</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">let</span> my_name <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;hailey&#34;</span>.to_string();
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">let</span> some <span style="color:#ff79c6">=</span> create_something(<span style="color:#ff79c6">&amp;</span>my_name);
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">let</span> other <span style="color:#ff79c6">=</span> create_other(<span style="color:#ff79c6">&amp;</span>my_name);
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>이 보다는 소유권을 가질 struct에게 ownership을 가진 변수를 넘겨주면 좋을 것 같습니다.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -585,27 +585,27 @@ Rust에서는 C와 같이 null-terminating string 개념을 사용하지 않습�
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">create_something</span>(name: String) -&gt; <span style="color:#a6e22e">SomeStruct</span> {
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">create_something</span>(name: <span style="color:#8be9fd;font-style:italic">String</span>) -&gt; <span style="color:#50fa7b">SomeStruct</span> {
 </span></span><span style="display:flex;"><span>    SomeStruct {
 </span></span><span style="display:flex;"><span>        name,
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">create_other</span>(name: String) -&gt; <span style="color:#a6e22e">OtherStruct</span> {
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">create_other</span>(name: <span style="color:#8be9fd;font-style:italic">String</span>) -&gt; <span style="color:#50fa7b">OtherStruct</span> {
 </span></span><span style="display:flex;"><span>    OtherStruct {
 </span></span><span style="display:flex;"><span>        name,
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">main</span>() {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> my_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;hailey&#34;</span>.to_string();
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> some <span style="color:#f92672">=</span> create_something(my_name.clone());
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> other <span style="color:#f92672">=</span> create_other(my_name.clone());
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">main</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">let</span> my_name <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;hailey&#34;</span>.to_string();
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">let</span> some <span style="color:#ff79c6">=</span> create_something(my_name.clone());
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">let</span> other <span style="color:#ff79c6">=</span> create_other(my_name.clone());
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>혹은 애초에 변하지 않는 값인 name은 <code>&amp;str</code> 타입을 사용해도 좋을텐데, 이 경우 주어지는 <code>&amp;str</code> 타입의 lifetime과 두 struct 의 lifetime을 잘 고려해야 합니다. 사용자 요청으로 받은 <code>String</code>에 대한 reference를 전달하고 이를 어떤 struct 멤버로 둔다면, 사용자 요청이 종료될 때 struct도 같이 소멸되는지 잘 확인해 봐야 할 것입니다. 그 전에 컴파일 지옥에 빠지겠지만요..</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -621,19 +621,19 @@ Rust에서는 C와 같이 null-terminating string 개념을 사용하지 않습�
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">create_something</span>(name: <span style="color:#66d9ef">&amp;</span><span style="color:#66d9ef">str</span>) -&gt; <span style="color:#a6e22e">SomeStruct</span> {
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">create_something</span>(name: <span style="color:#ff79c6">&amp;</span><span style="color:#8be9fd">str</span>) -&gt; <span style="color:#50fa7b">SomeStruct</span> {
 </span></span><span style="display:flex;"><span>    SomeStruct {
-</span></span><span style="display:flex;"><span>        name, <span style="color:#75715e">// type is &amp;str
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    }
+</span></span><span style="display:flex;"><span>        name, <span style="color:#6272a4">// type is &amp;str
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span>    }
 </span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">create_other</span>(name: <span style="color:#66d9ef">&amp;</span><span style="color:#66d9ef">str</span>) -&gt; <span style="color:#a6e22e">OtherStruct</span> {
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">create_other</span>(name: <span style="color:#ff79c6">&amp;</span><span style="color:#8be9fd">str</span>) -&gt; <span style="color:#50fa7b">OtherStruct</span> {
 </span></span><span style="display:flex;"><span>    OtherStruct {
-</span></span><span style="display:flex;"><span>        name, <span style="color:#75715e">// type is &amp;str
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    }
+</span></span><span style="display:flex;"><span>        name, <span style="color:#6272a4">// type is &amp;str
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span>    }
 </span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">name_provided</span>(my_name: <span style="color:#66d9ef">&amp;</span><span style="color:#66d9ef">str</span>) {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> some <span style="color:#f92672">=</span> create_something(my_name);
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> other <span style="color:#f92672">=</span> create_other(my_name);
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">name_provided</span>(my_name: <span style="color:#ff79c6">&amp;</span><span style="color:#8be9fd">str</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">let</span> some <span style="color:#ff79c6">=</span> create_something(my_name);
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">let</span> other <span style="color:#ff79c6">=</span> create_other(my_name);
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></td></tr></table>
 </div>
@@ -684,7 +684,7 @@ Rust에서는 C와 같이 null-terminating string 개념을 사용하지 않습�
     </main>
     
 <footer class="footer">
-    <span>&copy; 2023 <a href="http://huijeong-kim.github.io/">my dev note</a></span>
+    <span>&copy; 2024 <a href="http://huijeong-kim.github.io/">my dev note</a></span>
     <span>
         Powered by
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &

@@ -219,9 +219,9 @@ add_stream, add_message_stream 1 2 3 4 5 6 7 8 9 10 fn add_stream&lt;S&gt;(&amp;
 <p> 
  </p>
 <h3 id="add_stream-add_message_stream">add_stream, add_message_stream<a hidden class="anchor" aria-hidden="true" href="#add_stream-add_message_stream">#</a></h3>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -233,23 +233,23 @@ add_stream, add_message_stream 1 2 3 4 5 6 7 8 9 10 fn add_stream&lt;S&gt;(&amp;
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">add_stream</span><span style="color:#f92672">&lt;</span>S<span style="color:#f92672">&gt;</span>(<span style="color:#f92672">&amp;</span><span style="color:#66d9ef">mut</span> self, fut: <span style="color:#a6e22e">S</span>) -&gt; <span style="color:#a6e22e">SpawnHandle</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">where</span>
-</span></span><span style="display:flex;"><span>    S: <span style="color:#a6e22e">Stream</span> <span style="color:#f92672">+</span> &#39;static,
-</span></span><span style="display:flex;"><span>    A: <span style="color:#a6e22e">StreamHandler</span><span style="color:#f92672">&lt;</span>S::Item<span style="color:#f92672">&gt;</span>;
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">add_stream</span><span style="color:#ff79c6">&lt;</span>S<span style="color:#ff79c6">&gt;</span>(<span style="color:#ff79c6">&amp;</span><span style="color:#ff79c6">mut</span> self, fut: <span style="color:#50fa7b">S</span>) -&gt; <span style="color:#50fa7b">SpawnHandle</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">where</span>
+</span></span><span style="display:flex;"><span>    S: <span style="color:#50fa7b">Stream</span> <span style="color:#ff79c6">+</span> <span style="color:#8be9fd;font-style:italic">&#39;static</span>,
+</span></span><span style="display:flex;"><span>    A: <span style="color:#50fa7b">StreamHandler</span><span style="color:#ff79c6">&lt;</span>S::Item<span style="color:#ff79c6">&gt;</span>;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">add_message_stream</span><span style="color:#f92672">&lt;</span>S<span style="color:#f92672">&gt;</span>(<span style="color:#f92672">&amp;</span><span style="color:#66d9ef">mut</span> self, fut: <span style="color:#a6e22e">S</span>)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">where</span>
-</span></span><span style="display:flex;"><span>        S: <span style="color:#a6e22e">Stream</span> <span style="color:#f92672">+</span> &#39;static,
-</span></span><span style="display:flex;"><span>        S::Item: <span style="color:#a6e22e">Message</span>,
-</span></span><span style="display:flex;"><span>        A: <span style="color:#a6e22e">Handler</span><span style="color:#f92672">&lt;</span>S::Item<span style="color:#f92672">&gt;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">add_message_stream</span><span style="color:#ff79c6">&lt;</span>S<span style="color:#ff79c6">&gt;</span>(<span style="color:#ff79c6">&amp;</span><span style="color:#ff79c6">mut</span> self, fut: <span style="color:#50fa7b">S</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">where</span>
+</span></span><span style="display:flex;"><span>        S: <span style="color:#50fa7b">Stream</span> <span style="color:#ff79c6">+</span> <span style="color:#8be9fd;font-style:italic">&#39;static</span>,
+</span></span><span style="display:flex;"><span>        S::Item: <span style="color:#50fa7b">Message</span>,
+</span></span><span style="display:flex;"><span>        A: <span style="color:#50fa7b">Handler</span><span style="color:#ff79c6">&lt;</span>S::Item<span style="color:#ff79c6">&gt;</span>;
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>Context에 stream을 등록하는 함수입니다. 두 함수는 거의 비슷하나 차이점은 <code>add_message_stream</code>은 stream error를 무시한다는 점입니다.</p>
 <p>다음은 <a href="https://docs.rs/actix/0.13.0/actix/prelude/trait.AsyncContext.html#method.add_stream">API Doc</a>의 예제인데요. Stream을 만들고 message를 하나 보냅니다. <code>Stream</code>의 사용법과 예제는 다음 글에서 따로 정리해 보겠습니다 :)</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -286,60 +286,60 @@ add_stream, add_message_stream 1 2 3 4 5 6 7 8 9 10 fn add_stream&lt;S&gt;(&amp;
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">use</span> actix::prelude::<span style="color:#f92672">*</span>;
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">use</span> futures_util::stream::once;
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ff79c6">use</span> actix::prelude::<span style="color:#ff79c6">*</span>;
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">use</span> futures_util::stream::once;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#[derive(Message)]</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#[rtype(result = </span><span style="color:#e6db74">&#34;()&#34;</span><span style="color:#75715e">)]</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Ping</span>;
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">#[derive(Message)]</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">#[rtype(result = </span><span style="color:#f1fa8c">&#34;()&#34;</span><span style="color:#ff79c6">)]</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">struct</span> <span style="color:#50fa7b">Ping</span>;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">MyActor</span>;
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">struct</span> <span style="color:#50fa7b">MyActor</span>;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">impl</span> StreamHandler<span style="color:#f92672">&lt;</span>Ping<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">for</span> MyActor {
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">impl</span> StreamHandler<span style="color:#ff79c6">&lt;</span>Ping<span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">for</span> MyActor {
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">handle</span>(<span style="color:#f92672">&amp;</span><span style="color:#66d9ef">mut</span> self, item: <span style="color:#a6e22e">Ping</span>, ctx: <span style="color:#66d9ef">&amp;</span><span style="color:#a6e22e">mut</span> Context<span style="color:#f92672">&lt;</span>MyActor<span style="color:#f92672">&gt;</span>) {
-</span></span><span style="display:flex;"><span>        println!(<span style="color:#e6db74">&#34;PING&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">handle</span>(<span style="color:#ff79c6">&amp;</span><span style="color:#ff79c6">mut</span> self, item: <span style="color:#50fa7b">Ping</span>, ctx: <span style="color:#ff79c6">&amp;</span><span style="color:#50fa7b">mut</span> Context<span style="color:#ff79c6">&lt;</span>MyActor<span style="color:#ff79c6">&gt;</span>) {
+</span></span><span style="display:flex;"><span>        println!(<span style="color:#f1fa8c">&#34;PING&#34;</span>);
 </span></span><span style="display:flex;"><span>        System::current().stop();
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">finished</span>(<span style="color:#f92672">&amp;</span><span style="color:#66d9ef">mut</span> self, ctx: <span style="color:#66d9ef">&amp;</span><span style="color:#a6e22e">mut</span> Self::Context) {
-</span></span><span style="display:flex;"><span>        println!(<span style="color:#e6db74">&#34;finished&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">finished</span>(<span style="color:#ff79c6">&amp;</span><span style="color:#ff79c6">mut</span> self, ctx: <span style="color:#ff79c6">&amp;</span><span style="color:#50fa7b">mut</span> Self::Context) {
+</span></span><span style="display:flex;"><span>        println!(<span style="color:#f1fa8c">&#34;finished&#34;</span>);
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">impl</span> Actor <span style="color:#66d9ef">for</span> MyActor {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Context</span> <span style="color:#f92672">=</span> Context<span style="color:#f92672">&lt;</span>Self<span style="color:#f92672">&gt;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">impl</span> Actor <span style="color:#ff79c6">for</span> MyActor {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">type</span> <span style="color:#50fa7b">Context</span> <span style="color:#ff79c6">=</span> Context<span style="color:#ff79c6">&lt;</span>Self<span style="color:#ff79c6">&gt;</span>;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">started</span>(<span style="color:#f92672">&amp;</span><span style="color:#66d9ef">mut</span> self, ctx: <span style="color:#66d9ef">&amp;</span><span style="color:#a6e22e">mut</span> Context<span style="color:#f92672">&lt;</span>Self<span style="color:#f92672">&gt;</span>) {
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// add stream
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        ctx.add_stream(once(<span style="color:#66d9ef">async</span> { Ping }));
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">started</span>(<span style="color:#ff79c6">&amp;</span><span style="color:#ff79c6">mut</span> self, ctx: <span style="color:#ff79c6">&amp;</span><span style="color:#50fa7b">mut</span> Context<span style="color:#ff79c6">&lt;</span>Self<span style="color:#ff79c6">&gt;</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// add stream
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span>        ctx.add_stream(once(<span style="color:#ff79c6">async</span> { Ping }));
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">main</span>() {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> <span style="color:#66d9ef">mut</span> sys <span style="color:#f92672">=</span> System::new();
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> addr <span style="color:#f92672">=</span> sys.block_on(<span style="color:#66d9ef">async</span> { MyActor.start() });
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">main</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">let</span> <span style="color:#ff79c6">mut</span> sys <span style="color:#ff79c6">=</span> System::new();
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">let</span> addr <span style="color:#ff79c6">=</span> sys.block_on(<span style="color:#ff79c6">async</span> { MyActor.start() });
 </span></span><span style="display:flex;"><span>    sys.run();
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>실행 결과는 다음과 같습니다.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>PING
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>PING
 </span></span><span style="display:flex;"><span>finished
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p> </p>
 <hr>
 <h3 id="notify-notify_later">notify, notify_later<a hidden class="anchor" aria-hidden="true" href="#notify-notify_later">#</a></h3>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
@@ -350,23 +350,23 @@ add_stream, add_message_stream 1 2 3 4 5 6 7 8 9 10 fn add_stream&lt;S&gt;(&amp;
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">notify</span><span style="color:#f92672">&lt;</span>M<span style="color:#f92672">&gt;</span>(<span style="color:#f92672">&amp;</span><span style="color:#66d9ef">mut</span> self, msg: <span style="color:#a6e22e">M</span>)
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">where</span>
-</span></span><span style="display:flex;"><span>    A: <span style="color:#a6e22e">Handler</span><span style="color:#f92672">&lt;</span>M<span style="color:#f92672">&gt;</span>,
-</span></span><span style="display:flex;"><span>    M: <span style="color:#a6e22e">Message</span> <span style="color:#f92672">+</span> &#39;static;
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">notify</span><span style="color:#ff79c6">&lt;</span>M<span style="color:#ff79c6">&gt;</span>(<span style="color:#ff79c6">&amp;</span><span style="color:#ff79c6">mut</span> self, msg: <span style="color:#50fa7b">M</span>)
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">where</span>
+</span></span><span style="display:flex;"><span>    A: <span style="color:#50fa7b">Handler</span><span style="color:#ff79c6">&lt;</span>M<span style="color:#ff79c6">&gt;</span>,
+</span></span><span style="display:flex;"><span>    M: <span style="color:#50fa7b">Message</span> <span style="color:#ff79c6">+</span> <span style="color:#8be9fd;font-style:italic">&#39;static</span>;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">notify_later</span><span style="color:#f92672">&lt;</span>M<span style="color:#f92672">&gt;</span>(<span style="color:#f92672">&amp;</span><span style="color:#66d9ef">mut</span> self, msg: <span style="color:#a6e22e">M</span>, after: <span style="color:#a6e22e">Duration</span>) -&gt; <span style="color:#a6e22e">SpawnHandle</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">where</span>
-</span></span><span style="display:flex;"><span>        A: <span style="color:#a6e22e">Handler</span><span style="color:#f92672">&lt;</span>M<span style="color:#f92672">&gt;</span>,
-</span></span><span style="display:flex;"><span>        M: <span style="color:#a6e22e">Message</span> <span style="color:#f92672">+</span> &#39;static;
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">notify_later</span><span style="color:#ff79c6">&lt;</span>M<span style="color:#ff79c6">&gt;</span>(<span style="color:#ff79c6">&amp;</span><span style="color:#ff79c6">mut</span> self, msg: <span style="color:#50fa7b">M</span>, after: <span style="color:#50fa7b">Duration</span>) -&gt; <span style="color:#50fa7b">SpawnHandle</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">where</span>
+</span></span><span style="display:flex;"><span>        A: <span style="color:#50fa7b">Handler</span><span style="color:#ff79c6">&lt;</span>M<span style="color:#ff79c6">&gt;</span>,
+</span></span><span style="display:flex;"><span>        M: <span style="color:#50fa7b">Message</span> <span style="color:#ff79c6">+</span> <span style="color:#8be9fd;font-style:italic">&#39;static</span>;
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><code>notify</code>는 자기 자신에게 message를 보내는 함수입니다. 이전 글에서 <code>address</code>를 통해 자기 자신의 주소를 찾고, 여기에 message를 보내는 예제를 작성하였는데요. <code>notify</code> 함수로 바로 message handler를 부를 수도 있습니다.
 이 함수는 actor의 <!-- raw HTML omitted -->mailbox를 bypass<!-- raw HTML omitted --> 하고 항상 message를 전달한다고 합니다. 하지만 actor가 <code>Stopped</code> 상태라면 error 발생합니다.</p>
 <p>이전에 자신의 <code>Addr</code>를 찾아 메시지를 보내는 예제를 <code>notify</code> 함수를 사용하도록 수정하면 다음과 같습니다.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -378,40 +378,40 @@ add_stream, add_message_stream 1 2 3 4 5 6 7 8 9 10 fn add_stream&lt;S&gt;(&amp;
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">send_message_to_myself_using_address</span>(<span style="color:#f92672">&amp;</span><span style="color:#66d9ef">mut</span> self, ctx: <span style="color:#66d9ef">&amp;</span><span style="color:#a6e22e">mut</span> Context<span style="color:#f92672">&lt;</span>Self<span style="color:#f92672">&gt;</span>) {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> my_address <span style="color:#f92672">=</span> ctx.address();
-</span></span><span style="display:flex;"><span>    actix::spawn(<span style="color:#66d9ef">async</span> <span style="color:#66d9ef">move</span> {
-</span></span><span style="display:flex;"><span>        my_address.send(Message).<span style="color:#66d9ef">await</span>;
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">send_message_to_myself_using_address</span>(<span style="color:#ff79c6">&amp;</span><span style="color:#ff79c6">mut</span> self, ctx: <span style="color:#ff79c6">&amp;</span><span style="color:#50fa7b">mut</span> Context<span style="color:#ff79c6">&lt;</span>Self<span style="color:#ff79c6">&gt;</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">let</span> my_address <span style="color:#ff79c6">=</span> ctx.address();
+</span></span><span style="display:flex;"><span>    actix::spawn(<span style="color:#ff79c6">async</span> <span style="color:#ff79c6">move</span> {
+</span></span><span style="display:flex;"><span>        my_address.send(Message).<span style="color:#ff79c6">await</span>;
 </span></span><span style="display:flex;"><span>    });
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">send_message_to_myself_using_notify</span>(<span style="color:#f92672">&amp;</span><span style="color:#66d9ef">mut</span> self, ctx: <span style="color:#66d9ef">&amp;</span><span style="color:#a6e22e">mut</span> Context<span style="color:#f92672">&lt;</span>Self<span style="color:#f92672">&gt;</span>) {
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">send_message_to_myself_using_notify</span>(<span style="color:#ff79c6">&amp;</span><span style="color:#ff79c6">mut</span> self, ctx: <span style="color:#ff79c6">&amp;</span><span style="color:#50fa7b">mut</span> Context<span style="color:#ff79c6">&lt;</span>Self<span style="color:#ff79c6">&gt;</span>) {
 </span></span><span style="display:flex;"><span>    ctx.notify(Message);
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p> </p>
 <p><code>notify_later</code>은 <code>notify</code> 함수와 유사하지만, 지정된 시간 이후에 message를 보냅니다. 또 하나의 차이점은 <code>SpawnHandle</code>을 리턴한다는 것 인데요. 실행되기 전에는 <code>cancel_future</code> 통해 동작을 취소할 수 있습니다. 이전 글에서 언급한 바와 같이, <code>cancel_future</code> 함수의 리턴 값은 항상 true 입니다. 취소 성공 여부를 리턴하지 않음을 참고하세요.</p>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">send_message_to_myself_and_cancel</span>(<span style="color:#f92672">&amp;</span><span style="color:#66d9ef">mut</span> self, ctx: <span style="color:#66d9ef">&amp;</span><span style="color:#a6e22e">mut</span> Context<span style="color:#f92672">&lt;</span>Self<span style="color:#f92672">&gt;</span>) {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> handle <span style="color:#f92672">=</span> ctx.notify(Message, Duration::from_secs(<span style="color:#ae81ff">3</span>));
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> _success <span style="color:#f92672">=</span> ctx.cancel_future(handle);
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">send_message_to_myself_and_cancel</span>(<span style="color:#ff79c6">&amp;</span><span style="color:#ff79c6">mut</span> self, ctx: <span style="color:#ff79c6">&amp;</span><span style="color:#50fa7b">mut</span> Context<span style="color:#ff79c6">&lt;</span>Self<span style="color:#ff79c6">&gt;</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">let</span> handle <span style="color:#ff79c6">=</span> ctx.notify(Message, Duration::from_secs(<span style="color:#bd93f9">3</span>));
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">let</span> _success <span style="color:#ff79c6">=</span> ctx.cancel_future(handle);
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p> </p>
 <hr>
 <h3 id="run_later-run_interval">run_later, run_interval<a hidden class="anchor" aria-hidden="true" href="#run_later-run_interval">#</a></h3>
-<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
@@ -420,13 +420,13 @@ add_stream, add_message_stream 1 2 3 4 5 6 7 8 9 10 fn add_stream&lt;S&gt;(&amp;
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">run_later</span><span style="color:#f92672">&lt;</span>F<span style="color:#f92672">&gt;</span>(<span style="color:#f92672">&amp;</span><span style="color:#66d9ef">mut</span> self, dur: <span style="color:#a6e22e">Duration</span>, f: <span style="color:#a6e22e">F</span>) -&gt; <span style="color:#a6e22e">SpawnHandle</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">where</span>
-</span></span><span style="display:flex;"><span>    F: FnOnce(<span style="color:#f92672">&amp;</span><span style="color:#66d9ef">mut</span> A, <span style="color:#f92672">&amp;</span><span style="color:#66d9ef">mut</span> A::Context) <span style="color:#f92672">+</span> &#39;static;
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">run_later</span><span style="color:#ff79c6">&lt;</span>F<span style="color:#ff79c6">&gt;</span>(<span style="color:#ff79c6">&amp;</span><span style="color:#ff79c6">mut</span> self, dur: <span style="color:#50fa7b">Duration</span>, f: <span style="color:#50fa7b">F</span>) -&gt; <span style="color:#50fa7b">SpawnHandle</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">where</span>
+</span></span><span style="display:flex;"><span>    F: <span style="color:#8be9fd;font-style:italic">FnOnce</span>(<span style="color:#ff79c6">&amp;</span><span style="color:#ff79c6">mut</span> A, <span style="color:#ff79c6">&amp;</span><span style="color:#ff79c6">mut</span> A::Context) <span style="color:#ff79c6">+</span> <span style="color:#8be9fd;font-style:italic">&#39;static</span>;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">run_interval</span><span style="color:#f92672">&lt;</span>F<span style="color:#f92672">&gt;</span>(<span style="color:#f92672">&amp;</span><span style="color:#66d9ef">mut</span> self, dur: <span style="color:#a6e22e">Duration</span>, f: <span style="color:#a6e22e">F</span>) -&gt; <span style="color:#a6e22e">SpawnHandle</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">where</span>
-</span></span><span style="display:flex;"><span>        F: FnMut(<span style="color:#f92672">&amp;</span><span style="color:#66d9ef">mut</span> A, <span style="color:#f92672">&amp;</span><span style="color:#66d9ef">mut</span> A::Context) <span style="color:#f92672">+</span> &#39;static;
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">run_interval</span><span style="color:#ff79c6">&lt;</span>F<span style="color:#ff79c6">&gt;</span>(<span style="color:#ff79c6">&amp;</span><span style="color:#ff79c6">mut</span> self, dur: <span style="color:#50fa7b">Duration</span>, f: <span style="color:#50fa7b">F</span>) -&gt; <span style="color:#50fa7b">SpawnHandle</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">where</span>
+</span></span><span style="display:flex;"><span>        F: <span style="color:#8be9fd;font-style:italic">FnMut</span>(<span style="color:#ff79c6">&amp;</span><span style="color:#ff79c6">mut</span> A, <span style="color:#ff79c6">&amp;</span><span style="color:#ff79c6">mut</span> A::Context) <span style="color:#ff79c6">+</span> <span style="color:#8be9fd;font-style:italic">&#39;static</span>;
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><code>run_later</code>은 주어진 시간 이후에 주어진 future를 실행시키고, <code>run_interval</code>은 주어진 시간 주기로 future를 실행시킵니다. 사용법은 거의 동일하고, <code>run_interval</code>의 사용 예제는 <a href="https://huijeong-kim.github.io/2022/08/17/actix-actor-usage/">이 글</a>을 참고하시면 되겠습니다.</p>
@@ -469,7 +469,7 @@ add_stream, add_message_stream 1 2 3 4 5 6 7 8 9 10 fn add_stream&lt;S&gt;(&amp;
     </main>
     
 <footer class="footer">
-    <span>&copy; 2023 <a href="http://huijeong-kim.github.io/">my dev note</a></span>
+    <span>&copy; 2024 <a href="http://huijeong-kim.github.io/">my dev note</a></span>
     <span>
         Powered by
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
