@@ -164,6 +164,20 @@ if (!doNotTrack) {
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2>Actix actor의 AsyncContext 활용하기 (2)
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>지난 글에 이어 Actix actor의 AsyncContext 함수를 사용하는 방법을 알아봅니다.
+add_stream, add_message_stream 1 2 3 4 5 6 7 8 9 10 fn add_stream&lt;S&gt;(&amp;mut self, fut: S) -&gt; SpawnHandle where S: Stream &#43; &#39;static, A: StreamHandler&lt;S::Item&gt;; fn add_message_stream&lt;S&gt;(&amp;mut self, fut: S) where S: Stream &#43; &#39;static, S::Item: Message, A: Handler&lt;S::Item&gt;; Context에 stream을 등록하는 함수입니다. 두 함수는 거의 비슷하나 차이점은 add_message_stream은 stream error를 무시한다는 점입니다.
+다음은 API Doc의 예제인데요. Stream을 만들고 message를 하나 보냅니다....</p>
+  </div>
+  <footer class="entry-footer"><span title='2022-08-27 18:47:08 +0900 KST'>2022-08-27</span>&nbsp;·&nbsp;3 min&nbsp;·&nbsp;468 words&nbsp;·&nbsp;Huijeong Kim</footer>
+  <a class="entry-link" aria-label="post link to Actix actor의 AsyncContext 활용하기 (2)" href="http://huijeong-kim.github.io/post/2022-08-27-actix-actor-async-ctx-2/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2>Actix actor의 AsyncContext 활용하기 (1)
     </h2>
   </header>

@@ -159,6 +159,19 @@ if (!doNotTrack) {
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2>as operator in Rust
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>안녕하세요.
+오늘은 Rust의 as 를 사용한 type casting에 대해 알아보고자 합니다. C&#43;&#43; 프로그램에서는 잘못된 type 사용 으로 인한 오류를 종종 볼 수 있습니다. uint64_t 값을 uint32_t 값에 대입하여 잘못된 값으로 동작하는 경우가 그 예입니다. 조금은 어이 없는 실수이긴 한데, 생각보다 자주 발견됩니다. 이런 류의 버그는 처음 봤을 때 원인을 가늠하기 힘들기도 하지만, 고치기 귀찮거나 어렵기도 합니다. Type 재정의를 사용하지 않는 경우도 많고, 가끔씩은 통일할 필요가 크게 없는 경우도 있고, 의미 상 같은 변수를 모두 찾아내기 힘든 코드들도 종종 있습니다....</p>
+  </div>
+  <footer class="entry-footer"><span title='2023-05-02 19:00:30 +0900 KST'>2023-05-02</span>&nbsp;·&nbsp;8 min&nbsp;·&nbsp;1558 words&nbsp;·&nbsp;Huijeong Kim</footer>
+  <a class="entry-link" aria-label="post link to as operator in Rust" href="http://huijeong-kim.github.io/post/2023-05-02-rust-as-operator/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2>Polymorphism in Rust
     </h2>
   </header>
@@ -211,20 +224,6 @@ async rust에서 mpsc queue를 사용하는 방법을 알아보겠습니다.
   </div>
   <footer class="entry-footer"><span title='2022-08-27 18:49:11 +0900 KST'>2022-08-27</span>&nbsp;·&nbsp;8 min&nbsp;·&nbsp;1596 words&nbsp;·&nbsp;Huijeong Kim</footer>
   <a class="entry-link" aria-label="post link to Async Rust에서 mpsc queue 사용하기" href="http://huijeong-kim.github.io/post/2022-08-27-tokio-mpsc/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>Actix actor의 AsyncContext 활용하기 (2)
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>지난 글에 이어 Actix actor의 AsyncContext 함수를 사용하는 방법을 알아봅니다.
-add_stream, add_message_stream 1 2 3 4 5 6 7 8 9 10 fn add_stream&lt;S&gt;(&amp;mut self, fut: S) -&gt; SpawnHandle where S: Stream &#43; &#39;static, A: StreamHandler&lt;S::Item&gt;; fn add_message_stream&lt;S&gt;(&amp;mut self, fut: S) where S: Stream &#43; &#39;static, S::Item: Message, A: Handler&lt;S::Item&gt;; Context에 stream을 등록하는 함수입니다. 두 함수는 거의 비슷하나 차이점은 add_message_stream은 stream error를 무시한다는 점입니다.
-다음은 API Doc의 예제인데요. Stream을 만들고 message를 하나 보냅니다....</p>
-  </div>
-  <footer class="entry-footer"><span title='2022-08-27 18:47:08 +0900 KST'>2022-08-27</span>&nbsp;·&nbsp;3 min&nbsp;·&nbsp;468 words&nbsp;·&nbsp;Huijeong Kim</footer>
-  <a class="entry-link" aria-label="post link to Actix actor의 AsyncContext 활용하기 (2)" href="http://huijeong-kim.github.io/post/2022-08-27-actix-actor-async-ctx-2/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

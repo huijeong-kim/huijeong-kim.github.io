@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>빌드 스크립트 build.rs  | my dev note</title>
+<meta name="keywords" content="rust, cargo">
+<meta name="description" content="Rust 프로젝트에서 third-party non-Rust 코드를 함께 컴파일해야 할 때 빌드 스크립트를 이용할 수 있다. 별도의 스크립트를 실행하지 않고 프로젝트에 통합할수 있다는 점이 굉장히 유용한 편!
+이 스크립트를 사용하는 예제로는
+bindgen, cc 등을 이용하여 non-Rust 코드를 컴파일, Rust 코드와 연결해야 할 때 gRPC, jsonschema 등을 사용해 정의된 타입을 변환할 때 등이 있다. 이 스크립트를 사용할 때 주의해야 하는 소소한 점들을 정리했다.
+build.rs 예제 Cargo는 컴파일 과정에서 build script를 빌드, 실행한다. 따라서 다음과 같은 빌드 스크립트는 패키지 컴파일 과정에서 hello.">
+<meta name="author" content="Huijeong Kim">
+<link rel="canonical" href="http://huijeong-kim.github.io/post/2024-02-02-cargo-build-run-if-changed/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.3613efbd0b1772781e8f49935e973cae632a7f61471c05b17be155505ccf87b5.css" integrity="sha256-NhPvvQsXcngej0mTXpc8rmMqf2FHHAWxe&#43;FVUFzPh7U=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="http://huijeong-kim.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://huijeong-kim.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://huijeong-kim.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://huijeong-kim.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="http://huijeong-kim.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-VHBQNPGKKB"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-VHBQNPGKKB', { 'anonymize_ip': false });
+}
+</script>
+<meta property="og:title" content="빌드 스크립트 build.rs " />
+<meta property="og:description" content="Rust 프로젝트에서 third-party non-Rust 코드를 함께 컴파일해야 할 때 빌드 스크립트를 이용할 수 있다. 별도의 스크립트를 실행하지 않고 프로젝트에 통합할수 있다는 점이 굉장히 유용한 편!
+이 스크립트를 사용하는 예제로는
+bindgen, cc 등을 이용하여 non-Rust 코드를 컴파일, Rust 코드와 연결해야 할 때 gRPC, jsonschema 등을 사용해 정의된 타입을 변환할 때 등이 있다. 이 스크립트를 사용할 때 주의해야 하는 소소한 점들을 정리했다.
+build.rs 예제 Cargo는 컴파일 과정에서 build script를 빌드, 실행한다. 따라서 다음과 같은 빌드 스크립트는 패키지 컴파일 과정에서 hello." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://huijeong-kim.github.io/post/2024-02-02-cargo-build-run-if-changed/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2024-02-02T16:08:51+09:00" />
+<meta property="article:modified_time" content="2024-02-02T16:08:51+09:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="빌드 스크립트 build.rs "/>
+<meta name="twitter:description" content="Rust 프로젝트에서 third-party non-Rust 코드를 함께 컴파일해야 할 때 빌드 스크립트를 이용할 수 있다. 별도의 스크립트를 실행하지 않고 프로젝트에 통합할수 있다는 점이 굉장히 유용한 편!
+이 스크립트를 사용하는 예제로는
+bindgen, cc 등을 이용하여 non-Rust 코드를 컴파일, Rust 코드와 연결해야 할 때 gRPC, jsonschema 등을 사용해 정의된 타입을 변환할 때 등이 있다. 이 스크립트를 사용할 때 주의해야 하는 소소한 점들을 정리했다.
+build.rs 예제 Cargo는 컴파일 과정에서 build script를 빌드, 실행한다. 따라서 다음과 같은 빌드 스크립트는 패키지 컴파일 과정에서 hello."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "http://huijeong-kim.github.io/post/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "빌드 스크립트 build.rs ",
+      "item": "http://huijeong-kim.github.io/post/2024-02-02-cargo-build-run-if-changed/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "빌드 스크립트 build.rs ",
+  "name": "빌드 스크립트 build.rs ",
+  "description": "Rust 프로젝트에서 third-party non-Rust 코드를 함께 컴파일해야 할 때 빌드 스크립트를 이용할 수 있다. 별도의 스크립트를 실행하지 않고 프로젝트에 통합할수 있다는 점이 굉장히 유용한 편!\n이 스크립트를 사용하는 예제로는\nbindgen, cc 등을 이용하여 non-Rust 코드를 컴파일, Rust 코드와 연결해야 할 때 gRPC, jsonschema 등을 사용해 정의된 타입을 변환할 때 등이 있다. 이 스크립트를 사용할 때 주의해야 하는 소소한 점들을 정리했다.\nbuild.rs 예제 Cargo는 컴파일 과정에서 build script를 빌드, 실행한다. 따라서 다음과 같은 빌드 스크립트는 패키지 컴파일 과정에서 hello.",
+  "keywords": [
+    "rust", "cargo"
+  ],
+  "articleBody": "Rust 프로젝트에서 third-party non-Rust 코드를 함께 컴파일해야 할 때 빌드 스크립트를 이용할 수 있다. 별도의 스크립트를 실행하지 않고 프로젝트에 통합할수 있다는 점이 굉장히 유용한 편!\n이 스크립트를 사용하는 예제로는\nbindgen, cc 등을 이용하여 non-Rust 코드를 컴파일, Rust 코드와 연결해야 할 때 gRPC, jsonschema 등을 사용해 정의된 타입을 변환할 때 등이 있다. 이 스크립트를 사용할 때 주의해야 하는 소소한 점들을 정리했다.\nbuild.rs 예제 Cargo는 컴파일 과정에서 build script를 빌드, 실행한다. 따라서 다음과 같은 빌드 스크립트는 패키지 컴파일 과정에서 hello.rs 파일을 만들게 된다. 패키지의 코드는 hello.rs 내 함수를 사용할 수 있다.\n1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 // build.rs use std::env; use std::fs; use std::path::Path; fn main() { let out_dir = env::var_os(\"OUT_DIR\").unwrap(); let dest_path = Path::new(\u0026out_dir).join(\"hello.rs\"); fs::write( \u0026dest_path, \"pub fn message() -\u003e \u0026'static str { \\\"Hello, World!\\\" } \" ).unwrap(); println!(\"cargo:rerun-if-changed=build.rs\"); } Cargo.toml 의 package 옵션에 스크립트를 특정 파일로 지정할 수도 있다.\n1 2 3 4 5 [package] name = \"build_example\" version = \"0.1.0\" edition = \"2021\" build = \"build.rs\" # \u003c- 바꿀 수 있음 build.rs dependency 빌드 스크립트를 사용하는 대표적인 경우 중 하나가 proto 파일로 정의된 gRPC를 사용할 때이다. tonic을 사용하면, proto에 정의된 대로 서버, 클라이언트 코드를 생성할 수 있다. 이 과정은 빌드 스크립트에서 일어난다.\n1 2 3 4 5 6 7 8 9 10 11 // build.rs fn main() { tonic_build::configure() .build_server(false) .out_dir(\"src/rpc\") .compile( \u0026[\"proto/googleapis/google/pubsub/v1/pubsub.proto\"], \u0026[\"proto/googleapis\"], ) .unwrap(); } 이 때, build.rs는 tonic_build를 사용한다. 여기서 쓰는 dependency는 Cargo.toml 파일 build-dependencies 항목에 추가해 줘야 한다. 소소하지만 깜빡하기 쉬운 포인트!\n1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 # Cargo.toml [package] name = \"build_example\" version = \"0.1.0\" edition = \"2021\" build = \"build.rs\" # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html [dependencies] tonic = \"0.10.2\" tokio = { version = \"1.35.1\", features = [\"rt\", \"rt-multi-thread\", \"macros\"] } prost = \"0.12.3\" [build-dependencies] tonic-build = \"0.10.2\" # \u003c---- 여기 추가해 줘야 함 ! build.rs 재 실행 build.rs는 해당 파일의 변경점이 있을 때 재컴파일 되고, “패키지 내의 어떤 파일이 변경되면” 재 실행된다.\n위의 gRPC 예제에서 proto 파일이 패키지 내에 있다면, proto 파일이 변경될 때 마다 코드는 새로 생성된다.\n하지만 다음과 같은 구조로, 패키지 외부에 정의된 proto 파일(api.proto)을 참조하는 경우에는 해당 파일이 변경되어도 빌드 스크립트가 재실행되지 않는다.\n1 2 3 4 5 6 7 . ├── frontend ├── api.proto // \u003c-- 참고하는 proto 파일 └── rust_backend // \u003c-- package ├── Cargo.toml ├── build.rs └── main.rs 이 경우에는 다음과 같이 빌드 스크립트가 재실행되는 조건을 명시할 수 있다.\n1 2 3 4 5 6 7 8 9 10 11 12 13 // build.rs fn main() { println!(\"cargo:rerun-if-changed=../api.proto\"); // \u003c-- 이 명령을 출력! tonic_build::configure() .build_server(false) .out_dir(\"src/rpc\") .compile( \u0026[\"proto/googleapis/google/pubsub/v1/pubsub.proto\"], \u0026[\"proto/googleapis\"], ) .unwrap(); } 패키지 외부의 파일을 참조할 때, 패키지가 매우 커 모든 변경 시 마다 실행하기 부담스러울 때 등에 활용하면 될 듯 하다.\nReferences Build Scripts rerun-if-changed ",
+  "wordCount" : "466",
+  "inLanguage": "en",
+  "datePublished": "2024-02-02T16:08:51+09:00",
+  "dateModified": "2024-02-02T16:08:51+09:00",
+  "author":{
+    "@type": "Person",
+    "name": "Huijeong Kim"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "http://huijeong-kim.github.io/post/2024-02-02-cargo-build-run-if-changed/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "my dev note",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://huijeong-kim.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://huijeong-kim.github.io/" accesskey="h" title="my dev note (Alt + H)">my dev note</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://huijeong-kim.github.io/archives/" title="Archives">
+                    <span>Archives</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://huijeong-kim.github.io/post/" title="Posts">
+                    <span>Posts</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://huijeong-kim.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://huijeong-kim.github.io/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="http://huijeong-kim.github.io/">Home</a>&nbsp;»&nbsp;<a href="http://huijeong-kim.github.io/post/">Posts</a></div>
+    <h1 class="post-title">
+      빌드 스크립트 build.rs 
+    </h1>
+    <div class="post-meta"><span title='2024-02-02 16:08:51 +0900 KST'>2024-02-02</span>&nbsp;·&nbsp;3 min&nbsp;·&nbsp;466 words&nbsp;·&nbsp;Huijeong Kim
+
+</div>
+  </header> <div class="toc">
+    <details  open>
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><ul>
+                <li>
+                    <a href="#buildrs-%ec%98%88%ec%a0%9c" aria-label="build.rs 예제">build.rs 예제</a></li>
+                <li>
+                    <a href="#buildrs-dependency" aria-label="build.rs dependency">build.rs dependency</a></li>
+                <li>
+                    <a href="#buildrs-%ec%9e%ac-%ec%8b%a4%ed%96%89" aria-label="build.rs 재 실행">build.rs 재 실행</a></li>
+                <li>
+                    <a href="#references" aria-label="References">References</a>
+                </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><p>Rust 프로젝트에서 third-party non-Rust 코드를 함께 컴파일해야 할 때 <a href="https://doc.rust-lang.org/cargo/reference/build-scripts.html">빌드 스크립트</a>를 이용할 수 있다. 별도의 스크립트를 실행하지 않고 프로젝트에 통합할수 있다는 점이 굉장히 유용한 편!</p>
+<p>이 스크립트를 사용하는 예제로는</p>
+<ul>
+<li><code>bindgen</code>, <code>cc</code> 등을 이용하여 non-Rust 코드를 컴파일, Rust 코드와 연결해야 할 때</li>
+<li><code>gRPC</code>, <code>jsonschema</code> 등을 사용해 정의된 타입을 변환할 때</li>
+</ul>
+<p>등이 있다. 이 스크립트를 사용할 때 주의해야 하는 소소한 점들을 정리했다.</p>
+<p> 
+ </p>
+<h2 id="buildrs-예제">build.rs 예제<a hidden class="anchor" aria-hidden="true" href="#buildrs-예제">#</a></h2>
+<p>Cargo는 컴파일 과정에서 build script를 빌드, 실행한다. 따라서 다음과 같은 빌드 스크립트는 패키지 컴파일 과정에서 <code>hello.rs</code> 파일을 만들게 된다. 패키지의 코드는 <code>hello.rs</code> 내 함수를 사용할 수 있다.</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#6272a4">// build.rs
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span><span style="color:#ff79c6">use</span> std::env;
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">use</span> std::fs;
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">use</span> std::path::Path;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">main</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">let</span> out_dir <span style="color:#ff79c6">=</span> env::var_os(<span style="color:#f1fa8c">&#34;OUT_DIR&#34;</span>).unwrap();
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">let</span> dest_path <span style="color:#ff79c6">=</span> Path::new(<span style="color:#ff79c6">&amp;</span>out_dir).join(<span style="color:#f1fa8c">&#34;hello.rs&#34;</span>);
+</span></span><span style="display:flex;"><span>    fs::write(
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">&amp;</span>dest_path,
+</span></span><span style="display:flex;"><span>        <span style="color:#f1fa8c">&#34;pub fn message() -&gt; &amp;&#39;static str {
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">            </span><span style="color:#f1fa8c">\&#34;</span><span style="color:#f1fa8c">Hello, World!</span><span style="color:#f1fa8c">\&#34;</span><span style="color:#f1fa8c">
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">        }
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">        &#34;</span>
+</span></span><span style="display:flex;"><span>    ).unwrap();
+</span></span><span style="display:flex;"><span>    println!(<span style="color:#f1fa8c">&#34;cargo:rerun-if-changed=build.rs&#34;</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p> </p>
+<p><code>Cargo.toml</code> 의 package 옵션에 스크립트를 특정 파일로 지정할 수도 있다.</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span>[package]
+</span></span><span style="display:flex;"><span>name = <span style="color:#f1fa8c">&#34;build_example&#34;</span>
+</span></span><span style="display:flex;"><span>version = <span style="color:#f1fa8c">&#34;0.1.0&#34;</span>
+</span></span><span style="display:flex;"><span>edition = <span style="color:#f1fa8c">&#34;2021&#34;</span>
+</span></span><span style="display:flex;"><span>build = <span style="color:#f1fa8c">&#34;build.rs&#34;</span> <span style="color:#6272a4"># &lt;- 바꿀 수 있음 </span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p> 
+ </p>
+<h2 id="buildrs-dependency">build.rs dependency<a hidden class="anchor" aria-hidden="true" href="#buildrs-dependency">#</a></h2>
+<p>빌드 스크립트를 사용하는 대표적인 경우 중 하나가 proto 파일로 정의된 gRPC를 사용할 때이다. <a href="https://docs.rs/tonic/latest/tonic/">tonic</a>을 사용하면, proto에 정의된 대로 서버, 클라이언트 코드를 생성할 수 있다. 이 과정은 빌드 스크립트에서 일어난다.</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#6272a4">// build.rs
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span><span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">main</span>() {
+</span></span><span style="display:flex;"><span>    tonic_build::configure()
+</span></span><span style="display:flex;"><span>        .build_server(<span style="color:#ff79c6">false</span>)
+</span></span><span style="display:flex;"><span>        .out_dir(<span style="color:#f1fa8c">&#34;src/rpc&#34;</span>)
+</span></span><span style="display:flex;"><span>        .compile(
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">&amp;</span>[<span style="color:#f1fa8c">&#34;proto/googleapis/google/pubsub/v1/pubsub.proto&#34;</span>],
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">&amp;</span>[<span style="color:#f1fa8c">&#34;proto/googleapis&#34;</span>],
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>        .unwrap();
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p> </p>
+<p>이 때, <code>build.rs</code>는 <code>tonic_build</code>를 사용한다. 여기서 쓰는 dependency는 Cargo.toml 파일 <code>build-dependencies</code> 항목에 추가해 줘야 한다. 소소하지만 깜빡하기 쉬운 포인트!</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span><span style="color:#6272a4"># Cargo.toml</span>
+</span></span><span style="display:flex;"><span>[package]
+</span></span><span style="display:flex;"><span>name = <span style="color:#f1fa8c">&#34;build_example&#34;</span>
+</span></span><span style="display:flex;"><span>version = <span style="color:#f1fa8c">&#34;0.1.0&#34;</span>
+</span></span><span style="display:flex;"><span>edition = <span style="color:#f1fa8c">&#34;2021&#34;</span>
+</span></span><span style="display:flex;"><span>build = <span style="color:#f1fa8c">&#34;build.rs&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4"># See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[dependencies]
+</span></span><span style="display:flex;"><span>tonic = <span style="color:#f1fa8c">&#34;0.10.2&#34;</span>
+</span></span><span style="display:flex;"><span>tokio = { version = <span style="color:#f1fa8c">&#34;1.35.1&#34;</span>, features = [<span style="color:#f1fa8c">&#34;rt&#34;</span>, <span style="color:#f1fa8c">&#34;rt-multi-thread&#34;</span>, <span style="color:#f1fa8c">&#34;macros&#34;</span>] }
+</span></span><span style="display:flex;"><span>prost = <span style="color:#f1fa8c">&#34;0.12.3&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[build-dependencies]
+</span></span><span style="display:flex;"><span>tonic-build = <span style="color:#f1fa8c">&#34;0.10.2&#34;</span> <span style="color:#6272a4"># &lt;---- 여기 추가해 줘야 함 !</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p> 
+ </p>
+<h2 id="buildrs-재-실행">build.rs 재 실행<a hidden class="anchor" aria-hidden="true" href="#buildrs-재-실행">#</a></h2>
+<p><code>build.rs</code>는 해당 파일의 변경점이 있을 때 재컴파일 되고, <strong>&ldquo;패키지 내의 어떤 파일이 변경되면&rdquo;</strong> 재 실행된다.</p>
+<p>위의 gRPC 예제에서 proto 파일이 패키지 내에 있다면, proto 파일이 변경될 때 마다 코드는 새로 생성된다.</p>
+<p>하지만 다음과 같은 구조로, 패키지 외부에 정의된 proto 파일(<code>api.proto</code>)을 참조하는 경우에는 해당 파일이 변경되어도 빌드 스크립트가 재실행되지 않는다.</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>.
+</span></span><span style="display:flex;"><span>├── frontend
+</span></span><span style="display:flex;"><span>├── api.proto // &lt;-- 참고하는 proto 파일
+</span></span><span style="display:flex;"><span>└── rust_backend // &lt;-- package
+</span></span><span style="display:flex;"><span>    ├── Cargo.toml
+</span></span><span style="display:flex;"><span>    ├── build.rs 
+</span></span><span style="display:flex;"><span>    └── main.rs
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p> </p>
+<p>이 경우에는 다음과 같이 빌드 스크립트가 재실행되는 조건을 명시할 수 있다.</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#6272a4">// build.rs
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span><span style="color:#ff79c6">fn</span> <span style="color:#50fa7b">main</span>() {
+</span></span><span style="display:flex;"><span>    println!(<span style="color:#f1fa8c">&#34;cargo:rerun-if-changed=../api.proto&#34;</span>); <span style="color:#6272a4">// &lt;-- 이 명령을 출력!
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span>
+</span></span><span style="display:flex;"><span>    tonic_build::configure()
+</span></span><span style="display:flex;"><span>        .build_server(<span style="color:#ff79c6">false</span>)
+</span></span><span style="display:flex;"><span>        .out_dir(<span style="color:#f1fa8c">&#34;src/rpc&#34;</span>)
+</span></span><span style="display:flex;"><span>        .compile(
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">&amp;</span>[<span style="color:#f1fa8c">&#34;proto/googleapis/google/pubsub/v1/pubsub.proto&#34;</span>],
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">&amp;</span>[<span style="color:#f1fa8c">&#34;proto/googleapis&#34;</span>],
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>        .unwrap();
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>패키지 외부의 파일을 참조할 때, 패키지가 매우 커 모든 변경 시 마다 실행하기 부담스러울 때 등에 활용하면 될 듯 하다.</p>
+<p> 
+ </p>
+<h2 id="references">References<a hidden class="anchor" aria-hidden="true" href="#references">#</a></h2>
+<ul>
+<li><a href="https://doc.rust-lang.org/cargo/reference/build-scripts.html">Build Scripts</a></li>
+<li><a href="https://doc.rust-lang.org/cargo/reference/build-scripts.html#rerun-if-changed">rerun-if-changed</a></li>
+</ul>
+<p> 
+ </p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://huijeong-kim.github.io/tags/rust/">rust</a></li>
+      <li><a href="http://huijeong-kim.github.io/tags/cargo/">cargo</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="next" href="http://huijeong-kim.github.io/post/2023-11-18-ml-strategy-2/">
+    <span class="title">Next »</span>
+    <br>
+    <span>ML Strategy 2</span>
+  </a>
+</nav>
+
+  </footer><script src="https://utteranc.es/client.js"
+        repo="huijeong-kim/huijeong-kim.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="http://huijeong-kim.github.io/">my dev note</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>
