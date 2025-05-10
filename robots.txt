@@ -1,1 +1,3 @@
 User-agent: *
+Disallow:
+Sitemap: http://huijeong-kim.github.io/sitemap.xml

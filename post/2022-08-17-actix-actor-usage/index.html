@@ -1,0 +1,373 @@
+<!doctype html><html lang=en dir=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>Actix actor를 사용하는 두 가지 방법 | Dev. note</title>
+<meta name=keywords content="rust,actix"><meta name=description content="Actix에서 actor를 사용하는 방법은 두 가지로 나눌 수 있을 것 같습니다. 첫 번째는 특정 task를 실행시키는 용도로, client가 message를 보내면 이를 받아서 처리하는 actor를 만드는 것 이고, 두 번째는 주기적으로 task를 실행시키는 actor를 만드는 것 입니다. 두 경우 각각 actor를 사용하는 방법에 대해 알아봅니다.
+1. Message를 처리하는 actor Actor를 시작하면 Addr가 리턴됩니다. Addr는 해당 actor에게 message를 전달할 수 있는 channel 입니다. Client module은 이 addr를 통해서 message를 전달할 수 있습니다."><meta name=author content="Huijeong Kim"><link rel=canonical href=http://huijeong-kim.github.io/post/2022-08-17-actix-actor-usage/><link crossorigin=anonymous href=../../assets/css/stylesheet.3613efbd0b1772781e8f49935e973cae632a7f61471c05b17be155505ccf87b5.css integrity="sha256-NhPvvQsXcngej0mTXpc8rmMqf2FHHAWxe+FVUFzPh7U=" rel="preload stylesheet" as=style><script defer crossorigin=anonymous src=../../assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG+9vmJ0cTS+ovo0FeA=" onload=hljs.initHighlightingOnLoad()></script><link rel=icon href=http://huijeong-kim.github.io/favicon.ico><link rel=icon type=image/png sizes=16x16 href=http://huijeong-kim.github.io/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=http://huijeong-kim.github.io/favicon-32x32.png><link rel=apple-touch-icon href=http://huijeong-kim.github.io/apple-touch-icon.png><link rel=mask-icon href=http://huijeong-kim.github.io/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=en href=http://huijeong-kim.github.io/post/2022-08-17-actix-actor-usage/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--hljs-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css integrity=sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV crossorigin=anonymous><script type=module>
+    import renderMathInElement from "https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.mjs";
+    renderMathInElement(document.body);
+</script><script async src="https://www.googletagmanager.com/gtag/js?id=G-VHBQNPGKKB"></script><script>var doNotTrack=!1;if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-VHBQNPGKKB",{anonymize_ip:!1})}</script><meta property="og:title" content="Actix actor를 사용하는 두 가지 방법"><meta property="og:description" content="Actix에서 actor를 사용하는 방법은 두 가지로 나눌 수 있을 것 같습니다. 첫 번째는 특정 task를 실행시키는 용도로, client가 message를 보내면 이를 받아서 처리하는 actor를 만드는 것 이고, 두 번째는 주기적으로 task를 실행시키는 actor를 만드는 것 입니다. 두 경우 각각 actor를 사용하는 방법에 대해 알아봅니다.
+1. Message를 처리하는 actor Actor를 시작하면 Addr가 리턴됩니다. Addr는 해당 actor에게 message를 전달할 수 있는 channel 입니다. Client module은 이 addr를 통해서 message를 전달할 수 있습니다."><meta property="og:type" content="article"><meta property="og:url" content="http://huijeong-kim.github.io/post/2022-08-17-actix-actor-usage/"><meta property="article:section" content="post"><meta property="article:published_time" content="2022-08-17T18:39:01+09:00"><meta property="article:modified_time" content="2022-08-17T18:39:01+09:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="Actix actor를 사용하는 두 가지 방법"><meta name=twitter:description content="Actix에서 actor를 사용하는 방법은 두 가지로 나눌 수 있을 것 같습니다. 첫 번째는 특정 task를 실행시키는 용도로, client가 message를 보내면 이를 받아서 처리하는 actor를 만드는 것 이고, 두 번째는 주기적으로 task를 실행시키는 actor를 만드는 것 입니다. 두 경우 각각 actor를 사용하는 방법에 대해 알아봅니다.
+1. Message를 처리하는 actor Actor를 시작하면 Addr가 리턴됩니다. Addr는 해당 actor에게 message를 전달할 수 있는 channel 입니다. Client module은 이 addr를 통해서 message를 전달할 수 있습니다."><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"http://huijeong-kim.github.io/post/"},{"@type":"ListItem","position":2,"name":"Actix actor를 사용하는 두 가지 방법","item":"http://huijeong-kim.github.io/post/2022-08-17-actix-actor-usage/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Actix actor를 사용하는 두 가지 방법","name":"Actix actor를 사용하는 두 가지 방법","description":"Actix에서 actor를 사용하는 방법은 두 가지로 나눌 수 있을 것 같습니다. 첫 번째는 특정 task를 실행시키는 용도로, client가 message를 보내면 이를 받아서 처리하는 actor를 만드는 것 이고, 두 번째는 주기적으로 task를 실행시키는 actor를 만드는 것 입니다. 두 경우 각각 actor를 사용하는 방법에 대해 알아봅니다.\n1. Message를 처리하는 actor Actor를 시작하면 Addr가 리턴됩니다. Addr는 해당 actor에게 message를 전달할 수 있는 channel 입니다. Client module은 이 addr를 통해서 message를 전달할 수 있습니다.","keywords":["rust","actix"],"articleBody":"Actix에서 actor를 사용하는 방법은 두 가지로 나눌 수 있을 것 같습니다. 첫 번째는 특정 task를 실행시키는 용도로, client가 message를 보내면 이를 받아서 처리하는 actor를 만드는 것 이고, 두 번째는 주기적으로 task를 실행시키는 actor를 만드는 것 입니다. 두 경우 각각 actor를 사용하는 방법에 대해 알아봅니다.\n1. Message를 처리하는 actor Actor를 시작하면 Addr가 리턴됩니다. Addr는 해당 actor에게 message를 전달할 수 있는 channel 입니다. Client module은 이 addr를 통해서 message를 전달할 수 있습니다.\n1 2 let addr = MyActor::new().start(); addr.send(Ping(10)).await?; 위 예제는 actor를 생성, 시작한 뒤 actor에게 메시지를 보내는 코드입니다. 이 때 Actor는 시작되면서 Started 상태가 됩니다. Started 상태에선 Actor::started()함수가 불린 뒤 Running 상태, 즉 message 를 처리할 수 있는 상태가 됩니다. 이후 Actor는 다음 중 한 가지 조건이 만족되면 Stopping 상태가 되고 종료됩니다.\nActor 자신이 Context::stop 을 불렀을 때 Actor의 모든 Addr가 drop 되었을 때 Context에 등록 된 evented object가 없을 때 특정 Message를 처리하는 용도로 actor를 사용할 땐, 의도적으로 Context::stop을 호출했을 때 혹은 Addr를 사용하는 client가 없을 때 actor는 멈추게 됩니다. 즉 actor를 멈추기 위해선 Context::stop을 호출하거나, 사용 중인 Addr를 모두 drop하면 됩니다. 참고로 Actor를 시작한 후 리턴 된 Addr를 사용하지 않는다면(다른 variable에 bind하지 않는다면) actor는 Actor::started 실행 후 바로 Stopping 상태가 될 수 있습니다.\n세번째 경우는 아래에서 설명됩니다.\n2. 주기적으로 task를 실행하는 actor 주기적인 task를 실행하는 actor의 대표적인 예는 자기 자신 혹은 외부의 상태를 주기적으로 확인 하는 heartbeat 입니다.\n이를 가장 naive하게 구현하면, 특정 주기마다 actor에게 message를 보내 task를 수행하게 할 수 있습니다. 아래는 actix repo의 ping example을 주기적으로 ping을 보내도록 수정한 코드입니다. main 함수에서 특정 주기로 ping message를 보내도록 했습니다.\n여기서 주의할 점은, std::thread::sleep이 아닌 tokio::time::sleep을 사용했다는 점 입니다. std::thread::sleep을 통해 sleep하는 경우, 현재 thread가 sleep 상태에 빠져 Actix System이 다른 future들을 실행시킬 수 없습니다. Single thread를 사용하는 기본 Actix System의 경우, application 전체가 block 상태가 됩니다. tokio::time::sleep은 현재 thread가 아닌 현재 future만 sleep 시켜, 전체 system을 block시키지 않습니다.\n1 2 3 4 5 6 7 8 9 10 11 fn main() { System::new().block_on(async { let addr = MyActor { count: 10 }.start(); loop { let res = addr.send(Ping(10)).await; println!(\"RESULT: {}\", res.unwrap()); tokio::time::sleep(tokio::time::Duration::from_secs(3)).await; } }); } 하지만 Actix에는 이 경우 사용할 수 있는 run_interval() 함수가 있습니다. 다음과 같이 Actor의 started()에서 run_interval()을 통해 주기적으로 실행시킬 함수를 등록해 놓는다면, 위와 같은 loop를 작성하지 않아도 됩니다.\n1 2 3 4 5 6 7 fn started(\u0026mut self, ctx: \u0026mut Self::Context) { println!(\"Actor started\"); ctx.run_interval(std::time::Duration::from_secs(3), |_, _| { MyActor::do_something(); }); } 이 경우 Actor의 Addr가 사용되지 않아도 actor는 멈추지 않습니다. 앞에서 언급한 Actor가 Stopping 상태가 되는 조건 중 세 번째를 충족시키지 않기 때문, 즉 evented object 가 등록된 상태이기 때문입니다.\n1 2 3 4 5 6 fn run_interval\u003cF\u003e(\u0026mut self, dur: Duration, f: F) -\u003e SpawnHandle where F: FnMut(\u0026mut A, \u0026mut A::Context) + 'static, { self.spawn(IntervalFunc::new(dur, f).finish()) } run_interval() 함수를 조금 더 살펴봅시다. 함수는 다음과 같이 실행 주기에 해당하는 Duration과 실행시킬 함수, f를 인자로 받습니다.f는 FnMut(\u0026mut A, \u0026mut A::Context) + 'static 을 만족해야 합니다. 여기서 A는 Actor","wordCount":"1494","inLanguage":"en","datePublished":"2022-08-17T18:39:01+09:00","dateModified":"2022-08-17T18:39:01+09:00","author":{"@type":"Person","name":"Huijeong Kim"},"mainEntityOfPage":{"@type":"WebPage","@id":"http://huijeong-kim.github.io/post/2022-08-17-actix-actor-usage/"},"publisher":{"@type":"Organization","name":"Dev. note","logo":{"@type":"ImageObject","url":"http://huijeong-kim.github.io/favicon.ico"}}}</script></head><body id=top><script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add("dark"):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove("dark"):window.matchMedia("(prefers-color-scheme: dark)").matches&&document.body.classList.add("dark")</script><header class=header><nav class=nav><div class=logo><a href=http://huijeong-kim.github.io/ accesskey=h title="Dev. note (Alt + H)">Dev. note</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button><ul class=lang-switch><li>|</li></ul></div></div><ul id=menu><li><a href=http://huijeong-kim.github.io/archives/ title=Archive><span>Archive</span></a></li><li><a href=http://huijeong-kim.github.io/archives/ title=Archives><span>Archives</span></a></li><li><a href=http://huijeong-kim.github.io/post/ title=Posts><span>Posts</span></a></li><li><a href=http://huijeong-kim.github.io/search/ title="Search (Alt + /)" accesskey=/><span>Search</span></a></li><li><a href=http://huijeong-kim.github.io/search/ title="Search (Alt + /)" accesskey=/><span>Search</span></a></li><li><a href=http://huijeong-kim.github.io/tags/ title=Tags><span>Tags</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><div class=breadcrumbs><a href=http://huijeong-kim.github.io/>Home</a>&nbsp;»&nbsp;<a href=http://huijeong-kim.github.io/post/>Posts</a></div><h1 class=post-title>Actix actor를 사용하는 두 가지 방법</h1><div class=post-meta>&lt;span title='2022-08-17 18:39:01 +0900 +0900'>2022-08-17&lt;/span>&amp;nbsp;·&amp;nbsp;8 min&amp;nbsp;·&amp;nbsp;1494 words&amp;nbsp;·&amp;nbsp;Huijeong Kim</div></header><div class=toc><details open><summary accesskey=c title="(Alt + C)"><span class=details>Table of Contents</span></summary><div class=inner><ul><li><a href=#1-message%eb%a5%bc-%ec%b2%98%eb%a6%ac%ed%95%98%eb%8a%94-actor aria-label="1. Message를 처리하는 actor">1. Message를 처리하는 actor</a></li><li><a href=#2-%ec%a3%bc%ea%b8%b0%ec%a0%81%ec%9c%bc%eb%a1%9c-task%eb%a5%bc-%ec%8b%a4%ed%96%89%ed%95%98%eb%8a%94-actor aria-label="2. 주기적으로 task를 실행하는 actor">2. 주기적으로 task를 실행하는 actor</a></li><li><a href=#references aria-label=References>References</a></li></ul></div></details></div><div class=post-content><p>Actix에서 actor를 사용하는 방법은 두 가지로 나눌 수 있을 것 같습니다. 첫 번째는 특정 task를 실행시키는 용도로, client가 message를 보내면 이를 받아서 처리하는 actor를 만드는 것 이고, 두 번째는 주기적으로 task를 실행시키는 actor를 만드는 것 입니다. 두 경우 각각 actor를 사용하는 방법에 대해 알아봅니다.</p><p> 
+ </p><h3 id=1-message를-처리하는-actor>1. Message를 처리하는 actor<a hidden class=anchor aria-hidden=true href=#1-message를-처리하는-actor>#</a></h3><p>Actor를 시작하면 <code>Addr</code>가 리턴됩니다. <code>Addr</code>는 해당 actor에게 message를 전달할 수 있는 channel 입니다. Client module은 이 <code>addr</code>를 통해서 message를 전달할 수 있습니다.</p><div class=highlight><div style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=display:flex><span><span style=color:#8be9fd;font-style:italic>let</span> addr <span style=color:#ff79c6>=</span> MyActor::new().start();
+</span></span><span style=display:flex><span>addr.send(Ping(<span style=color:#bd93f9>10</span>)).<span style=color:#ff79c6>await</span><span style=color:#ff79c6>?</span>;
+</span></span></code></pre></td></tr></table></div></div><p>위 예제는 actor를 생성, 시작한 뒤 actor에게 메시지를 보내는 코드입니다. 이 때 Actor는 시작되면서 <code>Started</code> 상태가 됩니다. <code>Started</code> 상태에선 <code>Actor::started()</code>함수가 불린 뒤 <code>Running</code> 상태, 즉 message 를 처리할 수 있는 상태가 됩니다. 이후 Actor는 다음 중 한 가지 조건이 만족되면 <code>Stopping</code> 상태가 되고 종료됩니다.</p><ul><li>Actor 자신이 <code>Context::stop</code> 을 불렀을 때</li><li>Actor의 모든 <code>Addr</code>가 drop 되었을 때</li><li>Context에 등록 된 evented object가 없을 때</li></ul><p> </p><p>특정 Message를 처리하는 용도로 actor를 사용할 땐, 의도적으로 <code>Context::stop</code>을 호출했을 때 혹은 <code>Addr</code>를 사용하는 client가 없을 때 actor는 멈추게 됩니다. 즉 actor를 멈추기 위해선 <code>Context::stop</code>을 호출하거나, 사용 중인 <code>Addr</code>를 모두 drop하면 됩니다. 참고로 Actor를 시작한 후 리턴 된 <code>Addr</code>를 사용하지 않는다면(다른 variable에 bind하지 않는다면) actor는 <code>Actor::started</code> 실행 후 바로 <code>Stopping</code> 상태가 될 수 있습니다.</p><p>세번째 경우는 아래에서 설명됩니다.</p><p> 
+ </p><h3 id=2-주기적으로-task를-실행하는-actor>2. 주기적으로 task를 실행하는 actor<a hidden class=anchor aria-hidden=true href=#2-주기적으로-task를-실행하는-actor>#</a></h3><p>주기적인 task를 실행하는 actor의 대표적인 예는 자기 자신 혹은 외부의 상태를 주기적으로 확인 하는 heartbeat 입니다.</p><p>이를 가장 naive하게 구현하면, 특정 주기마다 actor에게 message를 보내 task를 수행하게 할 수 있습니다. 아래는 actix repo의 <a href=https://github.com/actix/actix/blob/master/actix/examples/ping.rs>ping example</a>을 주기적으로 ping을 보내도록 수정한 코드입니다. main 함수에서 특정 주기로 ping message를 보내도록 했습니다.</p><p>여기서 주의할 점은, <code>std::thread::sleep</code>이 아닌 <code>tokio::time::sleep</code>을 사용했다는 점 입니다. <code>std::thread::sleep</code>을 통해 sleep하는 경우, 현재 thread가 sleep 상태에 빠져 Actix System이 다른 future들을 실행시킬 수 없습니다. Single thread를 사용하는 기본 Actix System의 경우, application 전체가 block 상태가 됩니다. <code>tokio::time::sleep</code>은 현재 thread가 아닌 <u>현재 future</u>만 sleep 시켜, 전체 system을 block시키지 않습니다.</p><div class=highlight><div style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=display:flex><span><span style=color:#ff79c6>fn</span> <span style=color:#50fa7b>main</span>() {
+</span></span><span style=display:flex><span>    System::new().block_on(<span style=color:#ff79c6>async</span> {
+</span></span><span style=display:flex><span>        <span style=color:#8be9fd;font-style:italic>let</span> addr <span style=color:#ff79c6>=</span> MyActor { count: <span style=color:#bd93f9>10</span> }.start();
+</span></span><span style=display:flex><span>        <span style=color:#ff79c6>loop</span> {
+</span></span><span style=display:flex><span>            <span style=color:#8be9fd;font-style:italic>let</span> res <span style=color:#ff79c6>=</span> addr.send(Ping(<span style=color:#bd93f9>10</span>)).<span style=color:#ff79c6>await</span>;
+</span></span><span style=display:flex><span>            println!(<span style=color:#f1fa8c>&#34;RESULT: </span><span style=color:#f1fa8c>{}</span><span style=color:#f1fa8c>&#34;</span>, res.unwrap());
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>            tokio::time::sleep(tokio::time::Duration::from_secs(<span style=color:#bd93f9>3</span>)).<span style=color:#ff79c6>await</span>;
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>    });
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></td></tr></table></div></div><p> </p><p>하지만 Actix에는 이 경우 사용할 수 있는 <code>run_interval()</code> 함수가 있습니다. 다음과 같이 Actor의 <code>started()</code>에서 <code>run_interval()</code>을 통해 주기적으로 실행시킬 함수를 등록해 놓는다면, 위와 같은 loop를 작성하지 않아도 됩니다.</p><div class=highlight><div style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">7
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=display:flex><span><span style=color:#ff79c6>fn</span> <span style=color:#50fa7b>started</span>(<span style=color:#ff79c6>&amp;</span><span style=color:#ff79c6>mut</span> self, ctx: <span style=color:#ff79c6>&amp;</span><span style=color:#50fa7b>mut</span> Self::Context) {
+</span></span><span style=display:flex><span>    println!(<span style=color:#f1fa8c>&#34;Actor started&#34;</span>);
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    ctx.run_interval(std::time::Duration::from_secs(<span style=color:#bd93f9>3</span>), <span style=color:#ff79c6>|</span>_, _<span style=color:#ff79c6>|</span> {
+</span></span><span style=display:flex><span>        MyActor::do_something();
+</span></span><span style=display:flex><span>    });
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></td></tr></table></div></div><p>이 경우 Actor의 <code>Addr</code>가 사용되지 않아도 actor는 멈추지 않습니다. 앞에서 언급한 Actor가 <code>Stopping</code> 상태가 되는 조건 중 세 번째를 충족시키지 않기 때문, 즉 evented object 가 등록된 상태이기 때문입니다.</p><p> </p><div class=highlight><div style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">6
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=display:flex><span><span style=color:#ff79c6>fn</span> <span style=color:#50fa7b>run_interval</span><span style=color:#ff79c6>&lt;</span>F<span style=color:#ff79c6>&gt;</span>(<span style=color:#ff79c6>&amp;</span><span style=color:#ff79c6>mut</span> self, dur: <span style=color:#50fa7b>Duration</span>, f: <span style=color:#50fa7b>F</span>) -&gt; <span style=color:#50fa7b>SpawnHandle</span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>where</span>
+</span></span><span style=display:flex><span>    F: <span style=color:#8be9fd;font-style:italic>FnMut</span>(<span style=color:#ff79c6>&amp;</span><span style=color:#ff79c6>mut</span> A, <span style=color:#ff79c6>&amp;</span><span style=color:#ff79c6>mut</span> A::Context) <span style=color:#ff79c6>+</span> <span style=color:#8be9fd;font-style:italic>&#39;static</span>,
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>    self.spawn(IntervalFunc::new(dur, f).finish())
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></td></tr></table></div></div><p><code>run_interval()</code> 함수를 조금 더 살펴봅시다. 함수는 다음과 같이 실행 주기에 해당하는 <code>Duration</code>과 실행시킬 함수, <code>f</code>를 인자로 받습니다.<code>f</code>는 <code>FnMut(&amp;mut A, &amp;mut A::Context) + 'static</code> 을 만족해야 합니다. 여기서 <code>A</code>는 <code>Actor&lt;Context=Self></code> 입니다. 결국 <code>f</code>는 <code>Actor</code>와 <code>Actor::Context</code>를 인자로 받는 <code>FnMut</code>여야 합니다.</p><p>위의 예제에서 <code>|_, _| {}</code>로 구현된 closure가 이 타입이며, 사용되지 않은 두 인자는 <code>Actor</code>와 <code>Actor::Context</code> 입니다.</p><p> 
+ </p><p>이를 활용하여 다양한 함수를 주기적으로 호출되도록 등록할 수 있습니다. 여기서 만약, 주기적으로 실행되어야 하는 동작이 async 함수라면 어떻게 해야 할까요? 현재 Rust는 async closure를 지원하지 않습니다. <code>run_interval()</code>함수의 두 번째 인자인 f도 Future 타입은 아니죠.</p><p>해결하는 방법은 <a href=https://huijeong-kim.github.io/2022/08/14/run-grpc-server-in-actix/>지난 글</a>에서 사용한 방식과 동일합니다. fn에서 future를 spawn하면 됩니다. 지난 글처럼 해당 context에 spawn 하거나, actix system(현재 arbiter)에 spawn 할 수 있습니다.</p><div class=highlight><div style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">7
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=display:flex><span><span style=color:#8be9fd;font-style:italic>let</span> fut <span style=color:#ff79c6>=</span> <span style=color:#ff79c6>async</span> <span style=color:#ff79c6>move</span> {
+</span></span><span style=display:flex><span>    do_something().<span style=color:#ff79c6>await</span>;
+</span></span><span style=display:flex><span>};
+</span></span><span style=display:flex><span><span style=color:#8be9fd;font-style:italic>let</span> actor <span style=color:#ff79c6>=</span> fut.into_actor(fut);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>ctx.spawn(actor);        <span style=color:#6272a4>// 방법 1, 현재 context에 spawn 하기
+</span></span></span><span style=display:flex><span><span style=color:#6272a4></span>actix::spawn(fut);       <span style=color:#6272a4>// 방법 2, 현재 system에 spawn 하기
+</span></span></span></code></pre></td></tr></table></div></div><p> 
+ </p><p>아래 코드는 지금까지 설명한 <code>run_interval</code>을 다양한 방식으로 사용하는 코드 예시입니다. 1) 주기적으로 associated func을 호출하는 경우, 2) 주기적으로 struct method를 호출하는 경우, 그리고 3) 주기적으로 async method를 호출하는 경우입니다.</p><p>아래 코드에서 특이한(?) 포인트는 async method를 호출할 때, <code>send_ping</code> 함수에서 <code>self.clone()</code>를 하는 건데요. async block 내에서 self의 <code>async_send_ping</code>를 호출하고 있기 때문 입니다. 여기서 self가 async block 내로 move될 수 없기 때문에 clone 하였습니다. 이 부분은 아래에서 좀 더 설명하겠습니다.</p><div class=highlight><div style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">19
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">20
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">21
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">22
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">23
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">24
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">25
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">26
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">27
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">28
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">29
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">30
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">31
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">32
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">33
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">34
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">35
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">36
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">37
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">38
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">39
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">40
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">41
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">42
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">43
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">44
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">45
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">46
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">47
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">48
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">49
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">50
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">51
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">52
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">53
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">54
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">55
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">56
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">57
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">58
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">59
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">60
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">61
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">62
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">63
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">64
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">65
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">66
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">67
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">68
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">69
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">70
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">71
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">72
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">73
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">74
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">75
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">76
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">77
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">78
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">79
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">80
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">81
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">82
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">83
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">84
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">85
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">86
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=display:flex><span><span style=color:#ff79c6>use</span> actix::{Actor, Addr, AsyncContext, Context, Handler, Message};
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f1fa8c>/// Define `Ping` message
+</span></span></span><span style=display:flex><span><span style=color:#f1fa8c></span><span style=color:#ff79c6>#[derive(Default, Message)]</span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>#[rtype(result = </span><span style=color:#f1fa8c>&#34;usize&#34;</span><span style=color:#ff79c6>)]</span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>struct</span> <span style=color:#50fa7b>Ping</span>(<span style=color:#8be9fd>usize</span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f1fa8c>/// Actor
+</span></span></span><span style=display:flex><span><span style=color:#f1fa8c></span><span style=color:#ff79c6>#[derive(Clone, Debug)]</span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>struct</span> <span style=color:#50fa7b>MyActor</span> {
+</span></span><span style=display:flex><span>    count: <span style=color:#8be9fd>usize</span>,
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f1fa8c>/// Declare actor and its context
+</span></span></span><span style=display:flex><span><span style=color:#f1fa8c></span><span style=color:#ff79c6>impl</span> Actor <span style=color:#ff79c6>for</span> MyActor {
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>type</span> <span style=color:#50fa7b>Context</span> <span style=color:#ff79c6>=</span> Context<span style=color:#ff79c6>&lt;</span>Self<span style=color:#ff79c6>&gt;</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>fn</span> <span style=color:#50fa7b>started</span>(<span style=color:#ff79c6>&amp;</span><span style=color:#ff79c6>mut</span> self, ctx: <span style=color:#ff79c6>&amp;</span><span style=color:#50fa7b>mut</span> Self::Context) {
+</span></span><span style=display:flex><span>        println!(<span style=color:#f1fa8c>&#34;Actor started&#34;</span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        ctx.run_interval(std::time::Duration::from_secs(<span style=color:#bd93f9>3</span>), <span style=color:#ff79c6>|</span>_act, _ctx<span style=color:#ff79c6>|</span> {
+</span></span><span style=display:flex><span>            MyActor::run_associated_func();
+</span></span><span style=display:flex><span>        });
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        ctx.run_interval(std::time::Duration::from_secs(<span style=color:#bd93f9>1</span>), <span style=color:#ff79c6>|</span>act, _ctx<span style=color:#ff79c6>|</span> {
+</span></span><span style=display:flex><span>            act.run_func();
+</span></span><span style=display:flex><span>        });
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        ctx.run_interval(std::time::Duration::from_secs(<span style=color:#bd93f9>1</span>), <span style=color:#ff79c6>|</span>act, ctx<span style=color:#ff79c6>|</span> {
+</span></span><span style=display:flex><span>            act.send_ping(ctx);
+</span></span><span style=display:flex><span>        });
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>fn</span> <span style=color:#50fa7b>stopped</span>(<span style=color:#ff79c6>&amp;</span><span style=color:#ff79c6>mut</span> self, _ctx: <span style=color:#ff79c6>&amp;</span><span style=color:#50fa7b>mut</span> Self::Context) {
+</span></span><span style=display:flex><span>        println!(<span style=color:#f1fa8c>&#34;Actor stopped&#34;</span>);
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>impl</span> MyActor {
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>pub</span> <span style=color:#ff79c6>fn</span> <span style=color:#50fa7b>new</span>(count: <span style=color:#8be9fd>usize</span>) -&gt; <span style=color:#50fa7b>Self</span> {
+</span></span><span style=display:flex><span>        Self {
+</span></span><span style=display:flex><span>            count,
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>fn</span> <span style=color:#50fa7b>run_associated_func</span>() {
+</span></span><span style=display:flex><span>        println!(<span style=color:#f1fa8c>&#34;CASE 1. run associated func&#34;</span>);
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>fn</span> <span style=color:#50fa7b>run_func</span>(<span style=color:#ff79c6>&amp;</span>self) {
+</span></span><span style=display:flex><span>        println!(<span style=color:#f1fa8c>&#34;CASE 2. run func, count </span><span style=color:#f1fa8c>{}</span><span style=color:#f1fa8c>&#34;</span>, self.count);
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>fn</span> <span style=color:#50fa7b>send_ping</span>(<span style=color:#ff79c6>&amp;</span><span style=color:#ff79c6>mut</span> self, ctx: <span style=color:#ff79c6>&amp;</span><span style=color:#50fa7b>mut</span> Context<span style=color:#ff79c6>&lt;</span>Self<span style=color:#ff79c6>&gt;</span>) {
+</span></span><span style=display:flex><span>        <span style=color:#8be9fd;font-style:italic>let</span> actor <span style=color:#ff79c6>=</span> self.clone();
+</span></span><span style=display:flex><span>        <span style=color:#8be9fd;font-style:italic>let</span> address <span style=color:#ff79c6>=</span> ctx.address();
+</span></span><span style=display:flex><span>        <span style=color:#8be9fd;font-style:italic>let</span> fut <span style=color:#ff79c6>=</span> <span style=color:#ff79c6>async</span> <span style=color:#ff79c6>move</span> {
+</span></span><span style=display:flex><span>            actor.async_send_ping(address).<span style=color:#ff79c6>await</span>;
+</span></span><span style=display:flex><span>        };
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        actix::spawn(fut);
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>async</span> <span style=color:#ff79c6>fn</span> <span style=color:#50fa7b>async_send_ping</span>(<span style=color:#ff79c6>&amp;</span>self, addr: <span style=color:#50fa7b>Addr</span><span style=color:#ff79c6>&lt;</span>MyActor<span style=color:#ff79c6>&gt;</span>) {
+</span></span><span style=display:flex><span>        addr.send(Ping(<span style=color:#bd93f9>10</span>)).<span style=color:#ff79c6>await</span>.unwrap();
+</span></span><span style=display:flex><span>        println!(<span style=color:#f1fa8c>&#34;CASE 3. Send ping, now count is </span><span style=color:#f1fa8c>{}</span><span style=color:#f1fa8c>&#34;</span>, self.count);
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f1fa8c>/// Handler for `Ping` message
+</span></span></span><span style=display:flex><span><span style=color:#f1fa8c></span><span style=color:#ff79c6>impl</span> Handler<span style=color:#ff79c6>&lt;</span>Ping<span style=color:#ff79c6>&gt;</span> <span style=color:#ff79c6>for</span> MyActor {
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>type</span> <span style=color:#8be9fd;font-style:italic>Result</span> <span style=color:#ff79c6>=</span> <span style=color:#8be9fd>usize</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>fn</span> <span style=color:#50fa7b>handle</span>(<span style=color:#ff79c6>&amp;</span><span style=color:#ff79c6>mut</span> self, msg: <span style=color:#50fa7b>Ping</span>, _: <span style=color:#ff79c6>&amp;</span><span style=color:#50fa7b>mut</span> Context<span style=color:#ff79c6>&lt;</span>Self<span style=color:#ff79c6>&gt;</span>) -&gt; <span style=color:#50fa7b>Self</span>::<span style=color:#8be9fd;font-style:italic>Result</span> {
+</span></span><span style=display:flex><span>        self.count <span style=color:#ff79c6>+=</span> msg.<span style=color:#bd93f9>0</span>;
+</span></span><span style=display:flex><span>        self.count
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>fn</span> <span style=color:#50fa7b>main</span>() {
+</span></span><span style=display:flex><span>    <span style=color:#8be9fd;font-style:italic>let</span> system <span style=color:#ff79c6>=</span> actix::System::new();
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    system.block_on(<span style=color:#ff79c6>async</span> <span style=color:#ff79c6>move</span> {
+</span></span><span style=display:flex><span>        MyActor::new(<span style=color:#bd93f9>0</span>).start();
+</span></span><span style=display:flex><span>    });
+</span></span><span style=display:flex><span>    system.run().unwrap();
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></td></tr></table></div></div><p><strong>실행 결과</strong></p><div class=highlight><div style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">19
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">20
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">21
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">22
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">23
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">24
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">25
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">26
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=display:flex><span>Actor started
+</span></span><span style=display:flex><span>CASE <span style=color:#bd93f9>2.</span> run func, count <span style=color:#bd93f9>0</span>
+</span></span><span style=display:flex><span>CASE <span style=color:#bd93f9>3.</span> <span style=color:#8be9fd;font-style:italic>Send</span> ping, now count is <span style=color:#bd93f9>0</span>
+</span></span><span style=display:flex><span>CASE <span style=color:#bd93f9>2.</span> run func, count <span style=color:#bd93f9>10</span>
+</span></span><span style=display:flex><span>CASE <span style=color:#bd93f9>3.</span> <span style=color:#8be9fd;font-style:italic>Send</span> ping, now count is <span style=color:#bd93f9>10</span>
+</span></span><span style=display:flex><span>CASE <span style=color:#bd93f9>1.</span> run associated func
+</span></span><span style=display:flex><span>CASE <span style=color:#bd93f9>2.</span> run func, count <span style=color:#bd93f9>20</span>
+</span></span><span style=display:flex><span>CASE <span style=color:#bd93f9>3.</span> <span style=color:#8be9fd;font-style:italic>Send</span> ping, now count is <span style=color:#bd93f9>20</span>
+</span></span><span style=display:flex><span>CASE <span style=color:#bd93f9>2.</span> run func, count <span style=color:#bd93f9>30</span>
+</span></span><span style=display:flex><span>CASE <span style=color:#bd93f9>3.</span> <span style=color:#8be9fd;font-style:italic>Send</span> ping, now count is <span style=color:#bd93f9>30</span>
+</span></span><span style=display:flex><span>CASE <span style=color:#bd93f9>2.</span> run func, count <span style=color:#bd93f9>40</span>
+</span></span><span style=display:flex><span>CASE <span style=color:#bd93f9>3.</span> <span style=color:#8be9fd;font-style:italic>Send</span> ping, now count is <span style=color:#bd93f9>40</span>
+</span></span><span style=display:flex><span>CASE <span style=color:#bd93f9>1.</span> run associated func
+</span></span><span style=display:flex><span>CASE <span style=color:#bd93f9>2.</span> run func, count <span style=color:#bd93f9>50</span>
+</span></span><span style=display:flex><span>CASE <span style=color:#bd93f9>3.</span> <span style=color:#8be9fd;font-style:italic>Send</span> ping, now count is <span style=color:#bd93f9>50</span>
+</span></span><span style=display:flex><span>CASE <span style=color:#bd93f9>2.</span> run func, count <span style=color:#bd93f9>60</span>
+</span></span><span style=display:flex><span>CASE <span style=color:#bd93f9>3.</span> <span style=color:#8be9fd;font-style:italic>Send</span> ping, now count is <span style=color:#bd93f9>60</span>
+</span></span><span style=display:flex><span>CASE <span style=color:#bd93f9>2.</span> run func, count <span style=color:#bd93f9>70</span>
+</span></span><span style=display:flex><span>CASE <span style=color:#bd93f9>3.</span> <span style=color:#8be9fd;font-style:italic>Send</span> ping, now count is <span style=color:#bd93f9>70</span>
+</span></span><span style=display:flex><span>CASE <span style=color:#bd93f9>1.</span> run associated func
+</span></span><span style=display:flex><span>CASE <span style=color:#bd93f9>2.</span> run func, count <span style=color:#bd93f9>80</span>
+</span></span><span style=display:flex><span>CASE <span style=color:#bd93f9>3.</span> <span style=color:#8be9fd;font-style:italic>Send</span> ping, now count is <span style=color:#bd93f9>80</span>
+</span></span><span style=display:flex><span>CASE <span style=color:#bd93f9>2.</span> run func, count <span style=color:#bd93f9>90</span>
+</span></span><span style=display:flex><span>CASE <span style=color:#bd93f9>3.</span> <span style=color:#8be9fd;font-style:italic>Send</span> ping, now count is <span style=color:#bd93f9>90</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>(생략)
+</span></span></code></pre></td></tr></table></div></div><p> </p><p>결과를 보면, <code>send_async_ping</code> 에서 출력한 count가 현재 ping으로 인해 증가된 값이 반영되지 않는 문제가 있습니다. 위의 코드에서 <code>self.clone()</code>을 하면서 의도하지 않은 동작을 하게 만들었습니다. 이 상태를 분석하기 위해 위의 코드에서 <code>send_ping()</code>, <code>send_async_ping()</code> method에 현재 사용하고 있는 actor의 주소를 출력하도록 수정해 봤습니다.</p><div class=highlight><div style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">18
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=display:flex><span><span style=color:#ff79c6>fn</span> <span style=color:#50fa7b>send_ping</span>(<span style=color:#ff79c6>&amp;</span><span style=color:#ff79c6>mut</span> self, ctx: <span style=color:#ff79c6>&amp;</span><span style=color:#50fa7b>mut</span> Context<span style=color:#ff79c6>&lt;</span>Self<span style=color:#ff79c6>&gt;</span>) {
+</span></span><span style=display:flex><span>    println!(<span style=color:#f1fa8c>&#34;NOW I WILL START SEND PING: </span><span style=color:#f1fa8c>{:p}</span><span style=color:#f1fa8c>, </span><span style=color:#f1fa8c>{:?}</span><span style=color:#f1fa8c>&#34;</span>, <span style=color:#ff79c6>&amp;</span>self, self);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#8be9fd;font-style:italic>let</span> actor <span style=color:#ff79c6>=</span> self.clone();
+</span></span><span style=display:flex><span>    <span style=color:#8be9fd;font-style:italic>let</span> address <span style=color:#ff79c6>=</span> ctx.address();
+</span></span><span style=display:flex><span>    <span style=color:#8be9fd;font-style:italic>let</span> fut <span style=color:#ff79c6>=</span> <span style=color:#ff79c6>async</span> <span style=color:#ff79c6>move</span> {
+</span></span><span style=display:flex><span>        actor.async_send_ping(address).<span style=color:#ff79c6>await</span>;
+</span></span><span style=display:flex><span>    };
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    actix::spawn(fut);
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>async</span> <span style=color:#ff79c6>fn</span> <span style=color:#50fa7b>async_send_ping</span>(<span style=color:#ff79c6>&amp;</span>self, addr: <span style=color:#50fa7b>Addr</span><span style=color:#ff79c6>&lt;</span>MyActor<span style=color:#ff79c6>&gt;</span>) {
+</span></span><span style=display:flex><span>    println!(<span style=color:#f1fa8c>&#34;NOW I WILL SEND PING: </span><span style=color:#f1fa8c>{:p}</span><span style=color:#f1fa8c>, </span><span style=color:#f1fa8c>{:?}</span><span style=color:#f1fa8c>&#34;</span>, <span style=color:#ff79c6>&amp;</span>self, self);
+</span></span><span style=display:flex><span>    addr.send(Ping(<span style=color:#bd93f9>10</span>)).<span style=color:#ff79c6>await</span>.unwrap();
+</span></span><span style=display:flex><span>    println!(<span style=color:#f1fa8c>&#34;NOW I WILL SEND PING TO SELF COMPLETED: </span><span style=color:#f1fa8c>{:p}</span><span style=color:#f1fa8c>, </span><span style=color:#f1fa8c>{:?}</span><span style=color:#f1fa8c>&#34;</span>, <span style=color:#ff79c6>&amp;</span>self, self);
+</span></span><span style=display:flex><span>    println!(<span style=color:#f1fa8c>&#34;Send ping, now count is </span><span style=color:#f1fa8c>{}</span><span style=color:#f1fa8c>&#34;</span>, self.count);
+</span></span><span style=display:flex><span>} 
+</span></span></code></pre></td></tr></table></div></div><p>실행 시 출력은 다음과 같습니다.</p><div class=highlight><div style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>Actor started
+</span></span><span style=display:flex><span>NOW I WILL START SEND PING: 0x16fa78608, MyActor <span style=color:#ff79c6>{</span> count: <span style=color:#bd93f9>0</span> <span style=color:#ff79c6>}</span>
+</span></span><span style=display:flex><span>NOW I WILL SEND PING: 0x130605ee0, MyActor <span style=color:#ff79c6>{</span> count: <span style=color:#bd93f9>0</span> <span style=color:#ff79c6>}</span>
+</span></span><span style=display:flex><span>NOW I WILL SEND PING TO SELF COMPLETED: 0x130605ee0, MyActor <span style=color:#ff79c6>{</span> count: <span style=color:#bd93f9>0</span> <span style=color:#ff79c6>}</span>
+</span></span><span style=display:flex><span>Send ping, now count is <span style=color:#bd93f9>0</span>
+</span></span><span style=display:flex><span>NOW I WILL START SEND PING: 0x16fa78608, MyActor <span style=color:#ff79c6>{</span> count: <span style=color:#bd93f9>10</span> <span style=color:#ff79c6>}</span>
+</span></span><span style=display:flex><span>NOW I WILL SEND PING: 0x1306062e0, MyActor <span style=color:#ff79c6>{</span> count: <span style=color:#bd93f9>10</span> <span style=color:#ff79c6>}</span>
+</span></span><span style=display:flex><span>NOW I WILL SEND PING TO SELF COMPLETED: 0x1306062e0, MyActor <span style=color:#ff79c6>{</span> count: <span style=color:#bd93f9>10</span> <span style=color:#ff79c6>}</span>
+</span></span><span style=display:flex><span>Send ping, now count is <span style=color:#bd93f9>10</span>
+</span></span><span style=display:flex><span>NOW I WILL START SEND PING: 0x16fa78608, MyActor <span style=color:#ff79c6>{</span> count: <span style=color:#bd93f9>20</span> <span style=color:#ff79c6>}</span>
+</span></span><span style=display:flex><span>NOW I WILL SEND PING: 0x130707de0, MyActor <span style=color:#ff79c6>{</span> count: <span style=color:#bd93f9>20</span> <span style=color:#ff79c6>}</span>
+</span></span><span style=display:flex><span>NOW I WILL SEND PING TO SELF COMPLETED: 0x130707de0, MyActor <span style=color:#ff79c6>{</span> count: <span style=color:#bd93f9>20</span> <span style=color:#ff79c6>}</span>
+</span></span><span style=display:flex><span>Send ping, now count is <span style=color:#bd93f9>20</span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>(</span>생략<span style=color:#ff79c6>)</span>
+</span></span></code></pre></td></tr></table></div></div><p><code>0x1318043e0</code> 주소를 가진 actor가 시작되고, 이 actor가 <code>run_interval()</code>을 통해 반복적으로 불립니다. 하지만 <code>send_ping()</code> 함수에서 <code>self.clone()</code> 이 되면 매 번 새로운 주소의 actor가 생성된 후 동작합니다. Ping 요청 시 처음 시작한 actor의 address를 전달하고 있기 때문에, 처음에 <code>0x1318043e0</code>에 만들어 진 actor가 ping message를 처리하고 있긴 합니다.</p><p>이 경우는 <code>Addr</code>를 전달하고 있기 때문에 원하는 대로 주기적으로 count가 올라가는 동작을 구현할 수 있었는데, 주기적으로 자기 자신의 상태를 변경시키고, 그 과정에서 async 동작이 필요한 경우에는 위 방법을 활용하기 어렵겠습니다.</p><p> 
+ </p><h3 id=references>References<a hidden class=anchor aria-hidden=true href=#references>#</a></h3><ul><li><a href=https://github.com/actix/actix/blob/master/actix/src/actor.rs>https://github.com/actix/actix/blob/master/actix/src/actor.rs</a></li><li><a href=https://docs.rs/actix/latest/actix/prelude/trait.AsyncContext.html#method.run_interval>https://docs.rs/actix/latest/actix/prelude/trait.AsyncContext.html#method.run_interval</a></li></ul><p> 
+ </p></div><footer class=post-footer><ul class=post-tags><li><a href=http://huijeong-kim.github.io/tags/rust/>Rust</a></li><li><a href=http://huijeong-kim.github.io/tags/actix/>Actix</a></li></ul><nav class=paginav><a class=prev href=http://huijeong-kim.github.io/post/2022-08-21-actix-actor-async-ctx-1/><span class=title>« Prev</span><br><span>Actix actor의 AsyncContext 활용하기 (1)</span>
+</a><a class=next href=http://huijeong-kim.github.io/post/2022-08-14-expand-rust-macros/><span class=title>Next »</span><br><span>Expand Rust Macros</span></a></nav></footer><script src=https://utteranc.es/client.js repo=huijeong-kim/huijeong-kim.github.io issue-term=pathname theme=github-light crossorigin=anonymous async></script></article></main><footer class=footer><span>&copy; 2025 <a href=http://huijeong-kim.github.io/>Dev. note</a></span>
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg>
+</a><script>let menu=document.getElementById("menu");menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove("dark"),localStorage.setItem("pref-theme","light")):(document.body.classList.add("dark"),localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="copy";function s(){t.innerHTML="copied!",setTimeout(()=>{t.innerHTML="copy"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

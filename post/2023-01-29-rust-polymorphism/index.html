@@ -1,0 +1,652 @@
+<!doctype html><html lang=en dir=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>Polymorphism in Rust | Dev. note</title>
+<meta name=keywords content="rust,polymorphism"><meta name=description content="안녕하세요. 오늘은 rust에서 polymorphism을 활용하는 방법을 정리해 보고자 합니다.
+cpp 코드를 작성하던 습관 대로 Rust 코드를 작성하다 보면 막히는 부분 중 하나가 interface 클래스(pure virtual class)와 이를 통한 객체 전달 부분입니다. 단순히 trait으로 변환하여 코드를 작성하다 보면 쉽게 컴파일 에러 지옥에 빠지곤 하는데요..
+아주 간단한 composite design pattern 예제를 구현해 보면서 rust의 polymorphism 에 대해 알아보도록 하겠습니다. Composite pattern 예제로 많이 사용되는 File, Directory 구조를 표현해 보고자 합니다. File은 이름과 크기를 갖고 있는 객체로, Directory는 이름과 하위 파일 및 디렉토리를 갖는 객체로, 그리고 File, Directory 는 모두 Node 라는 interface를 구현하게 만들고자 합니다."><meta name=author content="Huijeong Kim"><link rel=canonical href=http://huijeong-kim.github.io/post/2023-01-29-rust-polymorphism/><link crossorigin=anonymous href=../../assets/css/stylesheet.3613efbd0b1772781e8f49935e973cae632a7f61471c05b17be155505ccf87b5.css integrity="sha256-NhPvvQsXcngej0mTXpc8rmMqf2FHHAWxe+FVUFzPh7U=" rel="preload stylesheet" as=style><script defer crossorigin=anonymous src=../../assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG+9vmJ0cTS+ovo0FeA=" onload=hljs.initHighlightingOnLoad()></script><link rel=icon href=http://huijeong-kim.github.io/favicon.ico><link rel=icon type=image/png sizes=16x16 href=http://huijeong-kim.github.io/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=http://huijeong-kim.github.io/favicon-32x32.png><link rel=apple-touch-icon href=http://huijeong-kim.github.io/apple-touch-icon.png><link rel=mask-icon href=http://huijeong-kim.github.io/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=en href=http://huijeong-kim.github.io/post/2023-01-29-rust-polymorphism/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--hljs-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css integrity=sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV crossorigin=anonymous><script type=module>
+    import renderMathInElement from "https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.mjs";
+    renderMathInElement(document.body);
+</script><script async src="https://www.googletagmanager.com/gtag/js?id=G-VHBQNPGKKB"></script><script>var doNotTrack=!1;if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-VHBQNPGKKB",{anonymize_ip:!1})}</script><meta property="og:title" content="Polymorphism in Rust"><meta property="og:description" content="안녕하세요. 오늘은 rust에서 polymorphism을 활용하는 방법을 정리해 보고자 합니다.
+cpp 코드를 작성하던 습관 대로 Rust 코드를 작성하다 보면 막히는 부분 중 하나가 interface 클래스(pure virtual class)와 이를 통한 객체 전달 부분입니다. 단순히 trait으로 변환하여 코드를 작성하다 보면 쉽게 컴파일 에러 지옥에 빠지곤 하는데요..
+아주 간단한 composite design pattern 예제를 구현해 보면서 rust의 polymorphism 에 대해 알아보도록 하겠습니다. Composite pattern 예제로 많이 사용되는 File, Directory 구조를 표현해 보고자 합니다. File은 이름과 크기를 갖고 있는 객체로, Directory는 이름과 하위 파일 및 디렉토리를 갖는 객체로, 그리고 File, Directory 는 모두 Node 라는 interface를 구현하게 만들고자 합니다."><meta property="og:type" content="article"><meta property="og:url" content="http://huijeong-kim.github.io/post/2023-01-29-rust-polymorphism/"><meta property="article:section" content="post"><meta property="article:published_time" content="2023-01-29T18:58:03+09:00"><meta property="article:modified_time" content="2023-01-29T18:58:03+09:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="Polymorphism in Rust"><meta name=twitter:description content="안녕하세요. 오늘은 rust에서 polymorphism을 활용하는 방법을 정리해 보고자 합니다.
+cpp 코드를 작성하던 습관 대로 Rust 코드를 작성하다 보면 막히는 부분 중 하나가 interface 클래스(pure virtual class)와 이를 통한 객체 전달 부분입니다. 단순히 trait으로 변환하여 코드를 작성하다 보면 쉽게 컴파일 에러 지옥에 빠지곤 하는데요..
+아주 간단한 composite design pattern 예제를 구현해 보면서 rust의 polymorphism 에 대해 알아보도록 하겠습니다. Composite pattern 예제로 많이 사용되는 File, Directory 구조를 표현해 보고자 합니다. File은 이름과 크기를 갖고 있는 객체로, Directory는 이름과 하위 파일 및 디렉토리를 갖는 객체로, 그리고 File, Directory 는 모두 Node 라는 interface를 구현하게 만들고자 합니다."><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"http://huijeong-kim.github.io/post/"},{"@type":"ListItem","position":2,"name":"Polymorphism in Rust","item":"http://huijeong-kim.github.io/post/2023-01-29-rust-polymorphism/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Polymorphism in Rust","name":"Polymorphism in Rust","description":"안녕하세요. 오늘은 rust에서 polymorphism을 활용하는 방법을 정리해 보고자 합니다.\ncpp 코드를 작성하던 습관 대로 Rust 코드를 작성하다 보면 막히는 부분 중 하나가 interface 클래스(pure virtual class)와 이를 통한 객체 전달 부분입니다. 단순히 trait으로 변환하여 코드를 작성하다 보면 쉽게 컴파일 에러 지옥에 빠지곤 하는데요..\n아주 간단한 composite design pattern 예제를 구현해 보면서 rust의 polymorphism 에 대해 알아보도록 하겠습니다. Composite pattern 예제로 많이 사용되는 File, Directory 구조를 표현해 보고자 합니다. File은 이름과 크기를 갖고 있는 객체로, Directory는 이름과 하위 파일 및 디렉토리를 갖는 객체로, 그리고 File, Directory 는 모두 Node 라는 interface를 구현하게 만들고자 합니다.","keywords":["rust","polymorphism"],"articleBody":"안녕하세요. 오늘은 rust에서 polymorphism을 활용하는 방법을 정리해 보고자 합니다.\ncpp 코드를 작성하던 습관 대로 Rust 코드를 작성하다 보면 막히는 부분 중 하나가 interface 클래스(pure virtual class)와 이를 통한 객체 전달 부분입니다. 단순히 trait으로 변환하여 코드를 작성하다 보면 쉽게 컴파일 에러 지옥에 빠지곤 하는데요..\n아주 간단한 composite design pattern 예제를 구현해 보면서 rust의 polymorphism 에 대해 알아보도록 하겠습니다. Composite pattern 예제로 많이 사용되는 File, Directory 구조를 표현해 보고자 합니다. File은 이름과 크기를 갖고 있는 객체로, Directory는 이름과 하위 파일 및 디렉토리를 갖는 객체로, 그리고 File, Directory 는 모두 Node 라는 interface를 구현하게 만들고자 합니다.\nFile, Directory가 공통으로 구현하고 있는 Interface의 각 함수는 다음과 같은 의미를 갖고 있습니다.\nget_name: 파일 혹은 디렉토리의 이름 반환. get_size: 파일의 크기를 반환. 디렉토리의 경우, 갖고 있는 모든 파일 혹은 디렉토리 크기의 합을 반환해야 함. Trait을 사용한 Composite Pattern 구현 아주 나이브하게는 interface를 trait으로 1:1 변환하여 다음과 같이 구현할 수 있을 것 같습니다.\n1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 fn main() { let mut root_node = Directory::new(\"root\".to_string()); let new_file = File::new(\"new_file\".to_string(), 1024 * 1024); let new_directory = Directory::new(\"my_folder\".to_string()); root_node.add_new_node(new_file); root_node.add_new_node(new_directory); assert_eq!(root_node.get_size(), 1024 * 1024); } trait Node { fn get_name(\u0026self) -\u003e String; fn get_size(\u0026self) -\u003e u64; } struct File { name: String, size: u64, } impl Node for File { fn get_name(\u0026self) -\u003e String { self.name.clone() } fn get_size(\u0026self) -\u003e u64 { self.size } } impl File { pub fn new(name: String, size: u64) -\u003e Self { Self { name, size, } } } struct Directory { name: String, childs: Vec\u003cdyn Node\u003e, } impl Node for Directory { fn get_name(\u0026self) -\u003e String { self.name.clone() } fn get_size(\u0026self) -\u003e u64 { self.childs.iter().fold(0, |acc, x| acc + x.get_size()) } } impl Directory { pub fn new(name: String) -\u003e Self { Self { name, childs: Vec::new(), } } pub fn add_new_node(\u0026mut self, node: dyn Node) { self.childs.push(node); } } 이 코드는 사실 빌드 되지는 않습니다. 이유는 다음과 같습니다.\n1 2 3 4 5 6 7 8 9 10 11 12 13 14 error[E0277]: the size for values of type `(dyn Node + 'static)` cannot be known at compilation time --\u003e src/bin/composite.rs:42:13 | 42 | childs: Vec, | ^^^^^^^^^^^^^ doesn't have a size known at compile-time | = help: the trait `Sized` is not implemented for `(dyn Node + 'static)` note: required by a bound in `Vec` --\u003e /Users/huijeongkim/.rustup/toolchains/stable-aarch64-apple-darwin/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:400:16 | 400 | pub struct Vec","wordCount":"1707","inLanguage":"en","datePublished":"2023-01-29T18:58:03+09:00","dateModified":"2023-01-29T18:58:03+09:00","author":{"@type":"Person","name":"Huijeong Kim"},"mainEntityOfPage":{"@type":"WebPage","@id":"http://huijeong-kim.github.io/post/2023-01-29-rust-polymorphism/"},"publisher":{"@type":"Organization","name":"Dev. note","logo":{"@type":"ImageObject","url":"http://huijeong-kim.github.io/favicon.ico"}}}</script></head><body id=top><script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add("dark"):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove("dark"):window.matchMedia("(prefers-color-scheme: dark)").matches&&document.body.classList.add("dark")</script><header class=header><nav class=nav><div class=logo><a href=http://huijeong-kim.github.io/ accesskey=h title="Dev. note (Alt + H)">Dev. note</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button><ul class=lang-switch><li>|</li></ul></div></div><ul id=menu><li><a href=http://huijeong-kim.github.io/archives/ title=Archive><span>Archive</span></a></li><li><a href=http://huijeong-kim.github.io/archives/ title=Archives><span>Archives</span></a></li><li><a href=http://huijeong-kim.github.io/post/ title=Posts><span>Posts</span></a></li><li><a href=http://huijeong-kim.github.io/search/ title="Search (Alt + /)" accesskey=/><span>Search</span></a></li><li><a href=http://huijeong-kim.github.io/search/ title="Search (Alt + /)" accesskey=/><span>Search</span></a></li><li><a href=http://huijeong-kim.github.io/tags/ title=Tags><span>Tags</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><div class=breadcrumbs><a href=http://huijeong-kim.github.io/>Home</a>&nbsp;»&nbsp;<a href=http://huijeong-kim.github.io/post/>Posts</a></div><h1 class=post-title>Polymorphism in Rust</h1><div class=post-meta>&lt;span title='2023-01-29 18:58:03 +0900 +0900'>2023-01-29&lt;/span>&amp;nbsp;·&amp;nbsp;9 min&amp;nbsp;·&amp;nbsp;1707 words&amp;nbsp;·&amp;nbsp;Huijeong Kim</div></header><div class=toc><details open><summary accesskey=c title="(Alt + C)"><span class=details>Table of Contents</span></summary><div class=inner><ul><li><a href=#trait%ec%9d%84-%ec%82%ac%ec%9a%a9%ed%95%9c-composite-pattern-%ea%b5%ac%ed%98%84 aria-label="Trait을 사용한 Composite Pattern 구현">Trait을 사용한 Composite Pattern 구현</a></li><li><a href=#trait-clone aria-label="Trait Clone">Trait Clone</a></li><li><a href=#generic%ec%9d%84-%ed%99%9c%ec%9a%a9%ed%95%98%ea%b8%b0 aria-label="Generic을 활용하기">Generic을 활용하기</a></li><li><a href=#enum%ec%9c%bc%eb%a1%9c-%ea%b0%90%ec%8b%b8%ea%b8%b0 aria-label="Enum으로 감싸기">Enum으로 감싸기</a></li><li><a href=#%ec%b5%9c%ec%a2%85-%ec%bd%94%eb%93%9c aria-label="최종 코드">최종 코드</a></li></ul></div></details></div><div class=post-content><p>안녕하세요. 오늘은 rust에서 polymorphism을 활용하는 방법을 정리해 보고자 합니다.</p><p>cpp 코드를 작성하던 습관 대로 Rust 코드를 작성하다 보면 막히는 부분 중 하나가 interface 클래스(pure virtual class)와 이를 통한 객체 전달 부분입니다. 단순히 trait으로 변환하여 코드를 작성하다 보면 쉽게 컴파일 에러 지옥에 빠지곤 하는데요..</p><p>아주 간단한 composite design pattern 예제를 구현해 보면서 rust의 polymorphism 에 대해 알아보도록 하겠습니다. Composite pattern 예제로 많이 사용되는 File, Directory 구조를 표현해 보고자 합니다. File은 이름과 크기를 갖고 있는 객체로, Directory는 이름과 하위 파일 및 디렉토리를 갖는 객체로, 그리고 File, Directory 는 모두 Node 라는 interface를 구현하게 만들고자 합니다.</p><center><img src=../../assets/images/image05.png></center><br><p>File, Directory가 공통으로 구현하고 있는 Interface의 각 함수는 다음과 같은 의미를 갖고 있습니다.</p><ul><li>get_name: 파일 혹은 디렉토리의 이름 반환.</li><li>get_size: 파일의 크기를 반환. 디렉토리의 경우, 갖고 있는 모든 파일 혹은 디렉토리 크기의 합을 반환해야 함.</li></ul><br><br><h2 id=trait을-사용한-composite-pattern-구현>Trait을 사용한 Composite Pattern 구현<a hidden class=anchor aria-hidden=true href=#trait을-사용한-composite-pattern-구현>#</a></h2><p>아주 나이브하게는 interface를 trait으로 1:1 변환하여 다음과 같이 구현할 수 있을 것 같습니다.</p><div class=highlight><div style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">19
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">20
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">21
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">22
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">23
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">24
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">25
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">26
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">27
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">28
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">29
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">30
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">31
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">32
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">33
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">34
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">35
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">36
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">37
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">38
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">39
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">40
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">41
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">42
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">43
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">44
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">45
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">46
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">47
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">48
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">49
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">50
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">51
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">52
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">53
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">54
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">55
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">56
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">57
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">58
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">59
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">60
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">61
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">62
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">63
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=display:flex><span><span style=color:#ff79c6>fn</span> <span style=color:#50fa7b>main</span>() {
+</span></span><span style=display:flex><span>    <span style=color:#8be9fd;font-style:italic>let</span> <span style=color:#ff79c6>mut</span> root_node <span style=color:#ff79c6>=</span> Directory::new(<span style=color:#f1fa8c>&#34;root&#34;</span>.to_string());
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#8be9fd;font-style:italic>let</span> new_file <span style=color:#ff79c6>=</span> File::new(<span style=color:#f1fa8c>&#34;new_file&#34;</span>.to_string(), <span style=color:#bd93f9>1024</span> <span style=color:#ff79c6>*</span> <span style=color:#bd93f9>1024</span>);
+</span></span><span style=display:flex><span>    <span style=color:#8be9fd;font-style:italic>let</span> new_directory <span style=color:#ff79c6>=</span> Directory::new(<span style=color:#f1fa8c>&#34;my_folder&#34;</span>.to_string());
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    root_node.add_new_node(new_file);
+</span></span><span style=display:flex><span>    root_node.add_new_node(new_directory);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    assert_eq!(root_node.get_size(), <span style=color:#bd93f9>1024</span> <span style=color:#ff79c6>*</span> <span style=color:#bd93f9>1024</span>);
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>trait</span> Node {
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>fn</span> <span style=color:#50fa7b>get_name</span>(<span style=color:#ff79c6>&amp;</span>self) -&gt; <span style=color:#8be9fd;font-style:italic>String</span>;
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>fn</span> <span style=color:#50fa7b>get_size</span>(<span style=color:#ff79c6>&amp;</span>self) -&gt; <span style=color:#8be9fd>u64</span>;
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>struct</span> <span style=color:#50fa7b>File</span> {
+</span></span><span style=display:flex><span>    name: <span style=color:#8be9fd;font-style:italic>String</span>,
+</span></span><span style=display:flex><span>    size: <span style=color:#8be9fd>u64</span>,
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span><span style=color:#ff79c6>impl</span> Node <span style=color:#ff79c6>for</span> File {
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>fn</span> <span style=color:#50fa7b>get_name</span>(<span style=color:#ff79c6>&amp;</span>self) -&gt; <span style=color:#8be9fd;font-style:italic>String</span> {
+</span></span><span style=display:flex><span>        self.name.clone()
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>fn</span> <span style=color:#50fa7b>get_size</span>(<span style=color:#ff79c6>&amp;</span>self) -&gt; <span style=color:#8be9fd>u64</span> {
+</span></span><span style=display:flex><span>        self.size
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span><span style=color:#ff79c6>impl</span> File {
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>pub</span> <span style=color:#ff79c6>fn</span> <span style=color:#50fa7b>new</span>(name: <span style=color:#8be9fd;font-style:italic>String</span>, size: <span style=color:#8be9fd>u64</span>) -&gt; <span style=color:#50fa7b>Self</span> {
+</span></span><span style=display:flex><span>        Self {
+</span></span><span style=display:flex><span>            name,
+</span></span><span style=display:flex><span>            size,
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>struct</span> <span style=color:#50fa7b>Directory</span> {
+</span></span><span style=display:flex><span>    name: <span style=color:#8be9fd;font-style:italic>String</span>,
+</span></span><span style=display:flex><span>    childs: <span style=color:#8be9fd;font-style:italic>Vec</span><span style=color:#ff79c6>&lt;</span><span style=color:#ff79c6>dyn</span> Node<span style=color:#ff79c6>&gt;</span>,
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span><span style=color:#ff79c6>impl</span> Node <span style=color:#ff79c6>for</span> Directory {
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>fn</span> <span style=color:#50fa7b>get_name</span>(<span style=color:#ff79c6>&amp;</span>self) -&gt; <span style=color:#8be9fd;font-style:italic>String</span> {
+</span></span><span style=display:flex><span>        self.name.clone()
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>fn</span> <span style=color:#50fa7b>get_size</span>(<span style=color:#ff79c6>&amp;</span>self) -&gt; <span style=color:#8be9fd>u64</span> {
+</span></span><span style=display:flex><span>        self.childs.iter().fold(<span style=color:#bd93f9>0</span>, <span style=color:#ff79c6>|</span>acc, x<span style=color:#ff79c6>|</span> acc <span style=color:#ff79c6>+</span> x.get_size())
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span><span style=color:#ff79c6>impl</span> Directory {
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>pub</span> <span style=color:#ff79c6>fn</span> <span style=color:#50fa7b>new</span>(name: <span style=color:#8be9fd;font-style:italic>String</span>) -&gt; <span style=color:#50fa7b>Self</span> {
+</span></span><span style=display:flex><span>        Self {
+</span></span><span style=display:flex><span>            name,
+</span></span><span style=display:flex><span>            childs: <span style=color:#8be9fd;font-style:italic>Vec</span>::new(),
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>pub</span> <span style=color:#ff79c6>fn</span> <span style=color:#50fa7b>add_new_node</span>(<span style=color:#ff79c6>&amp;</span><span style=color:#ff79c6>mut</span> self, node: <span style=color:#50fa7b>dyn</span> Node) {
+</span></span><span style=display:flex><span>        self.childs.push(node);
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></td></tr></table></div></div><p>이 코드는 사실 빌드 되지는 않습니다. 이유는 다음과 같습니다.</p><div class=highlight><div style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>error<span style=color:#ff79c6>[</span>E0277<span style=color:#ff79c6>]</span>: the size <span style=color:#ff79c6>for</span> values of <span style=color:#8be9fd;font-style:italic>type</span> <span style=color:#f1fa8c>`</span><span style=color:#ff79c6>(</span>dyn Node + <span style=color:#f1fa8c>&#39;static)` cannot be known at compilation time
+</span></span></span><span style=display:flex><span><span style=color:#f1fa8c>   --&gt; src/bin/composite.rs:42:13
+</span></span></span><span style=display:flex><span><span style=color:#f1fa8c>    |
+</span></span></span><span style=display:flex><span><span style=color:#f1fa8c>42  |     childs: Vec&lt;dyn Node&gt;,
+</span></span></span><span style=display:flex><span><span style=color:#f1fa8c>    |             ^^^^^^^^^^^^^ doesn&#39;</span>t have a size known at compile-time
+</span></span><span style=display:flex><span>    |
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>=</span> help: the trait <span style=color:#f1fa8c>`</span>Sized<span style=color:#f1fa8c>`</span> is not implemented <span style=color:#ff79c6>for</span> <span style=color:#f1fa8c>`</span><span style=color:#ff79c6>(</span>dyn Node + &#39;static<span style=color:#ff79c6>)</span><span style=color:#f1fa8c>`</span>
+</span></span><span style=display:flex><span>note: required by a bound in <span style=color:#f1fa8c>`</span>Vec<span style=color:#f1fa8c>`</span>
+</span></span><span style=display:flex><span>   --&gt; /Users/huijeongkim/.rustup/toolchains/stable-aarch64-apple-darwin/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:400:16
+</span></span><span style=display:flex><span>    |
+</span></span><span style=display:flex><span><span style=color:#bd93f9>400</span> | pub struct Vec&lt;T, <span style=color:#6272a4>#[unstable(feature = &#34;allocator_api&#34;, issue = &#34;32838&#34;)] A: Allocator = Global&gt; {</span>
+</span></span><span style=display:flex><span>    |                ^ required by this bound in <span style=color:#f1fa8c>`</span>Vec<span style=color:#f1fa8c>`</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>For more information about this error, try <span style=color:#f1fa8c>`</span>rustc --explain E0277<span style=color:#f1fa8c>`</span>.
+</span></span></code></pre></td></tr></table></div></div><p><code>dyn Node</code>는 compile time에 크기를 알 수 없기 때문에 Vector에 넣을 수 없다는 것 입니다. 이를 아주 간단하게 해결할 수 있는 방법은, 객체 자체가 아닌 객체를 가리키는 포인터를 Vector에 넣는 것 입니다. <code>dyn Node</code>가 아닌 Heap으로 옮겨 진 <code>Box&lt;dyn Node></code>의 리스트를 갖도록 수정하면 에러는 사라지고 컴파일 성공하게 됩니다.</p><div class=highlight><div style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=display:flex><span><span style=color:#6272a4>// main 함수 수정
+</span></span></span><span style=display:flex><span><span style=color:#6272a4></span>root_node.add_new_node(<span style=color:#8be9fd;font-style:italic>Box</span>::new(new_file));
+</span></span><span style=display:flex><span>root_node.add_new_node(<span style=color:#8be9fd;font-style:italic>Box</span>::new(new_directory));
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#6272a4>// Directory 수정
+</span></span></span><span style=display:flex><span><span style=color:#6272a4></span><span style=color:#ff79c6>struct</span> <span style=color:#50fa7b>Directory</span> {
+</span></span><span style=display:flex><span>    name: <span style=color:#8be9fd;font-style:italic>String</span>,
+</span></span><span style=display:flex><span>    childs: <span style=color:#8be9fd;font-style:italic>Vec</span><span style=color:#ff79c6>&lt;</span><span style=color:#8be9fd;font-style:italic>Box</span><span style=color:#ff79c6>&lt;</span><span style=color:#ff79c6>dyn</span> Node<span style=color:#ff79c6>&gt;&gt;</span>,
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>impl</span> Directory {
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>pub</span> <span style=color:#ff79c6>fn</span> <span style=color:#50fa7b>add_new_node</span>(<span style=color:#ff79c6>&amp;</span><span style=color:#ff79c6>mut</span> self, node: <span style=color:#8be9fd;font-style:italic>Box</span><span style=color:#ff79c6>&lt;</span><span style=color:#ff79c6>dyn</span> Node<span style=color:#ff79c6>&gt;</span>) {
+</span></span><span style=display:flex><span>        self.childs.push(node);
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></td></tr></table></div></div><br><br><h2 id=trait-clone>Trait Clone<a hidden class=anchor aria-hidden=true href=#trait-clone>#</a></h2><p>여기서 File, Directory 를 clone 하도록 수정해 보겠습니다. <code>#[derive(Clone)]</code> 매크로를 사용하면 손쉽게 Clone trait을 구현할 수 있습니다. 하지만 여기서 다시 한 번 컴파일 에러를 만나게 됩니다.</p><div class=highlight><div style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>error<span style=color:#ff79c6>[</span>E0277<span style=color:#ff79c6>]</span>: the trait bound <span style=color:#f1fa8c>`</span>dyn Node: Clone<span style=color:#f1fa8c>`</span> is not satisfied
+</span></span><span style=display:flex><span> --&gt; src/bin/composite.rs:51:5
+</span></span><span style=display:flex><span>  |
+</span></span><span style=display:flex><span><span style=color:#bd93f9>48</span> | <span style=color:#6272a4>#[derive(Clone)]</span>
+</span></span><span style=display:flex><span>  |          ----- in this derive macro expansion
+</span></span><span style=display:flex><span>...
+</span></span><span style=display:flex><span><span style=color:#bd93f9>51</span> |     childs: Vec&lt;Box&lt;dyn Node&gt;&gt;,
+</span></span><span style=display:flex><span>  |     ^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait <span style=color:#f1fa8c>`</span>Clone<span style=color:#f1fa8c>`</span> is not implemented <span style=color:#ff79c6>for</span> <span style=color:#f1fa8c>`</span>dyn Node<span style=color:#f1fa8c>`</span>
+</span></span><span style=display:flex><span>  |
+</span></span><span style=display:flex><span>  <span style=color:#ff79c6>=</span> note: required because of the requirements on the impl of <span style=color:#f1fa8c>`</span>Clone<span style=color:#f1fa8c>`</span> <span style=color:#ff79c6>for</span> <span style=color:#f1fa8c>`</span>Box&lt;dyn Node&gt;<span style=color:#f1fa8c>`</span>
+</span></span><span style=display:flex><span>  <span style=color:#ff79c6>=</span> note: <span style=color:#bd93f9>1</span> redundant requirement <span style=color:#8be9fd;font-style:italic>hidden</span>
+</span></span><span style=display:flex><span>  <span style=color:#ff79c6>=</span> note: required because of the requirements on the impl of <span style=color:#f1fa8c>`</span>Clone<span style=color:#f1fa8c>`</span> <span style=color:#ff79c6>for</span> <span style=color:#f1fa8c>`</span>Vec&lt;Box&lt;dyn Node&gt;&gt;<span style=color:#f1fa8c>`</span>
+</span></span><span style=display:flex><span>  <span style=color:#ff79c6>=</span> note: this error originates in the derive macro <span style=color:#f1fa8c>`</span>Clone<span style=color:#f1fa8c>`</span> <span style=color:#ff79c6>(</span>in Nightly builds, run with -Z macro-backtrace <span style=color:#ff79c6>for</span> more info<span style=color:#ff79c6>)</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>For more information about this error, try <span style=color:#f1fa8c>`</span>rustc --explain E0277<span style=color:#f1fa8c>`</span>.
+</span></span></code></pre></td></tr></table></div></div><p><code>dyn Node</code>에 대한 clone 이 구현되어 있지 않다는 것 입니다. Directory가 clone 가능하려면 그 내부의 모든 멤버도 clone 가능해야 합니다. 따라서 <code>dyn Node</code>의 clone을 구현해 줘야 합니다.</p><p>derive 매크로는 struct, enum, union에만 사용 가능하므로 <code>trait Node</code>에는 <code>#[derive(Clone)]</code>을 추가할 수 없습니다. 대신 다음과 같이 구현할 수 있습니다. 참고로 clone 함수의 리턴이 <code>dyn Node</code>가 되면 첫 번째 에러와 동일한 이유, compile time에 size를 알 수 없다는 문제로 에러가 발생하기 때문에 이 또한 Box 로 clone하도록 구현하였고, 이 때문에 <code>Box&lt;dyn Node></code>에 대한 clone 구현도 추가하였습니다.</p><div class=highlight><div style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">19
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">20
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">21
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">22
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">23
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">24
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">25
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">26
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">27
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">28
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">29
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">30
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">31
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">32
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">33
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">34
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">35
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">36
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">37
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=display:flex><span><span style=color:#6272a4>// Box&lt;dyn Node&gt; 에 대한 clone을 추가
+</span></span></span><span style=display:flex><span><span style=color:#6272a4></span><span style=color:#ff79c6>trait</span> Node : <span style=color:#50fa7b>CloneNode</span> {
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>fn</span> <span style=color:#50fa7b>get_name</span>(<span style=color:#ff79c6>&amp;</span>self) -&gt; <span style=color:#8be9fd;font-style:italic>String</span>;
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>fn</span> <span style=color:#50fa7b>get_size</span>(<span style=color:#ff79c6>&amp;</span>self) -&gt; <span style=color:#8be9fd>u64</span>;
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span><span style=color:#ff79c6>trait</span> CloneNode {
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>fn</span> <span style=color:#50fa7b>clone_box</span>(<span style=color:#ff79c6>&amp;</span>self) -&gt; <span style=color:#8be9fd;font-style:italic>Box</span><span style=color:#ff79c6>&lt;</span><span style=color:#ff79c6>dyn</span> Node<span style=color:#ff79c6>&gt;</span>;
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span><span style=color:#ff79c6>impl</span> <span style=color:#8be9fd;font-style:italic>Clone</span> <span style=color:#ff79c6>for</span> <span style=color:#8be9fd;font-style:italic>Box</span><span style=color:#ff79c6>&lt;</span><span style=color:#ff79c6>dyn</span> Node<span style=color:#ff79c6>&gt;</span> {
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>fn</span> <span style=color:#50fa7b>clone</span>(<span style=color:#ff79c6>&amp;</span>self) -&gt; <span style=color:#50fa7b>Self</span> {
+</span></span><span style=display:flex><span>        self.clone_box()
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#6272a4>// File에 CloneNode 추가
+</span></span></span><span style=display:flex><span><span style=color:#6272a4></span><span style=color:#ff79c6>#[derive(Clone)]</span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>struct</span> <span style=color:#50fa7b>File</span> {
+</span></span><span style=display:flex><span>    name: <span style=color:#8be9fd;font-style:italic>String</span>,
+</span></span><span style=display:flex><span>    size: <span style=color:#8be9fd>u64</span>,
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span><span style=color:#ff79c6>impl</span> CloneNode <span style=color:#ff79c6>for</span> File {
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>fn</span> <span style=color:#50fa7b>clone_box</span>(<span style=color:#ff79c6>&amp;</span>self) -&gt; <span style=color:#8be9fd;font-style:italic>Box</span><span style=color:#ff79c6>&lt;</span><span style=color:#ff79c6>dyn</span> Node<span style=color:#ff79c6>&gt;</span> {
+</span></span><span style=display:flex><span>        <span style=color:#8be9fd;font-style:italic>Box</span>::new(self.clone())
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#6272a4>// Directory에 CloneNode 추가
+</span></span></span><span style=display:flex><span><span style=color:#6272a4></span><span style=color:#ff79c6>#[derive(Clone)]</span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>struct</span> <span style=color:#50fa7b>Directory</span> {
+</span></span><span style=display:flex><span>    name: <span style=color:#8be9fd;font-style:italic>String</span>,
+</span></span><span style=display:flex><span>    childs: <span style=color:#8be9fd;font-style:italic>Vec</span><span style=color:#ff79c6>&lt;</span><span style=color:#8be9fd;font-style:italic>Box</span><span style=color:#ff79c6>&lt;</span><span style=color:#ff79c6>dyn</span> Node<span style=color:#ff79c6>&gt;&gt;</span>,
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span><span style=color:#ff79c6>impl</span> CloneNode <span style=color:#ff79c6>for</span> Directory {
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>fn</span> <span style=color:#50fa7b>clone_box</span>(<span style=color:#ff79c6>&amp;</span>self) -&gt; <span style=color:#8be9fd;font-style:italic>Box</span><span style=color:#ff79c6>&lt;</span><span style=color:#ff79c6>dyn</span> Node<span style=color:#ff79c6>&gt;</span> {
+</span></span><span style=display:flex><span>        <span style=color:#8be9fd;font-style:italic>Box</span>::new(self.clone())
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></td></tr></table></div></div><p><code>clone_box</code> 함수를 만드는 패턴은 생각보다 자주 반복 사용되어 boilerplate 코드가 되기도 합니다. 이럴 때 <a href=https://docs.rs/dyn-clone/latest/dyn_clone/>dyn_clone</a> crate를 사용하면 이 코드들을 제거할 수 있습니다.</p><div class=highlight><div style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">6
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=display:flex><span><span style=color:#ff79c6>use</span> dyn_clone::DynClone;
+</span></span><span style=display:flex><span><span style=color:#ff79c6>trait</span> Node : <span style=color:#50fa7b>DynClone</span> {
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>fn</span> <span style=color:#50fa7b>get_name</span>(<span style=color:#ff79c6>&amp;</span>self) -&gt; <span style=color:#8be9fd;font-style:italic>String</span>;
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>fn</span> <span style=color:#50fa7b>get_size</span>(<span style=color:#ff79c6>&amp;</span>self) -&gt; <span style=color:#8be9fd>u64</span>;
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>dyn_clone::clone_trait_object!(Node);
+</span></span></code></pre></td></tr></table></div></div><p>이렇게 수정하면 위에서 구현했던 <code>CloneNode</code> trait이나 <code>clone_box</code> 구현을 생략할 수 있습니다.</p><br><br><h2 id=generic을-활용하기>Generic을 활용하기<a hidden class=anchor aria-hidden=true href=#generic을-활용하기>#</a></h2><p>Rust 에서 polymorphism을 활용하는 또 다른 방법은 Generic을 사용하는 것 입니다. Directory에 적용해 보면 다음과 같습니다.</p><div class=highlight><div style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">19
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">20
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">21
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">22
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">23
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">24
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">25
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=display:flex><span><span style=color:#ff79c6>#[derive(Clone)]</span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>struct</span> <span style=color:#50fa7b>Directory</span><span style=color:#ff79c6>&lt;</span>N: <span style=color:#50fa7b>Node</span><span style=color:#ff79c6>&gt;</span> {
+</span></span><span style=display:flex><span>    name: <span style=color:#8be9fd;font-style:italic>String</span>,
+</span></span><span style=display:flex><span>    childs: <span style=color:#8be9fd;font-style:italic>Vec</span><span style=color:#ff79c6>&lt;</span><span style=color:#8be9fd;font-style:italic>Box</span><span style=color:#ff79c6>&lt;</span>N<span style=color:#ff79c6>&gt;&gt;</span>,
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span><span style=color:#ff79c6>impl</span><span style=color:#ff79c6>&lt;</span>N: <span style=color:#50fa7b>Node</span> <span style=color:#ff79c6>+</span> <span style=color:#8be9fd;font-style:italic>Clone</span><span style=color:#ff79c6>&gt;</span> Node <span style=color:#ff79c6>for</span> Directory<span style=color:#ff79c6>&lt;</span>N<span style=color:#ff79c6>&gt;</span> {
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>fn</span> <span style=color:#50fa7b>get_name</span>(<span style=color:#ff79c6>&amp;</span>self) -&gt; <span style=color:#8be9fd;font-style:italic>String</span> {
+</span></span><span style=display:flex><span>        self.name.clone()
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>fn</span> <span style=color:#50fa7b>get_size</span>(<span style=color:#ff79c6>&amp;</span>self) -&gt; <span style=color:#8be9fd>u64</span> {
+</span></span><span style=display:flex><span>        self.childs.iter().fold(<span style=color:#bd93f9>0</span>, <span style=color:#ff79c6>|</span>acc, x<span style=color:#ff79c6>|</span> acc <span style=color:#ff79c6>+</span> x.get_size())
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span><span style=color:#ff79c6>impl</span><span style=color:#ff79c6>&lt;</span>N: <span style=color:#50fa7b>Node</span><span style=color:#ff79c6>&gt;</span> Directory<span style=color:#ff79c6>&lt;</span>N<span style=color:#ff79c6>&gt;</span> {
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>pub</span> <span style=color:#ff79c6>fn</span> <span style=color:#50fa7b>new</span>(name: <span style=color:#8be9fd;font-style:italic>String</span>) -&gt; <span style=color:#50fa7b>Self</span> {
+</span></span><span style=display:flex><span>        Self {
+</span></span><span style=display:flex><span>            name,
+</span></span><span style=display:flex><span>            childs: <span style=color:#8be9fd;font-style:italic>Vec</span>::new(),
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>pub</span> <span style=color:#ff79c6>fn</span> <span style=color:#50fa7b>add_new_node</span>(<span style=color:#ff79c6>&amp;</span><span style=color:#ff79c6>mut</span> self, node: <span style=color:#8be9fd;font-style:italic>Box</span><span style=color:#ff79c6>&lt;</span>N<span style=color:#ff79c6>&gt;</span>) {
+</span></span><span style=display:flex><span>        self.childs.push(node);
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></td></tr></table></div></div><p>이렇게 작성했을 때의 문제는 <code>N: Node</code>가 File 혹은 Directory 중 하나만 될 수 있다는 것 입니다. main 함수에서 다음과 같이 <code>add_new_node</code>를 File, Directory 에 대해 호출한다면,</p><div class=highlight><div style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=display:flex><span>root_node.add_new_node(<span style=color:#8be9fd;font-style:italic>Box</span>::new(new_file));
+</span></span><span style=display:flex><span>root_node.add_new_node(<span style=color:#8be9fd;font-style:italic>Box</span>::new(new_directory));
+</span></span></code></pre></td></tr></table></div></div><p>다음과 같이 컴파일 에러가 발생하게 됩니다.</p><div class=highlight><div style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">17
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>error<span style=color:#ff79c6>[</span>E0308<span style=color:#ff79c6>]</span>: mismatched types
+</span></span><span style=display:flex><span>   --&gt; src/bin/composite.rs:10:37
+</span></span><span style=display:flex><span>    |
+</span></span><span style=display:flex><span><span style=color:#bd93f9>10</span>  |     root_node.add_new_node<span style=color:#ff79c6>(</span>Box::new<span style=color:#ff79c6>(</span>new_directory<span style=color:#ff79c6>))</span>;
+</span></span><span style=display:flex><span>    |                            -------- ^^^^^^^^^^^^^ expected struct <span style=color:#f1fa8c>`</span>File<span style=color:#f1fa8c>`</span>, found struct <span style=color:#f1fa8c>`</span>Directory<span style=color:#f1fa8c>`</span>
+</span></span><span style=display:flex><span>    |                            |
+</span></span><span style=display:flex><span>    |                            arguments to this <span style=color:#ff79c6>function</span> are incorrect
+</span></span><span style=display:flex><span>    |
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>=</span> note: expected struct <span style=color:#f1fa8c>`</span>File<span style=color:#f1fa8c>`</span>
+</span></span><span style=display:flex><span>               found struct <span style=color:#f1fa8c>`</span>Directory&lt;_&gt;<span style=color:#f1fa8c>`</span>
+</span></span><span style=display:flex><span>note: associated <span style=color:#ff79c6>function</span> defined here
+</span></span><span style=display:flex><span>   --&gt; /Users/huijeongkim/.rustup/toolchains/stable-aarch64-apple-darwin/lib/rustlib/src/rust/library/alloc/src/boxed.rs:213:12
+</span></span><span style=display:flex><span>    |
+</span></span><span style=display:flex><span><span style=color:#bd93f9>213</span> |     pub fn new<span style=color:#ff79c6>(</span>x: T<span style=color:#ff79c6>)</span> -&gt; Self <span style=color:#ff79c6>{</span>
+</span></span><span style=display:flex><span>    |            ^^^
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>For more information about this error, try <span style=color:#f1fa8c>`</span>rustc --explain E0308<span style=color:#f1fa8c>`</span>.
+</span></span></code></pre></td></tr></table></div></div><p>구체 객체가 run-time에 결정되어야 하는 이런 예제에서는 generic은 적합하지 않은 것이죠. 이 문제를 해결하기 위해서 enum을 사용해 볼 수 있겠습니다.</p><br><br><h2 id=enum으로-감싸기>Enum으로 감싸기<a hidden class=anchor aria-hidden=true href=#enum으로-감싸기>#</a></h2><p>Rust 의 enum 또한 polymorphism을 활용할 수 있는 방법 중 하나입니다. 다음과 같이 trait의 구현체들을 enum value로 넣어줄 수 있습니다.</p><div class=highlight><div style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">17
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=display:flex><span><span style=color:#6272a4>// enum을 하나 추가하고
+</span></span></span><span style=display:flex><span><span style=color:#6272a4></span><span style=color:#ff79c6>#[derive(Clone)]</span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>enum</span> <span style=color:#50fa7b>NodeType</span> {
+</span></span><span style=display:flex><span>    FileNode(File),
+</span></span><span style=display:flex><span>    DirectoryNode(Directory),
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#6272a4>// Directory는 boxed trait 대신 enum을 갖도록 수정,
+</span></span></span><span style=display:flex><span><span style=color:#6272a4></span><span style=color:#ff79c6>#[derive(Clone)]</span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>struct</span> <span style=color:#50fa7b>Directory</span> {
+</span></span><span style=display:flex><span>    name: <span style=color:#8be9fd;font-style:italic>String</span>,
+</span></span><span style=display:flex><span>    childs: <span style=color:#8be9fd;font-style:italic>Vec</span><span style=color:#ff79c6>&lt;</span>NodeType<span style=color:#ff79c6>&gt;</span>,
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#6272a4>// main 함수에서는 다음과 같이 node를 추가합니다.
+</span></span></span><span style=display:flex><span><span style=color:#6272a4></span>root_node.add_new_node(NodeType::FileNode(new_file));
+</span></span><span style=display:flex><span>root_node.add_new_node(NodeType::DirectoryNode(new_directory));
+</span></span></code></pre></td></tr></table></div></div><p>이 떄 enum 내의 value를 꺼내서 trait 함수를 부르기 번거로우므로, enum에도 <code>Node</code> trait을 구현해 줍니다.</p><div class=highlight><div style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=display:flex><span><span style=color:#ff79c6>impl</span> Node <span style=color:#ff79c6>for</span> NodeType {
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>fn</span> <span style=color:#50fa7b>get_name</span>(<span style=color:#ff79c6>&amp;</span>self) -&gt; <span style=color:#8be9fd;font-style:italic>String</span> {
+</span></span><span style=display:flex><span>        <span style=color:#ff79c6>match</span> <span style=color:#ff79c6>&amp;</span>self {
+</span></span><span style=display:flex><span>            NodeType::FileNode(f) <span style=color:#ff79c6>=&gt;</span> f.get_name(),
+</span></span><span style=display:flex><span>            NodeType::DirectoryNode(d) <span style=color:#ff79c6>=&gt;</span> d.get_name(),
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>fn</span> <span style=color:#50fa7b>get_size</span>(<span style=color:#ff79c6>&amp;</span>self) -&gt; <span style=color:#8be9fd>u64</span> {
+</span></span><span style=display:flex><span>        <span style=color:#ff79c6>match</span> <span style=color:#ff79c6>&amp;</span>self {
+</span></span><span style=display:flex><span>            NodeType::FileNode(f) <span style=color:#ff79c6>=&gt;</span> f.get_size(),
+</span></span><span style=display:flex><span>            NodeType::DirectoryNode(d) <span style=color:#ff79c6>=&gt;</span> d.get_size(),
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></td></tr></table></div></div><p>이런 패턴 또한 굉장히 많이 사용되는 것 같습니다. 이 코드도 <a href=https://docs.rs/enum_dispatch/0.3.11/enum_dispatch/>enum_dispatch</a> crate를 사용하면 단순화할 수 있습니다.</p><div class=highlight><div style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=display:flex><span><span style=color:#ff79c6>use</span> enum_dispatch::enum_dispatch;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>#[enum_dispatch]</span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>trait</span> Node : <span style=color:#50fa7b>DynClone</span> {
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>fn</span> <span style=color:#50fa7b>get_name</span>(<span style=color:#ff79c6>&amp;</span>self) -&gt; <span style=color:#8be9fd;font-style:italic>String</span>;
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>fn</span> <span style=color:#50fa7b>get_size</span>(<span style=color:#ff79c6>&amp;</span>self) -&gt; <span style=color:#8be9fd>u64</span>;
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>dyn_clone::clone_trait_object!(Node);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>#[derive(Clone)]</span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>#[enum_dispatch(Node)]</span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>enum</span> <span style=color:#50fa7b>NodeType</span> {
+</span></span><span style=display:flex><span>    FileNode(File),
+</span></span><span style=display:flex><span>    DirectoryNode(Directory),
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></td></tr></table></div></div><br><br><h2 id=최종-코드>최종 코드<a hidden class=anchor aria-hidden=true href=#최종-코드>#</a></h2><p>여태까지 수정한 내용을 모두 반영한 최종 코드는 다음과 같습니다.</p><div class=highlight><div style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">19
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">20
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">21
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">22
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">23
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">24
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">25
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">26
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">27
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">28
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">29
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">30
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">31
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">32
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">33
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">34
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">35
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">36
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">37
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">38
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">39
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">40
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">41
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">42
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">43
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">44
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">45
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">46
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">47
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">48
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">49
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">50
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">51
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">52
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">53
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">54
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">55
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">56
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">57
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">58
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">59
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">60
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">61
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">62
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">63
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">64
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">65
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">66
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">67
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">68
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">69
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">70
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">71
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">72
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">73
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">74
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">75
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">76
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">77
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=display:flex><span><span style=color:#ff79c6>fn</span> <span style=color:#50fa7b>main</span>() {
+</span></span><span style=display:flex><span>    <span style=color:#8be9fd;font-style:italic>let</span> <span style=color:#ff79c6>mut</span> root_node <span style=color:#ff79c6>=</span> Directory::new(<span style=color:#f1fa8c>&#34;root&#34;</span>.to_string());
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#8be9fd;font-style:italic>let</span> new_file <span style=color:#ff79c6>=</span> File::new(<span style=color:#f1fa8c>&#34;new_file&#34;</span>.to_string(), <span style=color:#bd93f9>1024</span> <span style=color:#ff79c6>*</span> <span style=color:#bd93f9>1024</span>);
+</span></span><span style=display:flex><span>    <span style=color:#8be9fd;font-style:italic>let</span> new_directory <span style=color:#ff79c6>=</span> Directory::new(<span style=color:#f1fa8c>&#34;my_folder&#34;</span>.to_string());
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    root_node.add_new_node(NodeType::FileNode(new_file));
+</span></span><span style=display:flex><span>    root_node.add_new_node(NodeType::DirectoryNode(new_directory));
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    assert_eq!(root_node.get_size(), <span style=color:#bd93f9>1024</span> <span style=color:#ff79c6>*</span> <span style=color:#bd93f9>1024</span>);
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>use</span> dyn_clone::DynClone;
+</span></span><span style=display:flex><span><span style=color:#ff79c6>use</span> enum_dispatch::enum_dispatch;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>#[enum_dispatch]</span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>trait</span> Node : <span style=color:#50fa7b>DynClone</span> {
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>fn</span> <span style=color:#50fa7b>get_name</span>(<span style=color:#ff79c6>&amp;</span>self) -&gt; <span style=color:#8be9fd;font-style:italic>String</span>;
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>fn</span> <span style=color:#50fa7b>get_size</span>(<span style=color:#ff79c6>&amp;</span>self) -&gt; <span style=color:#8be9fd>u64</span>;
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>dyn_clone::clone_trait_object!(Node);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>#[derive(Clone)]</span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>#[enum_dispatch(Node)]</span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>enum</span> <span style=color:#50fa7b>NodeType</span> {
+</span></span><span style=display:flex><span>    FileNode(File),
+</span></span><span style=display:flex><span>    DirectoryNode(Directory),
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>#[derive(Clone)]</span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>struct</span> <span style=color:#50fa7b>File</span> {
+</span></span><span style=display:flex><span>    name: <span style=color:#8be9fd;font-style:italic>String</span>,
+</span></span><span style=display:flex><span>    size: <span style=color:#8be9fd>u64</span>,
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span><span style=color:#ff79c6>impl</span> Node <span style=color:#ff79c6>for</span> File {
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>fn</span> <span style=color:#50fa7b>get_name</span>(<span style=color:#ff79c6>&amp;</span>self) -&gt; <span style=color:#8be9fd;font-style:italic>String</span> {
+</span></span><span style=display:flex><span>        self.name.clone()
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>fn</span> <span style=color:#50fa7b>get_size</span>(<span style=color:#ff79c6>&amp;</span>self) -&gt; <span style=color:#8be9fd>u64</span> {
+</span></span><span style=display:flex><span>        self.size
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span><span style=color:#ff79c6>impl</span> File {
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>pub</span> <span style=color:#ff79c6>fn</span> <span style=color:#50fa7b>new</span>(name: <span style=color:#8be9fd;font-style:italic>String</span>, size: <span style=color:#8be9fd>u64</span>) -&gt; <span style=color:#50fa7b>Self</span> {
+</span></span><span style=display:flex><span>        Self {
+</span></span><span style=display:flex><span>            name,
+</span></span><span style=display:flex><span>            size,
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>#[derive(Clone)]</span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>struct</span> <span style=color:#50fa7b>Directory</span> {
+</span></span><span style=display:flex><span>    name: <span style=color:#8be9fd;font-style:italic>String</span>,
+</span></span><span style=display:flex><span>    childs: <span style=color:#8be9fd;font-style:italic>Vec</span><span style=color:#ff79c6>&lt;</span>NodeType<span style=color:#ff79c6>&gt;</span>,
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span><span style=color:#ff79c6>impl</span> Node <span style=color:#ff79c6>for</span> Directory {
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>fn</span> <span style=color:#50fa7b>get_name</span>(<span style=color:#ff79c6>&amp;</span>self) -&gt; <span style=color:#8be9fd;font-style:italic>String</span> {
+</span></span><span style=display:flex><span>        self.name.clone()
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>fn</span> <span style=color:#50fa7b>get_size</span>(<span style=color:#ff79c6>&amp;</span>self) -&gt; <span style=color:#8be9fd>u64</span> {
+</span></span><span style=display:flex><span>        self.childs.iter().fold(<span style=color:#bd93f9>0</span>, <span style=color:#ff79c6>|</span>acc, x<span style=color:#ff79c6>|</span> acc <span style=color:#ff79c6>+</span> x.get_size())
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span><span style=color:#ff79c6>impl</span> Directory {
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>pub</span> <span style=color:#ff79c6>fn</span> <span style=color:#50fa7b>new</span>(name: <span style=color:#8be9fd;font-style:italic>String</span>) -&gt; <span style=color:#50fa7b>Self</span> {
+</span></span><span style=display:flex><span>        Self {
+</span></span><span style=display:flex><span>            name,
+</span></span><span style=display:flex><span>            childs: <span style=color:#8be9fd;font-style:italic>Vec</span>::new(),
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>pub</span> <span style=color:#ff79c6>fn</span> <span style=color:#50fa7b>add_new_node</span>(<span style=color:#ff79c6>&amp;</span><span style=color:#ff79c6>mut</span> self, node: <span style=color:#50fa7b>NodeType</span>) {
+</span></span><span style=display:flex><span>        self.childs.push(node);
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></td></tr></table></div></div><br><br><p>이렇게 아주 간단한 composite pattern 예제를 rust로 구현해 봤습니다. 매 번 헷갈리던 거여서 정리해 봤는데 이젠 그만 헷갈리길&mldr;</p><br><br></div><footer class=post-footer><ul class=post-tags><li><a href=http://huijeong-kim.github.io/tags/rust/>Rust</a></li><li><a href=http://huijeong-kim.github.io/tags/polymorphism/>Polymorphism</a></li></ul><nav class=paginav><a class=prev href=http://huijeong-kim.github.io/post/2023-05-02-rust-as-operator/><span class=title>« Prev</span><br><span>as operator in Rust</span>
+</a><a class=next href=http://huijeong-kim.github.io/post/2022-09-11-rust-async-programming/><span class=title>Next »</span><br><span>Rust Async Programming</span></a></nav></footer><script src=https://utteranc.es/client.js repo=huijeong-kim/huijeong-kim.github.io issue-term=pathname theme=github-light crossorigin=anonymous async></script></article></main><footer class=footer><span>&copy; 2025 <a href=http://huijeong-kim.github.io/>Dev. note</a></span>
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg>
+</a><script>let menu=document.getElementById("menu");menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove("dark"),localStorage.setItem("pref-theme","light")):(document.body.classList.add("dark"),localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="copy";function s(){t.innerHTML="copied!",setTimeout(()=>{t.innerHTML="copy"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>
