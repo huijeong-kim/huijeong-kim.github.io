@@ -1,36 +1,8 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
-  <channel>
-    <title>cargo on Dev. note</title>
-    <link>http://huijeong-kim.github.io/tags/cargo/</link>
-    <description>Recent content in cargo on Dev. note</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>kr</language>
-    <lastBuildDate>Fri, 02 Feb 2024 16:08:51 +0900</lastBuildDate><atom:link href="http://huijeong-kim.github.io/tags/cargo/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>빌드 스크립트 build.rs </title>
-      <link>http://huijeong-kim.github.io/post/2024-02-02-cargo-build-run-if-changed/</link>
-      <pubDate>Fri, 02 Feb 2024 16:08:51 +0900</pubDate>
-      
-      <guid>http://huijeong-kim.github.io/post/2024-02-02-cargo-build-run-if-changed/</guid>
-      <description>Rust 프로젝트에서 third-party non-Rust 코드를 함께 컴파일해야 할 때 빌드 스크립트를 이용할 수 있다. 별도의 스크립트를 실행하지 않고 프로젝트에 통합할수 있다는 점이 굉장히 유용한 편!
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Cargo on Dev. note</title><link>http://huijeong-kim.github.io/tags/cargo/</link><description>Recent content in Cargo on Dev. note</description><generator>Hugo -- gohugo.io</generator><language>kr</language><lastBuildDate>Fri, 02 Feb 2024 16:08:51 +0900</lastBuildDate><atom:link href="http://huijeong-kim.github.io/tags/cargo/index.xml" rel="self" type="application/rss+xml"/><item><title>빌드 스크립트 build.rs</title><link>http://huijeong-kim.github.io/post/2024-02-02-cargo-build-run-if-changed/</link><pubDate>Fri, 02 Feb 2024 16:08:51 +0900</pubDate><guid>http://huijeong-kim.github.io/post/2024-02-02-cargo-build-run-if-changed/</guid><description>Rust 프로젝트에서 third-party non-Rust 코드를 함께 컴파일해야 할 때 빌드 스크립트를 이용할 수 있다. 별도의 스크립트를 실행하지 않고 프로젝트에 통합할수 있다는 점이 굉장히 유용한 편!
 이 스크립트를 사용하는 예제로는
 bindgen, cc 등을 이용하여 non-Rust 코드를 컴파일, Rust 코드와 연결해야 할 때 gRPC, jsonschema 등을 사용해 정의된 타입을 변환할 때 등이 있다. 이 스크립트를 사용할 때 주의해야 하는 소소한 점들을 정리했다.
-build.rs 예제 Cargo는 컴파일 과정에서 build script를 빌드, 실행한다. 따라서 다음과 같은 빌드 스크립트는 패키지 컴파일 과정에서 hello.</description>
-    </item>
-    
-    <item>
-      <title>Expand Rust Macros</title>
-      <link>http://huijeong-kim.github.io/post/2022-08-14-expand-rust-macros/</link>
-      <pubDate>Sun, 14 Aug 2022 18:09:18 +0900</pubDate>
-      
-      <guid>http://huijeong-kim.github.io/post/2022-08-14-expand-rust-macros/</guid>
-      <description>Rust에서 사용 된 macro의 구현이 궁금할 때 cargo expand를 사용할 수 있습니다.
+build.rs 예제 Cargo는 컴파일 과정에서 build script를 빌드, 실행한다. 따라서 다음과 같은 빌드 스크립트는 패키지 컴파일 과정에서 hello.</description></item><item><title>Expand Rust Macros</title><link>http://huijeong-kim.github.io/post/2022-08-14-expand-rust-macros/</link><pubDate>Sun, 14 Aug 2022 18:09:18 +0900</pubDate><guid>http://huijeong-kim.github.io/post/2022-08-14-expand-rust-macros/</guid><description>Rust에서 사용 된 macro의 구현이 궁금할 때 cargo expand를 사용할 수 있습니다.
 설치 $ cargo install cargo-expand 사용법 이전 글에서 사용한 코드를 expand해 봅시다. cargo expand 시 expand 된 코드가 stdout으로 출력됩니다. $ cargo expand --bin actix-and-tonic
 이 예제는 하나의 파일로 이루어져 있어 binary를 지정했지만, 특정 module 코드를 expand하기 위해서 module을 지정할 수도 있습니다. $ cargo expand path::to:module
 Message 구현에 사용했던 Message macro는
-1 2 3 #[derive(Default, Message)] #[rtype(result = &amp;#34;String&amp;#34;)] struct GetName; 이렇게 풀어쓸 수 있습니다.</description>
-    </item>
-    
-  </channel>
-</rss>
+1 2 3 #[derive(Default, Message)] #[rtype(result = &amp;#34;String&amp;#34;)] struct GetName; 이렇게 풀어쓸 수 있습니다.</description></item></channel></rss>
