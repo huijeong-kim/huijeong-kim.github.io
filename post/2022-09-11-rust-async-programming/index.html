@@ -59,6 +59,23 @@ Asynchronous programming, or async for short, is a concurrent programming model 
 
     </style>
 </noscript>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, {
+    delimiters: [
+      {left: '$$', right: '$$', display: true},
+      {left: '$', right: '$', display: false}
+    ]
+  });"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+<script type="module">
+    import renderMathInElement from "https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.mjs";
+    renderMathInElement(document.body);
+</script>
+
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-VHBQNPGKKB"></script>
 <script>
 var doNotTrack = false;
@@ -248,7 +265,7 @@ Asynchronous programming, or async for short, is a concurrent programming model 
 <p><a href="https://rust-lang.github.io/async-book/01_getting_started/02_why_async.html">Async book</a>에는 Asynchronous programming이 다음과 같이 정의되어 있습니다.</p>
 <p> </p>
 <blockquote>
-<p>Asynchronous programming, or async for short, is a <strong><!-- raw HTML omitted -->concurrent programming model<!-- raw HTML omitted --></strong> supported by an increasing number of programming languages. It lets you run a large number of concurrent tasks on a small number of OS threads, while preserving much of the look and feel of ordinary synchronous programming, through the <strong><!-- raw HTML omitted -->async/await syntax<!-- raw HTML omitted --></strong>.</p>
+<p>Asynchronous programming, or async for short, is a <strong><u>concurrent programming model</u></strong> supported by an increasing number of programming languages. It lets you run a large number of concurrent tasks on a small number of OS threads, while preserving much of the look and feel of ordinary synchronous programming, through the <strong><u>async/await syntax</u></strong>.</p>
 </blockquote>
 <p> </p>
 <p>중요 포인트는 두 가지 일 것 같습니다.</p>
@@ -406,7 +423,7 @@ Asynchronous programming, or async for short, is a concurrent programming model 
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p> </p>
-<p><code>await</code>을 사용하여 <!-- raw HTML omitted -->&lsquo;기다리는&rsquo;<!-- raw HTML omitted --> 동작은 현재 thread를 blocking 하지 않고 동작을 yield 하는 방식으로 이루어집니다. 위의 예제에서는 그 동작이 잘 보이지 않을 수 있지만, I/O intensive application을 생각해 보면 이해하기 쉬울 것 입니다.</p>
+<p><code>await</code>을 사용하여 <u>&lsquo;기다리는&rsquo;</u> 동작은 현재 thread를 blocking 하지 않고 동작을 yield 하는 방식으로 이루어집니다. 위의 예제에서는 그 동작이 잘 보이지 않을 수 있지만, I/O intensive application을 생각해 보면 이해하기 쉬울 것 입니다.</p>
 <p>다음 예제는 rust의 대표적인 <code>Runtime</code>인 <code>tokio</code>를 사용한 TCP I/O 예시입니다. tokio runtime 생성 시  <code>new_current_thread</code>을 사용하여 현재 thread(단일 thread)만 사용하도록 했습니다. 단일 thread에서 Server 동작과 Client 동작 둘 다를 실행하고 있지만, Server 동작을 하는 async block에서 TcpListner가 <code>accept()</code>를 기다리는(await) 동안 thread를 blocking 하지 않고 동작을 yield 하므로 Client 동작의 async block에서 불리는 <code>connect()</code>가 실행될 수 있습니다.</p>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
@@ -633,7 +650,7 @@ Asynchronous programming, or async for short, is a concurrent programming model 
     </main>
     
 <footer class="footer">
-    <span>&copy; 2024 <a href="http://huijeong-kim.github.io/">Dev. note</a></span>
+    <span>&copy; 2025 <a href="http://huijeong-kim.github.io/">Dev. note</a></span>
     <span>
         Powered by
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &

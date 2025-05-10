@@ -58,6 +58,23 @@
 
     </style>
 </noscript>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, {
+    delimiters: [
+      {left: '$$', right: '$$', display: true},
+      {left: '$', right: '$', display: false}
+    ]
+  });"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+<script type="module">
+    import renderMathInElement from "https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.mjs";
+    renderMathInElement(document.body);
+</script>
+
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-VHBQNPGKKB"></script>
 <script>
 var doNotTrack = false;
@@ -259,7 +276,7 @@ if (!doNotTrack) {
 <h3 id="2-주기적으로-task를-실행하는-actor">2. 주기적으로 task를 실행하는 actor<a hidden class="anchor" aria-hidden="true" href="#2-주기적으로-task를-실행하는-actor">#</a></h3>
 <p>주기적인 task를 실행하는 actor의 대표적인 예는 자기 자신 혹은 외부의 상태를 주기적으로 확인 하는 heartbeat 입니다.</p>
 <p>이를 가장 naive하게 구현하면, 특정 주기마다 actor에게 message를 보내 task를 수행하게 할 수 있습니다. 아래는 actix repo의 <a href="https://github.com/actix/actix/blob/master/actix/examples/ping.rs">ping example</a>을 주기적으로 ping을 보내도록 수정한 코드입니다. main 함수에서 특정 주기로 ping message를 보내도록 했습니다.</p>
-<p>여기서 주의할 점은, <code>std::thread::sleep</code>이 아닌 <code>tokio::time::sleep</code>을 사용했다는 점 입니다. <code>std::thread::sleep</code>을 통해 sleep하는 경우, 현재 thread가 sleep 상태에 빠져 Actix System이 다른 future들을 실행시킬 수 없습니다. Single thread를 사용하는 기본 Actix System의 경우, application 전체가 block 상태가 됩니다. <code>tokio::time::sleep</code>은 현재 thread가 아닌 <!-- raw HTML omitted -->현재 future<!-- raw HTML omitted -->만 sleep 시켜, 전체 system을 block시키지 않습니다.</p>
+<p>여기서 주의할 점은, <code>std::thread::sleep</code>이 아닌 <code>tokio::time::sleep</code>을 사용했다는 점 입니다. <code>std::thread::sleep</code>을 통해 sleep하는 경우, 현재 thread가 sleep 상태에 빠져 Actix System이 다른 future들을 실행시킬 수 없습니다. Single thread를 사용하는 기본 Actix System의 경우, application 전체가 block 상태가 됩니다. <code>tokio::time::sleep</code>은 현재 thread가 아닌 <u>현재 future</u>만 sleep 시켜, 전체 system을 block시키지 않습니다.</p>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
@@ -721,7 +738,7 @@ if (!doNotTrack) {
     </main>
     
 <footer class="footer">
-    <span>&copy; 2024 <a href="http://huijeong-kim.github.io/">Dev. note</a></span>
+    <span>&copy; 2025 <a href="http://huijeong-kim.github.io/">Dev. note</a></span>
     <span>
         Powered by
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &

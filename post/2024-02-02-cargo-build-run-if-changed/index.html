@@ -60,6 +60,23 @@ build.rs 예제 Cargo는 컴파일 과정에서 build script를 빌드, 실행�
 
     </style>
 </noscript>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, {
+    delimiters: [
+      {left: '$$', right: '$$', display: true},
+      {left: '$', right: '$', display: false}
+    ]
+  });"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+<script type="module">
+    import renderMathInElement from "https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.mjs";
+    renderMathInElement(document.body);
+</script>
+
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-VHBQNPGKKB"></script>
 <script>
 var doNotTrack = false;
@@ -507,6 +524,11 @@ build.rs 예제 Cargo는 컴파일 과정에서 build script를 빌드, 실행�
       <li><a href="http://huijeong-kim.github.io/tags/cargo/">cargo</a></li>
     </ul>
 <nav class="paginav">
+  <a class="prev" href="http://huijeong-kim.github.io/post/2025-05-10-transformer-architecture/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>Transformer Architecture - 구조와 연산 소개</span>
+  </a>
   <a class="next" href="http://huijeong-kim.github.io/post/2023-11-18-ml-strategy-2/">
     <span class="title">Next »</span>
     <br>
@@ -526,7 +548,7 @@ build.rs 예제 Cargo는 컴파일 과정에서 build script를 빌드, 실행�
     </main>
     
 <footer class="footer">
-    <span>&copy; 2024 <a href="http://huijeong-kim.github.io/">Dev. note</a></span>
+    <span>&copy; 2025 <a href="http://huijeong-kim.github.io/">Dev. note</a></span>
     <span>
         Powered by
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &

@@ -58,6 +58,23 @@
 
     </style>
 </noscript>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, {
+    delimiters: [
+      {left: '$$', right: '$$', display: true},
+      {left: '$', right: '$', display: false}
+    ]
+  });"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+<script type="module">
+    import renderMathInElement from "https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.mjs";
+    renderMathInElement(document.body);
+</script>
+
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-VHBQNPGKKB"></script>
 <script>
 var doNotTrack = false;
@@ -159,6 +176,20 @@ if (!doNotTrack) {
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2>Async Rust에서 mpsc queue 사용하기
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>mpsc(multi produce single consumer) queue는 thread 간 message를 주고받는 channel로 많이 쓰입니다. std mpsc와 crossbeam channel가 많이 쓰이는 mpsc channel이고, async rust에서는 tokio mpsc를 사용할 수 있습니다.
+async rust에서 mpsc queue를 사용하는 방법을 알아보겠습니다.
+1. std::sync::mpsc 사용하기 가장 먼저 std 라이브러리의 mpsc를 사용해 볼 수 있겠습니다. Async rust에서 mpsc를 사용하려면 여러 future들이 message sender(tx)를 갖고 있고 하나의 future가 message receiver(rx)를 갖고 있어야 합니다. mpsc의 Sender는 clone 가능하므로 다음과 같이 tx를 clone하여 여러 Future가 message channel을 공유할 수 있습니다....</p>
+  </div>
+  <footer class="entry-footer"><span title='2022-08-27 18:49:11 +0900 KST'>2022-08-27</span>&nbsp;·&nbsp;8 min&nbsp;·&nbsp;1596 words&nbsp;·&nbsp;Huijeong Kim</footer>
+  <a class="entry-link" aria-label="post link to Async Rust에서 mpsc queue 사용하기" href="http://huijeong-kim.github.io/post/2022-08-27-tokio-mpsc/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2>Actix actor의 AsyncContext 활용하기 (2)
     </h2>
   </header>
@@ -214,30 +245,19 @@ Message 구현에 사용했던 Message macro는
   <footer class="entry-footer"><span title='2022-08-14 18:09:18 +0900 KST'>2022-08-14</span>&nbsp;·&nbsp;1 min&nbsp;·&nbsp;132 words&nbsp;·&nbsp;Huijeong Kim</footer>
   <a class="entry-link" aria-label="post link to Expand Rust Macros" href="http://huijeong-kim.github.io/post/2022-08-14-expand-rust-macros/"></a>
 </article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>Actix에서 gRPC Server 시작하기
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Rust로 gRPC로 외부와 통신하는 Actix 기반 application을 작성하는 방법을 알아봅니다. gRPC Server는 Tonic을 사용해 구현합니다. Tonic과 Actix는 둘 다 tokio 기반 application으로, tokio Runtime 위에서 동작합니다. 같은 tokio Runtime에 gRPC Server와 Actor System을 실행시켜 보겠습니다.
-Tonic을 사용해 gRPC Server 시작하기 Tonic을 사용하면 다음과 같은 간단한 Server 실행 코드를 포함한 Async Block(Future)을 Tokio Runtime에서 실행하여 gRPC Server를 시작할 수 있습니다. 아래 코드는 Tonic repo 내 helloworld exmaple에서 tonic::main 매크로를 풀어 쓴 것입니다....</p>
-  </div>
-  <footer class="entry-footer"><span title='2022-08-14 17:24:46 +0900 KST'>2022-08-14</span>&nbsp;·&nbsp;4 min&nbsp;·&nbsp;699 words&nbsp;·&nbsp;Huijeong Kim</footer>
-  <a class="entry-link" aria-label="post link to Actix에서 gRPC Server 시작하기" href="http://huijeong-kim.github.io/post/2022-08-14-run-grpc-server-in-actix/"></a>
-</article>
 <footer class="page-footer">
   <nav class="pagination">
     <a class="prev" href="http://huijeong-kim.github.io/page/2/">
-      «&nbsp;Prev&nbsp;2/3
+      «&nbsp;Prev&nbsp;2/4
+    </a>
+    <a class="next" href="http://huijeong-kim.github.io/page/4/">Next&nbsp;4/4&nbsp;»
     </a>
   </nav>
 </footer>
     </main>
     
 <footer class="footer">
-    <span>&copy; 2024 <a href="http://huijeong-kim.github.io/">Dev. note</a></span>
+    <span>&copy; 2025 <a href="http://huijeong-kim.github.io/">Dev. note</a></span>
     <span>
         Powered by
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &

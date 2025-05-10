@@ -58,6 +58,23 @@
 
     </style>
 </noscript>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, {
+    delimiters: [
+      {left: '$$', right: '$$', display: true},
+      {left: '$', right: '$', display: false}
+    ]
+  });"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+<script type="module">
+    import renderMathInElement from "https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.mjs";
+    renderMathInElement(document.body);
+</script>
+
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-VHBQNPGKKB"></script>
 <script>
 var doNotTrack = false;
@@ -244,17 +261,17 @@ if (!doNotTrack) {
 <p>오늘은 Rust의  <code>as</code> 를 사용한 type casting에 대해 알아보고자 합니다. C++ 프로그램에서는 잘못된 type 사용 으로 인한 오류를 종종 볼 수 있습니다. <code>uint64_t</code> 값을 <code>uint32_t</code> 값에 대입하여 잘못된 값으로 동작하는 경우가 그 예입니다. 조금은 어이 없는 실수이긴 한데, 생각보다 자주 발견됩니다. 이런 류의 버그는 처음 봤을 때 원인을 가늠하기 힘들기도 하지만, 고치기 귀찮거나 어렵기도 합니다. Type 재정의를 사용하지 않는 경우도 많고, 가끔씩은 통일할 필요가 크게 없는 경우도 있고, 의미 상 같은 변수를 모두 찾아내기 힘든 코드들도 종종 있습니다. 테스트를 더 잘 하면 된다고 하지만, 모든 변수에 대해 boundary test를 하는 건 현실적으로 조금 어렵습니다.</p>
 <p>Rust에서는 엄격하게 type 검사를 합니다. Rust로 작성할 땐 <code>u64</code>를 <code>u32</code>에 대입할 수 없습니다. <code>into()</code> 혹은 <code>try_into()</code> 등을 통해 type conversion하여야 하고, 적절하지 못한 type 변환 시도는 컴파일 타임에 발견되거나 런타임에 에러 리턴이 됩니다. 그래서 Rust 사용 시에는 type 관련해서는 매우 안심하고 있었는데, 생각치 못한 예외가 있더라고요. 바로 <code>as</code>를 사용한 type casting 입니다.</p>
 <p><code>as</code>는 Rust의 <strong>type cast operator</strong> 입니다. <a href="https://doc.rust-lang.org/reference/expressions/operator-expr.html#type-cast-expressions">Reference book</a>와 <a href="https://doc.rust-lang.org/std/keyword.as.html">std reference</a>를 참고하여 그 용도를 정리하고, type casting과 type conversion 으로 막을 수 있는/없는 invalid casting을 살펴보겠습니다.</p>
-<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<p><br><br></p>
 <h2 id="type-casting">Type casting<a hidden class="anchor" aria-hidden="true" href="#type-casting">#</a></h2>
 <p><code>as</code>는 primitive 의 type casting에 사용됩니다. Type을 강제 할당하는 것이기 때문에, 런타임 casting 실패는 존재하지 않습니다. 하지만 casting이 가능한 케이스는 한정되어 있습니다. 그 외의 경우는 compile time에 <code>invalid casting</code>으로 실패합니다.</p>
-<!-- raw HTML omitted -->
+<br>
 <h3 id="numeric-cast">Numeric cast<a hidden class="anchor" aria-hidden="true" href="#numeric-cast">#</a></h3>
 <ul>
 <li>동일 size integer: no-op</li>
 <li>smaller integer -&gt; larger integer: zero/sign-extend</li>
 <li>larger integer -&gt; smaller integer: truncate (!!)</li>
 </ul>
-<!-- raw HTML omitted -->
+<br>
 <p>제가 최근에 습관적으로 <code>as</code>를 사용하였는데, 이 경우 특별한 경고(compile error/warning 등) 없이 값을 잃을 수 있더라고요. <code>as</code>는 type 변환이 아닌 <strong>casting</strong>을 해 주는 것 이기 때문에 사용에 주의해야 할 것 같습니다.</p>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
@@ -277,7 +294,7 @@ if (!doNotTrack) {
 <pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>Numbers: ffffffffffffffff, ffffffff
 </span></span></code></pre></td></tr></table>
 </div>
-</div><!-- raw HTML omitted -->
+</div><br>
 <p>Numeric casting 하고 싶을 때는 <code>as</code>를 사용한 casting 대신 <code>into()</code> 혹은 <code>try_into()</code>를 사용하여 type conversion을 하는 것이 좋겠습니다.
 위와 같은 예제에서 <code>into()</code>를 사용하면, <code>u32</code>에 대한 <code>From&lt;u64&gt;</code>는 구현되어 있지 않다는 이유로 compile error가 발생합니다. 물론 직접 <code>into()</code> 함수를 구현할 수도 있겠지만 굳이 그럴 필욘 없겠지요. <code>try_into()</code>를 사용한다면 결과값은 <code>TryFromIntError</code> 에러가 됩니다.</p>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
@@ -305,7 +322,7 @@ if (!doNotTrack) {
 <pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>Conversion result: Err<span style="color:#ff79c6">(</span>TryFromIntError<span style="color:#ff79c6">(()))</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><!-- raw HTML omitted -->
+</div><br>
 <h3 id="enum-cast">Enum cast<a hidden class="anchor" aria-hidden="true" href="#enum-cast">#</a></h3>
 <p>Enum의 numeric casting 도 가능합니다. 단,</p>
 <ul>
@@ -313,7 +330,7 @@ if (!doNotTrack) {
 <li>Field-less enums (without explicit discriminants)
 만 가능합니다.</li>
 </ul>
-<!-- raw HTML omitted -->
+<br>
 <p><a href="https://doc.rust-lang.org/reference/items/enumerations.html#field-less-enum">Field-less enum</a>은 <em>&ldquo;no constructors contain fields&rdquo;</em> 인 enum 입니다. Tuple, Struct 와 같은 enum 값이 있더라도 그 안에 field가 없는 경우를 말하는 것 같습니다. 이 경우에는 explicit discriminants(<code>=3</code> 과 같은 값 지정)가 없어야만 numeric casting 가능합니다.</p>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
@@ -352,7 +369,7 @@ if (!doNotTrack) {
 <pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>FieldOnlyEnum: Tuple 0, Struct 1, Unit <span style="color:#bd93f9">2</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><!-- raw HTML omitted -->
+</div><br>
 <p>여기에 <code>FieldOnlyEnum::Unit</code>에 <code>Unit = 1,</code>과 같이 명시적으로 값을 지정하면 <em>&ldquo;discriminant value <code>1</code> assigned more than once&rdquo;</em> 에러가 발생합니다. 하지만 enum에 <code>#[repr(u8)]</code> 지정할 경우 explicit discriminant가 있는 field-less enum에서도 numeric casting 가능하다고 합니다. 이 때 tuple type이나 struct type에 discriminant value 지정하는 경우에는 *&ldquo;non-primitive cast&rdquo;*로 compile error 발생합니다.</p>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
@@ -395,9 +412,9 @@ if (!doNotTrack) {
 <pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>FieldOnlyEnum2: Tuple 4, Struct 5, Unit <span style="color:#bd93f9">6</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><!-- raw HTML omitted -->
+</div><br>
 <p>여기서 또 한 가지 신기한 점은, casting 시 <code>FieldOnlyEnum::Struct as u8</code> 와 같이 작성하는 경우(생성자 사용 X)엔 compile error 가 발생하고, <code>FieldOnlyEnum::Tuple as u8</code> 로 작성하면 빌드는 성공하나 값이 이상하게 <code>FieldOnlyEnum: Tuple 224, Struct 1, Unit 2</code> 로 나오더라고요. 혼란스럽지만 이런 enum type casting이 얼마나 필요할 지 모르겠으니 그냥 넘어가 보겠습니다..</p>
-<!-- raw HTML omitted -->
+<br>
 <p>Unit-only enum은 field-less enum 중 unit으로만 이루어진 경우입니다. 이 때는 Field-only enum과 다르게 *&ldquo;explicit discriminant value&rdquo;*를 갖고 있어도 상관 없습니다. 아래 코드에서 주석 처리 된 것 처럼 <code>UnitNum3</code>이 <code>i32</code>란 field를 갖고 있는 경우(unit-only enum이 아닌 경우), 모든 type casting에서 에러가 발생합니다.</p>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
@@ -458,19 +475,19 @@ if (!doNotTrack) {
 </span></span><span style="display:flex;"><span>UnitOnlyEnum2: UnitNum 1, UnitNum2 <span style="color:#bd93f9">4</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><!-- raw HTML omitted -->
+</div><br>
 <h3 id="other-primitives">Other primitives<a hidden class="anchor" aria-hidden="true" href="#other-primitives">#</a></h3>
 <ul>
 <li>false -&gt; 0, true -&gt; 1</li>
 <li>char -&gt; numerics: 해당 char code</li>
 <li>numerics -&gt; char: 해당하는 char code의 char</li>
 </ul>
-<!-- raw HTML omitted -->
+<br>
 <p>numerics -&gt; char 변환은 <code>u8</code>만 가능합니다. 그보다 큰 값을 가진 emoji 들은 <code>try_into</code>나 <code>into</code>를 사용해 type conversion 하면 되겠습니다.</p>
-<!-- raw HTML omitted -->
+<br>
 <p><strong>업데이트 (23.5.7)</strong>
 <code>char</code> 타입은 &ldquo;Unicode scalar value&rdquo; 를 의미하며, 1B로 표현 됩니다. Unicode 글자만이 <code>char</code>로 type casting 가능하다고 보면 될 것 같습니다.</p>
-<!-- raw HTML omitted -->
+<br>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
@@ -536,7 +553,7 @@ if (!doNotTrack) {
 </span></span><span style="display:flex;"><span>Converting result: Ok<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#39;❤&#39;</span><span style="color:#ff79c6">)</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><!-- raw HTML omitted -->
+</div><br>
 <p>pointer to address cast의 경우 예상하는 바와 유사한 것 같습니다. casting 되는 type에 따라 값이 truncate 되어 잘못된 주소를 반환할 수 있으니 주의해야 합니다. <code>usize</code> 로 casting 하거나, 다음과 같이 <code>_</code>를 사용하여 컴파일러가 추론하게 만들 수도 있습니다.</p>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
@@ -559,7 +576,7 @@ if (!doNotTrack) {
 <pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>The address of num is <span style="color:#bd93f9">0x7fffd6002dfc</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+</div><p><br><br></p>
 <h2 id="type-coercions">Type coercions<a hidden class="anchor" aria-hidden="true" href="#type-coercions">#</a></h2>
 <p>Type 을 강제할 때 사용합니다. 흔히 사용하는 literal 에 type 지정하는 경우가 그 예입니다. 이 때 잘못된 casting을 하면 (e.g., 너무 큰 값을 u8로 casting) compile error가 발생합니다.</p>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
@@ -589,7 +606,7 @@ if (!doNotTrack) {
 <pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>numbers: <span style="color:#bd93f9">123</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><!-- raw HTML omitted -->
+</div><br>
 <p>또 다른 예는 Trait 으로의 변환입니다. 다음과 같이 <code>&amp;dyn Animal</code> trait 으로 casting 하여 해당 trait의 함수를 사용할 수 있습니다.</p>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
@@ -652,7 +669,7 @@ if (!doNotTrack) {
 <pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>Happy says woof<span style="color:#ff79c6">!</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><!-- raw HTML omitted -->
+</div><br>
 <p>근데 casting 없이 그냥 호출해도 되고, 다음과 같이 함수 인자로 전달하면 자연스럽게(암묵적으로) casting 되는데, 위와 같이 <code>as Trait</code> 을 사용하는 경우가 어떤 경우인지 감이 오질 않네요.</p>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
@@ -685,7 +702,7 @@ if (!doNotTrack) {
 <pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>Happy says woof<span style="color:#ff79c6">!</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><!-- raw HTML omitted -->
+</div><br>
 <p>이 보다는 Trait을 downcasting를 하고 싶은 경우가 더 많을 것 같습니다. 꼭 downcasting을 해야 하겠느냐고 하면 할 말이 없지만(다른 방식으로 해결하는 게 좋은 경우가 더 많지만) 그래도 현실적으로 필요할 때가 종종 있습니다. 이 땐 <code>std::any::Any::downcast_ref</code>를 사용할 수 있습니다(<a href="https://bennett.dev/rust/downcast-trait-object/">참고</a>). 이 과정에서 <code>animal as &amp;dyn Any</code>와 같이 casting 하면 downcast가 정상 동작하지 않는 등 예상대로 동작하지 않는데요.  <code>as_any()</code> 의 신비는 다음에 기회 되면 알아보고 정리해 보겠습니다.</p>
 <p>다음 예제에서 Dog, Cat은 <code>Animal</code> trait을 구현하고 있고, Desk는 구현하고 있지 않습니다.</p>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
@@ -775,15 +792,15 @@ if (!doNotTrack) {
 </span></span><span style="display:flex;"><span>desk is dog<span style="color:#ff79c6">?:</span> None
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+</div><p><br><br></p>
 <h2 id="rename-imports">Rename imports<a hidden class="anchor" aria-hidden="true" href="#rename-imports">#</a></h2>
 <p>마지막으로 C++ 의 namespace renaming과 유사한 rename imports 가 있는데, 이는 type casting이 아니므로 생략합니다.</p>
-<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<p><br><br></p>
 <h2 id="결론">결론<a hidden class="anchor" aria-hidden="true" href="#결론">#</a></h2>
-<!-- raw HTML omitted -->
+<br>
 <p>Rust 의 type casting은 C++ 대비 매우 제한적이고, 정의되지 않은 casting은 invalid casting으로 처리되는 것 같습니다. 하지만 이 기준을 Reference Book만 보고 파악하기는 조금 어렵더라고요.</p>
 <p>이번 편을 작성하다 보니, Type Casting이 꼭 필요한 경우는 사실 없지 않을까 싶었습니다.(Type Casting이 유용한 예가 있다면 공유해 주시길!!) 오늘도 조금 뻔한 결론, type casting 보다는 type conversion을 사용하여 암묵적인 변환으로 인해 발생할 수 있는 버그를 피하자로 마무리 하겠습니다.</p>
-<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<p><br><br></p>
 
 
   </div>
@@ -818,7 +835,7 @@ if (!doNotTrack) {
     </main>
     
 <footer class="footer">
-    <span>&copy; 2024 <a href="http://huijeong-kim.github.io/">Dev. note</a></span>
+    <span>&copy; 2025 <a href="http://huijeong-kim.github.io/">Dev. note</a></span>
     <span>
         Powered by
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &

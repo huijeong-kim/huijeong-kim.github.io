@@ -58,6 +58,23 @@
 
     </style>
 </noscript>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, {
+    delimiters: [
+      {left: '$$', right: '$$', display: true},
+      {left: '$', right: '$', display: false}
+    ]
+  });"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+<script type="module">
+    import renderMathInElement from "https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.mjs";
+    renderMathInElement(document.body);
+</script>
+
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-VHBQNPGKKB"></script>
 <script>
 var doNotTrack = false;
@@ -203,6 +220,21 @@ if (!doNotTrack) {
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2>Transformer Architecture - 구조와 연산 소개
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>‘Full Stack Optimization of Transformer Inference: a Survey’ 리뷰 시리즈 1편
+Transformer Inference의 성능 병목을 이해하기 위해 ‘Full Stack Optimization of Transformer Inference: a Survey’ 논문을 읽고 있습니다. 이번 글은 본격적인 분석에 앞서 Transformer의 기본 구조와 이를 구성하는 주요 연산들을 간략히 소개합니다.
+논문 링크: https://arxiv.org/abs/2302.14017
+Transformer Architecture Transformer는 입력을 인코딩하는 Encoder와 출력을 생성하는 Decoder로 구성됩니다. 두 모듈 모두 Multi-Head Attention (MHA) 과 Feed-Forward Network (FFN) 으로 이루어진 Transformer Block을 반복적으로 쌓아 구현됩니다....</p>
+  </div>
+  <footer class="entry-footer"><span title='2025-05-10 20:46:32 +0900 KST'>2025-05-10</span>&nbsp;·&nbsp;4 min&nbsp;·&nbsp;783 words&nbsp;·&nbsp;Huijeong Kim</footer>
+  <a class="entry-link" aria-label="post link to Transformer Architecture - 구조와 연산 소개" href="http://huijeong-kim.github.io/post/2025-05-10-transformer-architecture/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2>빌드 스크립트 build.rs 
     </h2>
   </header>
@@ -256,31 +288,16 @@ Why? Jekyll을 사용한 건 가장 유명한 정적 사이트 생성기이고 G
   <footer class="entry-footer"><span title='2023-06-15 16:24:38 +0900 KST'>2023-06-15</span>&nbsp;·&nbsp;8 min&nbsp;·&nbsp;1590 words&nbsp;·&nbsp;Huijeong Kim</footer>
   <a class="entry-link" aria-label="post link to Jekyll to Hugo" href="http://huijeong-kim.github.io/post/2023-06-15-jekyll-to-hugo/"></a>
 </article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>Exploring Rust Strings
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>안녕하세요.
-오늘은 Rust의 문자열 개념을 간단하게 알아보고, 코드 작성 시 문자열 관련 혼란스러웠던 포인트들을 정리해 보고자 합니다.
-1. String vs. str String 과 str 는 모두 valid UTF-8 문자열을 나타냅니다. Invalid UTF-8 데이터로 String 타입을 생성할 수 없습니다. UTF-8, Unicode 등에 대한 설명은 생략합니다.
-Rust에서는 C와 같이 null-terminating string 개념을 사용하지 않습니다. 대신 String 타입은 문자열과 그 길이를 갖고 있는 “fat pointer” 입니다. “fat pointer&#34;는 raw pointer과 additional metadata (e.g., length)를 갖고 있는 포인터를 의미합니다....</p>
-  </div>
-  <footer class="entry-footer"><span title='2023-05-07 19:02:30 +0900 KST'>2023-05-07</span>&nbsp;·&nbsp;8 min&nbsp;·&nbsp;1587 words&nbsp;·&nbsp;Huijeong Kim</footer>
-  <a class="entry-link" aria-label="post link to Exploring Rust Strings" href="http://huijeong-kim.github.io/post/2023-05-07-exploring-rust-strings/"></a>
-</article>
 <footer class="page-footer">
   <nav class="pagination">
-    <a class="next" href="http://huijeong-kim.github.io/page/2/">Next&nbsp;2/3&nbsp;»
+    <a class="next" href="http://huijeong-kim.github.io/page/2/">Next&nbsp;2/4&nbsp;»
     </a>
   </nav>
 </footer>
     </main>
     
 <footer class="footer">
-    <span>&copy; 2024 <a href="http://huijeong-kim.github.io/">Dev. note</a></span>
+    <span>&copy; 2025 <a href="http://huijeong-kim.github.io/">Dev. note</a></span>
     <span>
         Powered by
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &

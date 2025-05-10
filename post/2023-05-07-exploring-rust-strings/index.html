@@ -60,6 +60,23 @@ Rust에서는 C와 같이 null-terminating string 개념을 사용하지 않습�
 
     </style>
 </noscript>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, {
+    delimiters: [
+      {left: '$$', right: '$$', display: true},
+      {left: '$', right: '$', display: false}
+    ]
+  });"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+<script type="module">
+    import renderMathInElement from "https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.mjs";
+    renderMathInElement(document.body);
+</script>
+
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-VHBQNPGKKB"></script>
 <script>
 var doNotTrack = false;
@@ -337,7 +354,7 @@ Rust에서는 C와 같이 null-terminating string 개념을 사용하지 않습�
 </div><p>문제는 두 가지 입니다. 첫 번째는 대입하고자 하는 데이터인 &ldquo;hello world&quot;가 <code>str</code>가 아닌 <code>&amp;str</code> 타입이라는 것 이고, 두 번째는 <code>str</code> 타입의 크기는 compile type에 알 수 없다는 것 입니다.</p>
 <p>&ldquo;hello world&quot;와 같은 <strong>string literal</strong>은 <code>&amp;str</code> 타입입니다. 실행 파일의 text 영역에 하드코딩 된 문자열을 참조하는 형태기 때문입니다.</p>
 <p><code>str</code> 은 <strong>string slice</strong>로 DST(Dynamic Sized Type) 중 하나 입니다. <a href="https://doc.rust-lang.org/reference/dynamically-sized-types.html">DST</a>는 compile time에 그 크기를 알 수 없는 타입으로, <code>Slice</code>, <code>Trait</code> 이 대표적인 예 입니다. 해당 타입들은 그냥 사용할 순 없고, <code>Box</code>를 사용하여 heap 에 위치시키거나, reference 로 Sized object를 가리키도록 하는 등의 방식으로 사용해야 합니다. <code>Vec&lt;dyn Trait&gt;</code>을 사용할 때 발생하는 컴파일 에러는 <a href="https://huijeong-kim.github.io/rust-polymorphism/">이전 포스트</a>에서 살펴본 적 있습니다.</p>
-<p><code>str</code>은 reference 형태로 많이 사용되고, reference 대상은 <!-- raw HTML omitted -->Heap-allocated String<!-- raw HTML omitted -->, <!-- raw HTML omitted -->String literal<!-- raw HTML omitted --> 등이 됩니다.</p>
+<p><code>str</code>은 reference 형태로 많이 사용되고, reference 대상은 <U>Heap-allocated String</U>, <U>String literal</U> 등이 됩니다.</p>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
@@ -684,7 +701,7 @@ Rust에서는 C와 같이 null-terminating string 개념을 사용하지 않습�
     </main>
     
 <footer class="footer">
-    <span>&copy; 2024 <a href="http://huijeong-kim.github.io/">Dev. note</a></span>
+    <span>&copy; 2025 <a href="http://huijeong-kim.github.io/">Dev. note</a></span>
     <span>
         Powered by
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &

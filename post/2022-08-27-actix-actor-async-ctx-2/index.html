@@ -59,6 +59,23 @@ add_stream, add_message_stream 1 2 3 4 5 6 7 8 9 10 fn add_stream&lt;S&gt;(&amp;
 
     </style>
 </noscript>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, {
+    delimiters: [
+      {left: '$$', right: '$$', display: true},
+      {left: '$', right: '$', display: false}
+    ]
+  });"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+<script type="module">
+    import renderMathInElement from "https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.mjs";
+    renderMathInElement(document.body);
+</script>
+
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-VHBQNPGKKB"></script>
 <script>
 var doNotTrack = false;
@@ -362,7 +379,7 @@ add_stream, add_message_stream 1 2 3 4 5 6 7 8 9 10 fn add_stream&lt;S&gt;(&amp;
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><code>notify</code>는 자기 자신에게 message를 보내는 함수입니다. 이전 글에서 <code>address</code>를 통해 자기 자신의 주소를 찾고, 여기에 message를 보내는 예제를 작성하였는데요. <code>notify</code> 함수로 바로 message handler를 부를 수도 있습니다.
-이 함수는 actor의 <!-- raw HTML omitted -->mailbox를 bypass<!-- raw HTML omitted --> 하고 항상 message를 전달한다고 합니다. 하지만 actor가 <code>Stopped</code> 상태라면 error 발생합니다.</p>
+이 함수는 actor의 <u>mailbox를 bypass</u> 하고 항상 message를 전달한다고 합니다. 하지만 actor가 <code>Stopped</code> 상태라면 error 발생합니다.</p>
 <p>이전에 자신의 <code>Addr</code>를 찾아 메시지를 보내는 예제를 <code>notify</code> 함수를 사용하도록 수정하면 다음과 같습니다.</p>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
@@ -469,7 +486,7 @@ add_stream, add_message_stream 1 2 3 4 5 6 7 8 9 10 fn add_stream&lt;S&gt;(&amp;
     </main>
     
 <footer class="footer">
-    <span>&copy; 2024 <a href="http://huijeong-kim.github.io/">Dev. note</a></span>
+    <span>&copy; 2025 <a href="http://huijeong-kim.github.io/">Dev. note</a></span>
     <span>
         Powered by
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
