@@ -1,8 +1,36 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Cargo on Dev. note</title><link>http://huijeong-kim.github.io/tags/cargo/</link><description>Recent content in Cargo on Dev. note</description><generator>Hugo -- gohugo.io</generator><language>kr</language><lastBuildDate>Fri, 02 Feb 2024 16:08:51 +0900</lastBuildDate><atom:link href="http://huijeong-kim.github.io/tags/cargo/index.xml" rel="self" type="application/rss+xml"/><item><title>빌드 스크립트 build.rs</title><link>http://huijeong-kim.github.io/post/2024-02-02-cargo-build-run-if-changed/</link><pubDate>Fri, 02 Feb 2024 16:08:51 +0900</pubDate><guid>http://huijeong-kim.github.io/post/2024-02-02-cargo-build-run-if-changed/</guid><description>Rust 프로젝트에서 third-party non-Rust 코드를 함께 컴파일해야 할 때 빌드 스크립트를 이용할 수 있다. 별도의 스크립트를 실행하지 않고 프로젝트에 통합할수 있다는 점이 굉장히 유용한 편!
-이 스크립트를 사용하는 예제로는
-bindgen, cc 등을 이용하여 non-Rust 코드를 컴파일, Rust 코드와 연결해야 할 때 gRPC, jsonschema 등을 사용해 정의된 타입을 변환할 때 등이 있다. 이 스크립트를 사용할 때 주의해야 하는 소소한 점들을 정리했다.
-build.rs 예제 Cargo는 컴파일 과정에서 build script를 빌드, 실행한다. 따라서 다음과 같은 빌드 스크립트는 패키지 컴파일 과정에서 hello.</description></item><item><title>Expand Rust Macros</title><link>http://huijeong-kim.github.io/post/2022-08-14-expand-rust-macros/</link><pubDate>Sun, 14 Aug 2022 18:09:18 +0900</pubDate><guid>http://huijeong-kim.github.io/post/2022-08-14-expand-rust-macros/</guid><description>Rust에서 사용 된 macro의 구현이 궁금할 때 cargo expand를 사용할 수 있습니다.
-설치 $ cargo install cargo-expand 사용법 이전 글에서 사용한 코드를 expand해 봅시다. cargo expand 시 expand 된 코드가 stdout으로 출력됩니다. $ cargo expand --bin actix-and-tonic
-이 예제는 하나의 파일로 이루어져 있어 binary를 지정했지만, 특정 module 코드를 expand하기 위해서 module을 지정할 수도 있습니다. $ cargo expand path::to:module
-Message 구현에 사용했던 Message macro는
-1 2 3 #[derive(Default, Message)] #[rtype(result = &amp;#34;String&amp;#34;)] struct GetName; 이렇게 풀어쓸 수 있습니다.</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Cargo on Dev. note</title><link>http://huijeong-kim.github.io/tags/cargo/</link><description>Recent content in Cargo on Dev. note</description><generator>Hugo -- 0.146.0</generator><language>kr</language><lastBuildDate>Fri, 02 Feb 2024 16:08:51 +0900</lastBuildDate><atom:link href="http://huijeong-kim.github.io/tags/cargo/index.xml" rel="self" type="application/rss+xml"/><item><title>빌드 스크립트 build.rs</title><link>http://huijeong-kim.github.io/post/2024-02-02-cargo-build-run-if-changed/</link><pubDate>Fri, 02 Feb 2024 16:08:51 +0900</pubDate><guid>http://huijeong-kim.github.io/post/2024-02-02-cargo-build-run-if-changed/</guid><description>&lt;p>Rust 프로젝트에서 third-party non-Rust 코드를 함께 컴파일해야 할 때 &lt;a href="https://doc.rust-lang.org/cargo/reference/build-scripts.html">빌드 스크립트&lt;/a>를 이용할 수 있다. 별도의 스크립트를 실행하지 않고 프로젝트에 통합할수 있다는 점이 굉장히 유용한 편!&lt;/p>
+&lt;p>이 스크립트를 사용하는 예제로는&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>bindgen&lt;/code>, &lt;code>cc&lt;/code> 등을 이용하여 non-Rust 코드를 컴파일, Rust 코드와 연결해야 할 때&lt;/li>
+&lt;li>&lt;code>gRPC&lt;/code>, &lt;code>jsonschema&lt;/code> 등을 사용해 정의된 타입을 변환할 때&lt;/li>
+&lt;/ul>
+&lt;p> &lt;/p>
+&lt;p>등이 있다. 이 스크립트를 사용할 때 주의해야 하는 소소한 점들을 정리했다.&lt;/p>
+&lt;p> 
+ &lt;/p>
+&lt;h2 id="buildrs-예제">build.rs 예제&lt;/h2>
+&lt;p>Cargo는 컴파일 과정에서 build script를 빌드, 실행한다. 따라서 다음과 같은 빌드 스크립트는 패키지 컴파일 과정에서 &lt;code>hello.rs&lt;/code> 파일을 만들게 된다. 패키지의 코드는 &lt;code>hello.rs&lt;/code> 내 함수를 사용할 수 있다.&lt;/p></description></item><item><title>Expand Rust Macros</title><link>http://huijeong-kim.github.io/post/2022-08-14-expand-rust-macros/</link><pubDate>Sun, 14 Aug 2022 18:09:18 +0900</pubDate><guid>http://huijeong-kim.github.io/post/2022-08-14-expand-rust-macros/</guid><description>&lt;p>Rust에서 사용 된 macro의 구현이 궁금할 때 &lt;a href="https://github.com/dtolnay/cargo-expand">cargo expand&lt;/a>를 사용할 수 있습니다.&lt;/p>
+&lt;h3 id="설치">설치&lt;/h3>
+&lt;p>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ cargo install cargo-expand&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+ 
+ &lt;/p>
+&lt;h3 id="사용법">사용법&lt;/h3>
+&lt;p>&lt;a href="https://huijeong-kim.github.io/run-grpc-server-in-actix/">이전 글&lt;/a>에서 사용한 코드를 expand해 봅시다. &lt;code>cargo expand&lt;/code> 시 expand 된 코드가 stdout으로 출력됩니다.
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ cargo expand --bin actix-and-tonic&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/p>
+&lt;p>이 예제는 하나의 파일로 이루어져 있어 binary를 지정했지만, 특정 module 코드를 expand하기 위해서 module을 지정할 수도 있습니다.
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ cargo expand path::to:module&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/p>
+&lt;p> &lt;/p>
+&lt;p>Message 구현에 사용했던 Message macro는&lt;/p>
+&lt;div class="highlight">&lt;div style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+&lt;table style="border-spacing:0;padding:0;margin:0;border:0;">&lt;tr>&lt;td style="vertical-align:top;padding:0;margin:0;border:0;">
+&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code>&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+&lt;/span>&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+&lt;/span>&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-rust" data-lang="rust">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ff79c6">#[derive(Default, Message)]&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ff79c6">#[rtype(result = &lt;/span>&lt;span style="color:#f1fa8c">&amp;#34;String&amp;#34;&lt;/span>&lt;span style="color:#ff79c6">)]&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ff79c6">struct&lt;/span> &lt;span style="color:#50fa7b">GetName&lt;/span>;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>이렇게 풀어쓸 수 있습니다.&lt;/p></description></item></channel></rss>
