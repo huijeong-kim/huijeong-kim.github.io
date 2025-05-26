@@ -1,4 +1,45 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Inference on Dev. note</title><link>http://huijeong-kim.github.io/tags/inference/</link><description>Recent content in Inference on Dev. note</description><generator>Hugo -- 0.146.0</generator><language>kr</language><lastBuildDate>Sat, 10 May 2025 20:46:32 +0900</lastBuildDate><atom:link href="http://huijeong-kim.github.io/tags/inference/index.xml" rel="self" type="application/rss+xml"/><item><title>Transformer Architecture - 구조와 연산 소개</title><link>http://huijeong-kim.github.io/post/2025-05-10-transformer-architecture/</link><pubDate>Sat, 10 May 2025 20:46:32 +0900</pubDate><guid>http://huijeong-kim.github.io/post/2025-05-10-transformer-architecture/</guid><description>&lt;p>&lt;em>‘Full Stack Optimization of Transformer Inference: a Survey’ 리뷰 시리즈 1편&lt;/em>&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Inference on Dev. note</title><link>http://huijeong-kim.github.io/tags/inference/</link><description>Recent content in Inference on Dev. note</description><generator>Hugo -- 0.146.0</generator><language>kr</language><lastBuildDate>Mon, 26 May 2025 07:31:04 +0900</lastBuildDate><atom:link href="http://huijeong-kim.github.io/tags/inference/index.xml" rel="self" type="application/rss+xml"/><item><title>Transformer Model Workload Analysis</title><link>http://huijeong-kim.github.io/post/2025-05-26-transformer-model-workload-analysis/</link><pubDate>Mon, 26 May 2025 07:31:04 +0900</pubDate><guid>http://huijeong-kim.github.io/post/2025-05-26-transformer-model-workload-analysis/</guid><description>&lt;p>&lt;em>‘Full Stack Optimization of Transformer Inference: a Survey’ 리뷰 시리즈 2편&lt;/em>&lt;/p>
+&lt;p>논문의 2.2장에서는 모델 워크로드를 분석합니다. Idle한 상황을 가정하고, 각 트랜스포머 모델의 이론적 최대 성능(upper bound)을 분석합니다. 그 과정에서 각 모델의 특성을 이해해 볼 수 있습니다.&lt;/p>
+&lt;p>논문 링크: &lt;a href="https://arxiv.org/abs/2302.14017">https://arxiv.org/abs/2302.14017&lt;/a>&lt;/p>
+&lt;hr>
+&lt;p> &lt;/p>
+&lt;h2 id="models">Models&lt;/h2>
+&lt;p>논문은 BERT-Base, BERT-Large, GPT-2 모델로 워크로드를 분석했습니다. 모두 트랜스포머 기반입니다. 주요 특징과 parameter configuration은 아래와 같습니다.&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>모델&lt;/th>
+&lt;th>구조&lt;/th>
+&lt;th>방향성&lt;/th>
+&lt;th>목적&lt;/th>
+&lt;th>주요 용도&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>12-layer BERT-Base&lt;/td>
+&lt;td>인코더-only&lt;/td>
+&lt;td>양방향&lt;/td>
+&lt;td>마스킹된 단어 예측 (MLM)&lt;/td>
+&lt;td>문장 이해 (분류, 질의응답 등)&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>24-layer BERT-Large&lt;/td>
+&lt;td>인코더-only&lt;/td>
+&lt;td>양방향&lt;/td>
+&lt;td>BERT-Base 확장&lt;/td>
+&lt;td>고성능 문장 이해&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>12-layer GPT-2&lt;/td>
+&lt;td>디코더-only&lt;/td>
+&lt;td>단방향 (왼→오)&lt;/td>
+&lt;td>다음 단어 예측 (causal LM)&lt;/td>
+&lt;td>텍스트 생성 (요약, 번역, 대화 등)&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p> &lt;/p></description></item><item><title>Transformer Architecture - 구조와 연산 소개</title><link>http://huijeong-kim.github.io/post/2025-05-10-transformer-architecture/</link><pubDate>Sat, 10 May 2025 20:46:32 +0900</pubDate><guid>http://huijeong-kim.github.io/post/2025-05-10-transformer-architecture/</guid><description>&lt;p>&lt;em>‘Full Stack Optimization of Transformer Inference: a Survey’ 리뷰 시리즈 1편&lt;/em>&lt;/p>
 &lt;p>Transformer Inference의 성능 병목을 이해하기 위해 ‘Full Stack Optimization of Transformer Inference: a Survey’ 논문을 읽고 있습니다. 이번 글은 본격적인 분석에 앞서 Transformer의 기본 구조와 이를 구성하는 주요 연산들을 간략히 소개합니다.&lt;/p>
 &lt;p>논문 링크: &lt;a href="https://arxiv.org/abs/2302.14017">https://arxiv.org/abs/2302.14017&lt;/a>&lt;/p>
 &lt;p> 
